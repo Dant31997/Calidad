@@ -9,23 +9,14 @@ if ($conexion->connect_error) {
 
 // Obtiene los datos del formulario
 $cod_inventario = $_POST['cod_inventario'];
-$nom_inventario = $_POST['nom_inventario'];
-$estado = $_POST['estado'];
 $nombre_persona = $_POST['nombre_persona'];
-$diaentrega = $_POST['diaentrega'];
-$horario_prestamo = $_POST['devolucion'];
-
+$equipo = $_POST['equipo'];
+$estado = $_POST['estado'];
 
 // Inicializa la parte SET de la consulta SQL
 $set = array();
 $tipos = "";
 $valores = array();
-
-if (!empty($nom_inventario)) {
-    $set[] = "espacio = ?";
-    $tipos .= 's';
-    $valores[] = $nom_inventario;
-}
 
 if (!empty($estado)) {
     $set[] = "estado_peticion = ?";
@@ -39,22 +30,14 @@ if (!empty($nombre_persona)) {
     $valores[] = $nombre_persona;
 }
 
-if (!empty($diaentrega)) {
-    $set[] = "dia_entrega = ?";
+if (!empty($equipo)) {
+    $set[] = "equipo = ?";
     $tipos .= 's';
-    $valores[] = $diaentrega;
+    $valores[] = $equipo;
 }
 
-if (!empty($devolucion)) {
-    $set[] = "horario_prestamo = ?";
-    $tipos .= 's';
-    $valores[] = $horario_prestamo;
-} 
-
-
-
 // Consulta SQL para actualizar los campos especificados
-$sql = "UPDATE peticiones_espacios SET " . implode(", ", $set) . " WHERE id = ?";
+$sql = "UPDATE peticiones_insumos SET " . implode(", ", $set) . " WHERE id = ?";
 $tipos .= 'i'; // Agrega el tipo de dato para el ID
 $valores[] = $cod_inventario;
 
@@ -71,4 +54,4 @@ if ($stmt->execute()) {
 $conexion->close();
 ?>
 
-<meta http-equiv="Refresh" content="1; url='verificarPeticionesEspacios.php'" />
+<meta http-equiv="Refresh" content="1; url='verificarPeticionesInsumos.php'" />

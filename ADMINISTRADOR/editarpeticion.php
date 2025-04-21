@@ -11,17 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id = $_GET['id'];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['espacio'])) {
-    // Conexión a la base de datos
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
-
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión: " . $conexion->connect_error);
-    }
-
-    $espacio = $_GET['espacio'];
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
     // Conexión a la base de datos
@@ -34,6 +23,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
 
     $pide = $_GET['pide'];
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['equipo'])) {
+    // Conexión a la base de datos
+    $conexion = new mysqli("localhost", "root", "", "basededatos");
+
+    // Verifica la conexión
+    if ($conexion->connect_error) {
+        die("Error en la conexión: " . $conexion->connect_error);
+    }
+
+    $equipo = $_GET['equipo'];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_peticion'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -55,18 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['dia_entrega'])) {
     }
 
     $dia_entrega = $_GET['dia_entrega'];
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['horario_prestamo'])) {
-    // Conexión a la base de datos
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
-
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión: " . $conexion->connect_error);
-    }
-
-    $horario_prestamo = $_GET['horario_prestamo'];
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
@@ -182,17 +172,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
 </style>
 <br>
 <div class="login-box">
-<h3>Editar Peticion</h3>
+<h3>Actualizar estado de la Peticion</h3>
 <br>
         <form action="cambiopeticion.php" method="POST">
             <div class="form-group">
-                <label for="cod_inventario">ID:</label>
+                <label for="cod_inventario">ID de la peticion:</label>
                 <input readonly class="inputcentrado" type="number" style="width : 50px; heigth : 1px" id="cod_inventario" name="cod_inventario" value="<?php echo $id; ?>">
             </div>
             <br>
             <div class="form-group">
-                <label for="nom_inventario">Espacio:</label>
-                <input  type="text" style="width : 100px; heigth : 1px" id="nom_inventario" name="nom_inventario" value="<?php echo $espacio; ?>">
+                <label for="nombre_persona">Nombre de la persona:</label>
+                <input readonly type="text" style="width : 200px; " id="nombre_persona" name="nombre_persona" value="<?php echo $pide; ?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="equipo">Equipo necesario:</label>
+                <input readonly type="text" style="width : 200px; " id="equipo" name="equipo" value="<?php echo $equipo; ?>">
             </div>
             <br>
             <div class="form-group">
@@ -209,23 +204,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
                 </select>
             </div>
             <br>
-            <div class="form-group">
-                <label for="nombre_persona">Nombre de la persona:</label>
-                <input readonly type="text" style="width : 200px; " id="nombre_persona" name="nombre_persona" value="<?php echo $pide; ?>">
-            </div>
+            
             <br>
-            <div class="form-group">
-                <label for="diaentrega">Fecha en que se necesita</label>
-                <input readonly type="date" id="diaentrega" name="diaentrega" value="<?php echo $dia_entrega; ?>">
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="devolucion">Horario de uso</label>
-                <input readonly type="text" id="devolucion" name="devolucion" value="<?php echo $horario_prestamo; ?>">
-            </div>
+            
+            
             <br>
 
-            <input class="btno" type="submit" name= "editar" value="Editar Objeto">
+            <input class="btno" type="submit" name= "editar" value="Actualizar">
             <br>
         </form>
         </div>
