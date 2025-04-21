@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado'])) {
 
     $estado = $_GET['estado'];
 }
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['diahora_p'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Descripcion'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -54,8 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['diahora_p'])) {
     if ($conexion->connect_error) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
-
-    $diahora_p = $_GET['diahora_p'];
+    $Descripcion = $_GET['Descripcion'];
 }
 ?>    
 <style>
@@ -153,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['diahora_p'])) {
 </style>
 <br>
 <div class="login-box">
-<h3>Editar Objeto</h3>
+<h3>Editar Insumo</h3>
 <br>
         <form action="cambio_objeto.php" method="POST">
             <div class="form-group">
@@ -164,6 +163,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['diahora_p'])) {
             <div class="form-group">
                 <label for="nom_inventario">Nombre del equipo:</label>
                 <input type="text" style="width : 200px; heigth : 1px" id="nom_inventario" name="nom_inventario" value="<?php echo $nom_inventario; ?>">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="Descripcion">Descripcion:</label>
+                <input type="textarea" style="width : 200px; heigth : 1px" id="Descripcion" name="Descripcion" value="<?php echo $Descripcion; ?>">
             </div>
             <br>
             <div class="form-group">
@@ -179,17 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['diahora_p'])) {
                 </select>
             </div>
             <br>
-            <div class="form-group">
-                <label for="nombre_persona">Nombre de la persona:</label>
-                <input type="text" style="width : 200px; " id="nombre_persona" name="nombre_persona" value="-">
-            </div>
             <br>
-            <div class="form-group">
-                <label for="devolucion">Fecha de devolucion</label>
-                <input type="date" id="devolucion" name="devolucion" value="">
-            </div>
-            <br>
-            <input class="btno" type="submit" name= "editar" value="Editar Objeto">
+            <input class="btno" type="submit" name= "editar" value="Editar Insumo">
             <br>
         </form>
         </div>

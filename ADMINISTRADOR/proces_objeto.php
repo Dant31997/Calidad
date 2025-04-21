@@ -18,12 +18,19 @@ if (isset($_POST['agregar'])) {
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param('sss', $nombre_objeto, $estado, $descripcion);
 
-    if ($stmt->execute()) {
-        echo "Objeto de inventario agregado con éxito.";
-        echo"<script>alert('El objeto fue agregado con éxito.');</script>";
-    } else {
-        echo "Error al agregar el objeto de inventario: " . $stmt->error;
+    try {
+        if ($stmt->execute()) {
+            echo "<script>alert('El objeto fue agregado con éxito.');</script>";
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) { // Código de error para "Duplicate entry"
+            echo "<script>alert('Error: El objeto ya existe en el inventario.');
+            window.history.back()
+            </script>";
+        } else {
+            echo "<script>alert('Error al agregar el objeto de inventario: " . $e->getMessage() . "');</script>";
+        }
     }
 }
 ?>
-<meta http-equiv="Refresh" content="1; url='http://localhost/proyecto/inventario.php'" />
+<meta http-equiv="Refresh" content="1; url='http://localhost/proyectofinal/ADMINISTRADOR/agregarobjeto.php'" />

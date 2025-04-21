@@ -10,10 +10,8 @@ if ($conexion->connect_error) {
 // Obtiene los datos del formulario
 $cod_inventario = $_POST['cod_inventario'];
 $nom_inventario = $_POST['nom_inventario'];
+$Descripcion = $_POST['Descripcion'];
 $estado = $_POST['estado'];
-$nombre_persona = $_POST['nombre_persona'];
-$fecha_prestamo = ($_POST['estado'] == 'prestado') ? date('Y-m-d', time()) : 0;
-$devolucion = $_POST['devolucion'];
 
 // Inicializa la parte SET de la consulta SQL
 $set = array();
@@ -32,30 +30,10 @@ if (!empty($estado)) {
     $valores[] = $estado;
 }
 
-if (!empty($nombre_persona)) {
-    $set[] = "nombre_persona = ?";
+if (!empty($Descripcion)) {
+    $set[] = "Descripcion = ?";
     $tipos .= 's';
-    $valores[] = $nombre_persona;
-}
-
-if (!empty($fecha_prestamo)) {
-    $set[] = "diahora_p = ?";
-    $tipos .= 's';
-    $valores[] = $fecha_prestamo;
-} else {
-    $set[] = "diahora_p = ?";
-    $tipos .= 's';
-    $valores[] = "0000-00-00";
-}
-
-if (!empty($devolucion)) {
-    $set[] = "devolucion = ?";
-    $tipos .= 's';
-    $valores[] = $devolucion;
-} else {
-    $set[] = "devolucion = ?";
-    $tipos .= 's';
-    $valores[] = "0000-00-00";
+    $valores[] = $Descripcion;
 }
 
 // Consulta SQL para actualizar los campos especificados
@@ -66,14 +44,24 @@ $valores[] = $cod_inventario;
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param($tipos, ...$valores);
 
+try { 
 if ($stmt->execute()) {
     echo "Campos actualizados correctamente.";
-} else {
-    echo "Error al actualizar los campos: " . $stmt->error;
+    }
+} catch (mysqli_sql_exception $e) {
+    if ($e->getCode() == 1062) { // Código de error para "Duplicate entry"
+        echo "<script>alert('Error: El objeto ya existe en el inventario.');
+        window.history.back();
+        </script>";
+        
+    } else {
+        echo "Error al actualizar el objeto de inventario: " . $e->getMessage();
+    }
 }
+    
 
 // Cierra la conexión
 $conexion->close();
 ?>
 
-<meta http-equiv="Refresh" content="1; url='http://localhost/proyecto/inventario.php'" />
+<meta http-equiv="Refresh" content="1; url='http://localhost/proyectofinal/ADMINISTRADOR/inventario.php'" />

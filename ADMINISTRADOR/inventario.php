@@ -158,7 +158,7 @@ if ($resultado->num_rows >= 0) {
     echo "<tr  class= 'encabezado'>
     <th style=width:50px;>Cód.inv</th>
     <th style=width:150px;> Nombre del insumo </th>
-    <th style=width:300px;> Descripcion a</th>
+    <th style=width:300px;> Descripcion</th>
     <th style=width:80px;> Estado </th>
     <th style=width:150px;>Acciones</th>
     </tr>";
