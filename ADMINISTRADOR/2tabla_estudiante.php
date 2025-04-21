@@ -1,15 +1,14 @@
 <?php
 $fecha_entrega = $_POST['fecha_entrega'];
-$fecha_regreso = $_POST['fecha_regreso'];
 $hora_entrega = $_POST['hora_entrega'];
 $hora_regreso = $_POST['hora_regreso'];
 $cod_espacio = $_POST['inventario'];
-$nom_profesor = $_POST['Estudiante'];
+$nom_profesor = $_POST['Nombre_trabajador'];
 
 $hora_entrega = validarYLimpiarTiempo($hora_entrega);
 $hora_regreso = validarYLimpiarTiempo($hora_regreso);
 $fecha_entrega = validarYLimpiarFecha($fecha_entrega);
-$fecha_regreso = validarYLimpiarFecha($fecha_regreso);
+
 
 $servername = "localhost";
 $username = "root";

@@ -125,7 +125,7 @@
         die("Error en la conexión: " . $conexion->connect_error);
     }
     
-    $registrosPorPagina = 7;
+    $registrosPorPagina = 6;
     $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -146,10 +146,11 @@
         echo "<table border='1'>";
         echo "<tr class='encabezado' ><th style=width:50px;>ID</th>
         <th style=width:100px;>Equipo</th>
-        <th style=width:150px;>Nombre de la persona</th>
-        <th style=width:200px;>Estado de la peticion</th>
-        <th>Dia que se necesita</th>
-        <th>Horario de uso</th>
+        <th style=width:250px;>Nombre de la persona</th>
+        <th style=width:150px;>Estado de la peticion</th>
+        <th style=width:130px>Fecha</th>
+        <th style=width:100px;>Hora de Salida</th>
+        <th style=width:100px;>Hora de Devolucion</th>
         <th>Acciones</th> </tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
@@ -158,8 +159,9 @@
             echo "<td>" . $fila['pide'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
             echo "<td>" . $fila['dia_entrega'] . "</td>";
-            echo "<td>" . $fila['horario_prestamo'] . "</td>";
-            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&dia_devolucion=" .  $fila['horario_prestamo'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td>" . $fila['horario_salida'] . "</td>";
+            echo "<td>" . $fila['horario_devolucion'] . "</td>";
+            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&horario_salida=" .  $fila['horario_salida'] ."&horario_devolucion=" . $fila['horario_devolucion'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -179,6 +181,6 @@
    
     
     <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
-    <a class ="custom-button3" href="1tabla_estudiante.php">Asignar Equipo</a>
+    <a class ="custom-button3" href="asignar_Insumo.php">Asignar Insumo</a>
 </body>
 </html>

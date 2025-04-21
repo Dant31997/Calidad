@@ -11,10 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Consulta SQL para eliminar el usuario por ID
-    $sql = "DELETE FROM peticiones_estudiantes WHERE id = $id";
+    $sql = "DELETE FROM peticiones_insumos WHERE id = $id";
 
     if ($conexion->query($sql) === TRUE) {
-        header("Location: http://localhost/proyecto/verificarpeticiones.php");
+        header("Location: http://localhost/proyectofinal/ADMINISTRADOR/verificarPeticionesInsumos.php");
     } else {
         echo "Error al eliminar el usuario: " . $conexion->error;
     }

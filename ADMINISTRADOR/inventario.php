@@ -157,7 +157,7 @@ if ($resultado->num_rows >= 0) {
     echo "<table border='1'>";
     echo "<tr  class= 'encabezado'>
     <th style=width:50px;>Cód.inv</th>
-    <th style=width:150px;> Nombre del equipo </th>
+    <th style=width:150px;> Nombre del insumo </th>
     <th style=width:300px;> Descripcion a</th>
     <th style=width:80px;> Estado </th>
     <th style=width:150px;>Acciones</th>
@@ -189,7 +189,7 @@ if ($resultado->num_rows >= 0) {
         ?>
     </div>
     <br>
-    <a class="custom-button" href="agregarobjeto.php">Agregar Objeto</a>
+    <a class="custom-button" href="agregarobjeto.php">Agregar insumo</a>
     
     <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
     <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
