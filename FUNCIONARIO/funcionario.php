@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
 <html>
     
 <head>
-    <title>Panel del Profesor</title>
-    <style>
+    <title>Funcionario</title>
+<style>
 
         body {
             font-family: Arial, sans-serif;
@@ -121,8 +121,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             border-radius: 5px;
             margin-top: 1px; 
-            position: absolute;
-            top: 85%; left: 32%;
         }
         .buttonM:hover {
             background-color: #D62828;
@@ -136,8 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
-            position: absolute;
-            top: 68%; left: 19%;
         }
         .custom-button3:hover {
             background-color: #D62828;
@@ -151,8 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
-            position: absolute;
-            top: 75%; left: 69.5%;
         }
         .custom-button4:hover {
             background-color: #D62828;
@@ -166,8 +160,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
-            position: absolute;
-            top: 80%; left: 19.4%;
         }
         .custom-button5:hover {
             background-color: #D62828;
@@ -181,8 +173,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
-            position: absolute;
-            top: 87%; left: 70%;
         }
         .custom-button6:hover {
             background-color: #D62828;
@@ -191,124 +181,61 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             position: absolute;
             top: 28%; left: 27%;
         }
+        .container-izq {
+        position: absolute;
+        left: 0; /* Alinea al lado izquierdo */
+        top: 20%; /* Ajusta la posición vertical */
+        width: 40%; /* Ajusta el ancho del contenedor */
+        height: 60%; /* Ajusta la altura del contenedor */
+        padding: 20px;
+        display: flex;
+        flex-direction: column; /* Coloca los elementos en una lista vertical */
+        align-items: center; /* Alinea los elementos al centro */
+        align-content: center; /* Alinea los elementos al centro */
+        align-self: center; /* Alinea los elementos al centro */
+        text-align: center;
+        gap: 15px; /* Espaciado entre los elementos */
+        }
 
-    
-    </style>
+        .container-der {
+            position: absolute;
+            right: 0; /* Alinea al lado derecho */
+            top: 22%; /* Ajusta la posición vertical */
+            width: 50%; /* Ajusta el ancho del contenedor */
+            height: 60%; /* Ajusta la altura del contenedor */
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Coloca los elementos en una lista vertical */
+            align-items: center; /* Alinea los elementos al centro */
+            align-content: center; /* Alinea los elementos al centro */
+            align-self: center; /* Alinea los elementos al centro */
+            text-align: center;
+            gap: 15px; /* Espaciado entre los elementos */
+        }
+</style>
 </head>
 <body>
     <header>
-    <div class="container">
-        <h2>Bienvenido profesor/a, <?php echo $nombre; ?>!</h2>
-    </div>
-    <nav>
-        <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
-    </nav>
+        <div class="container">
+            <h2>Bienvenido <?php echo $nombre; ?></h2>
+        </div>
+        <nav>
+            <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
+        </nav>
     </header>
+
+    <div class="container-izq">
+        <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
+        <a class='custom-button3' href='equipos_profesor.php?nombre=$nombre'>Peticiones de equipos</a>
+        <a class='custom-button5' href='equipos_prestados.php?nombre=$nombre'>Equipos prestados</a>
+    </div>
+
+    <div class="container-der">
+        <a class="imgesp" ><img src='imagenes/espacio1.jpg' /></a>
+        <a class='custom-button4' href='espacios_profesor.php?nombre=$nombre'>Peticiones de espacios</a>
+        <a class='custom-button6' href='espacios_prestados.php?nombre=$nombre'>Espacios prestados</a>
+    </div>
     
-    <div class="login-box">
-    <h2>Prestamos de equipos</h2>
-
-        <form action="pros_peticion.php" method="POST">
-
-            <div class="form-group">
-                <label for="nombre">Nombre del encargado:</label>
-                <input type="text" style="width : 180px;" class="inputcentrado" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
-            </div>
-            <br>
-              <div class="form-group">
-                <label for="equipo">¿Qué equipo necesitas?</label>
-                <select id="equipo" name="equipo">
-                    <option value="-">-</option>
-                    <option value="Portatil">Portatil</option>
-                    <option value="Tablet">Tablet</option>
-                </select>
-                </div>
-                <br>
-                
-                <div class="form-group">
-                    <!---
-                <label for="sonido">¿Necesita sonido?</label>
-                <select id="sonido" name="sonido">
-                    <option value="No">No</option>
-                    <option value="Si">Si</option> 
-                    --->
-                </select>
-                </div>
-                <br>
-                <div class="form-group">
-                <label for="dia_entrega">Necesito el prestamo para el dia:</label>
-                <input type="date" style="width : 100px;"  id="dia_entrega" name="dia_entrega" value="" required>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="horario_prestamo">Horario de prestamo:</label>
-                <input type="time" style="width : 130px;" id="horario_prestamo" name="horario_prestamo" value="" required>
-            </div>
-            <br>
-            <div class="form-group">
-                <input class="buttonM" type="submit" name= "agregarpeticion" value="Enviar peticion">
-            </div>
-        </form>
-</div>
-
-<div class="login-box2">
-    <h2>Prestamos de Espacios</h2>
-
-        <form action="pros_peticion_espacio.php" method="POST">
-
-            <div class="form-group">
-                <label for="nombre">Nombre del encargado:</label>
-                <input type="text" style="width : 180px;" class="inputcentrado" id="nombre" name="nombre" value="<?php echo $nombre; ?>" required>
-            </div>
-            <br>
-              <div class="form-group">
-                <label for="espacio">¿Qué espacio necesitas?</label>
-                <select id="espacio" name="espacio">
-                <option value="-">-</option>
-                    <option value="Salon">Salon</option>
-                    <option value="SalaSistemas">Sala de sistemas</option>
-                    <option value="evento">Espacio para evento</option>
-                    <option value="polideportivo">Polideportivo</option>
-                </select>
-                </div>
-                <br>
-                <div class="form-group">
-                    ¿Necesitas algun equipo?:
-                    <br>
-                    <br>
-                    <input type="text" style="width : 350px; height: 30px;" id="adicional" name="adicional"value="">
-                    </div>
-                <br>
-                <div class="form-group">
-                <label for="dia_entrega">Necesito el prestamo para el dia:</label>
-                <input type="date" style="width : 100px;"  id="dia_entrega" name="dia_entrega" value="" required>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="horario_prestamo">Horario de prestamo:</label>
-                <input type="text" style="width : 130px;" id="horario_prestamo" name="horario_prestamo" value="" required>
-            </div>
-            <br>
-            <div class="form-group">
-                <input class="buttonM" type="submit" name= "agregarpeticion" value="Enviar peticion">
-            </div>
-        </form>
-</div>
-<?php
-    echo "<a class='custom-button3' href='equipos_profesor.php?nombre=$nombre'>Peticiones <br> de equipos</a>";
-?>
-
-<?php
-    echo "<a class='custom-button4' href='espacios_profesor.php?nombre=$nombre'>Peticiones <br> de espacios</a>";
-?>
-
-<?php
-    echo "<a class='custom-button5' href='equipos_prestados.php?nombre=$nombre'>Equipos <br> prestados</a>";
-?>
-
-<?php
-    echo "<a class='custom-button6' href='espacios_prestados.php?nombre=$nombre'>Espacios <br> prestados</a>";
-?>
     
 </body>
 </html>
