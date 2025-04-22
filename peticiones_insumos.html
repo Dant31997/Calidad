@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Petición de Insumos</title>
+    <style>
+        html{background: linear-gradient(to bottom, white,70%, #d89785 ); margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        form {
+            max-width: 500px;
+            width: 450px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #ccc;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: red;
+            padding: 5px;
+            border-radius: 5px;
+            width: auto;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: auto;
+            max-width: 450px;
+            max-height: fit-content;
+            margin-bottom: 15px;
+            
+        }
+        .container h1 {
+            font-size: 24px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 >Formulario de Petición de Insumos</h1>
+    </div>
+    <form action="procesar_peticion.php" method="POST">
+        <label for="equipo">Equipo</label>
+        <select name="equipo" id="equipo" required>
+            <option value="Portatil">Portátil</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Sonido">Sonido</option>
+        </select>
+
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+
+        <label for="horario_salida">Hora de Recogida</label>
+        <input type="time" id="horario_salida" name="horario_salida" required>
+
+        <label for="horario_devolucion">Hora de Devolución</label>
+        <input type="time" id="horario_devolucion" name="horario_devolucion" required>
+
+        <button type="submit">Enviar Petición</button>
+    </form>
+</body>
+</html>

@@ -311,6 +311,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
     <form action="verificarPeticionesEspacios.php" method="POST">
         <input class="custom-button4" name="inv" type="submit" value="PETICIONES DE ESPACIOS">
     </form>
+    <form action="prestamos_insumos.php" method="POST">
+        <input class="custom-button5" name="inv" type="submit" value="PRESTAMOS">
+    </form>
 
     <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
     <a class="imgesp" ><img src='imagenes/espacio1.jpg' /></a>

@@ -158,7 +158,7 @@ if ($resultado->num_rows > 0) {
                 if (data.success) {
                     alert('Insumo asignado correctamente.');
                     if (data.reload) {
-                        location.reload(); // Recarga la página
+                        window.location.href = 'verificarPeticionesInsumos.php'; 
                     }
                 } else {
                     alert('Error al asignar el insumo: ' + data.message);
