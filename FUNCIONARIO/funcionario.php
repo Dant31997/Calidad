@@ -235,7 +235,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
         <a class='custom-button4' href='espacios_profesor.php?nombre=$nombre'>Peticiones de espacios</a>
         <a class='custom-button6' href='espacios_prestados.php?nombre=$nombre'>Espacios prestados</a>
     </div>
-    
-    
 </body>
 </html>
