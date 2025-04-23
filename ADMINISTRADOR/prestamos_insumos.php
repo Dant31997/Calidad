@@ -1,5 +1,5 @@
 <?php
-$title = "PRÉSTAMOS DE INSUMOS";
+$title = "PRÉSTAMOS";
 ?>
 
 <!DOCTYPE html>
@@ -187,10 +187,10 @@ $title = "PRÉSTAMOS DE INSUMOS";
     </style>
 </head>
 <body>
-    <!-- Modal -->
+    <!-- Modal para editar préstamos de insumos -->
 <div id="editModal" class="modal" style="display:none;">
     <div class="modal-content">
-        <span class="close">&times;</span>
+    <span class="close" onclick="modal.style.display='none';">&times;</span>
         <h2>Editar Préstamo</h2>
         <form id="editForm" method="POST" action="actualizar_prestamo.php">
             <input type="hidden" name="id_prestamo" id="id_prestamo">
@@ -205,7 +205,7 @@ $title = "PRÉSTAMOS DE INSUMOS";
                 <option value="Prestado">Prestado</option>
                 <option value="Devuelto">Devuelto</option>
             <br>
-            <label for="dia_prestamo">Día del Préstamo:</label>
+            <label for="dia_prestamo">Día del Prestamo:</label>
             <input type="date" name="dia_prestamo" id="dia_prestamo" required>
             <br>
             <label for="hora_prestamo">Hora del Préstamo:</label>
@@ -216,6 +216,49 @@ $title = "PRÉSTAMOS DE INSUMOS";
     </div>
 </div>
 
+<!-- Modal para Editar Préstamo de Espacios -->
+<div id="editEspaciosModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('editEspaciosModal').style.display='none';">&times;</span>
+        <h2>Editar Préstamo de Espacios</h2>
+        <form id="editEspaciosForm" method="POST" action="actualizar_prestamo_espacios.php">
+            <input type="hidden" name="id_prestamo_espacio" id="id_prestamo_espacio">
+            <label for="espacio">Espacio:</label>
+            <input type="text" name="espacio" id="espacio" required>
+            <br>
+            <label for="nom_persona">Nombre de la Persona:</label>
+            <input type="text" name="nom_persona" id="nom_persona" required>
+            <br>
+            <label for="estado">Estado:</label>
+            <select name="estado" id="estado" required>
+                <option value="Reservado">Reservado</option>
+                <option value="Terminado">Terminado</option>
+                <option value="Cancelado">Cancelado</option>
+            </select>
+            <br>
+            <label for="dia_prestamo_espacio">Día del Préstamo:</label>
+            <input type="date" name="dia_prestamo_espacio" id="dia_prestamo_espacio" required>
+            <br>
+            <label for="hora_prestamo_espacio">Hora del Préstamo:</label>
+            <input type="time" name="hora_prestamo_espacio" id="hora_prestamo_espacio" required>
+            <br>
+            <label for="fecha_entrega">Fecha de Entrega:</label>
+            <input type="date" name="fecha_entrega" id="fecha_entrega" required>
+            <br>
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Formulario para seleccionar la tabla -->
+<form method="GET" action="prestamos_insumos.php" style="text-align: center; margin-bottom: 20px;">
+        <label for="tabla">Selecciona la tabla:</label>
+        <select name="tabla" id="tabla" onchange="this.form.submit()">
+            <option value="prestamos_insumos" <?php echo (isset($_GET['tabla']) && $_GET['tabla'] === 'prestamos_insumos') ? 'selected' : ''; ?>>Prestamos Insumos</option>
+            <option value="prestamos_espacios" <?php echo (isset($_GET['tabla']) && $_GET['tabla'] === 'prestamos_espacios') ? 'selected' : ''; ?>>Prestamos Espacios</option>
+        </select>
+    </form>
+
 <script>
     // Obtener elementos del DOM
     const modal = document.getElementById("editModal");
@@ -223,15 +266,28 @@ $title = "PRÉSTAMOS DE INSUMOS";
     const editForm = document.getElementById("editForm");
 
     // Función para abrir el modal con los datos del registro
-    function openModal(id, insumo, nombre, estado, dia, hora) {
-        document.getElementById("id_prestamo").value = id;
+    function openModal(id_prestamo, insumo, nombre_persona_prestamo, estado, dia_prestamo, hora_prestamo) {
+        document.getElementById("id_prestamo").value = id_prestamo;
         document.getElementById("insumo").value = insumo;
-        document.getElementById("nombre_persona_prestamo").value = nombre;
+        document.getElementById("nombre_persona_prestamo").value = nombre_persona_prestamo;
         document.getElementById("estado").value = estado;
-        document.getElementById("dia_prestamo").value = dia;
-        document.getElementById("hora_prestamo").value = hora;
+        document.getElementById("dia_prestamo").value = dia_prestamo;
+        document.getElementById("hora_prestamo").value = hora_prestamo;
+        document.getElementById("hora_prestamo").value = hora_prestamo;
         modal.style.display = "block";
     }
+
+    // Función para abrir el modal de edición de préstamos de espacios
+    function openEspaciosModal(id_prestamo_espacio, espacio, nom_persona, estado, dia_prestamo, hora_prestamo, fecha_entrega) {
+        document.getElementById("id_prestamo_espacio").value = id_prestamo_espacio;
+        document.getElementById("espacio").value = espacio;
+        document.getElementById("nom_persona").value = nom_persona;
+        document.getElementById("estado").value = estado;
+        document.getElementById("dia_prestamo_espacio").value = dia_prestamo;
+        document.getElementById("hora_prestamo_espacio").value = hora_prestamo;
+        document.getElementById("fecha_entrega").value = fecha_entrega;
+        document.getElementById("editEspaciosModal").style.display = "block";
+}
 
     // Cerrar el modal
     closeModal.onclick = function() {
@@ -253,18 +309,20 @@ $title = "PRÉSTAMOS DE INSUMOS";
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $registrosPorPagina = 6;
-    $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    // Determinar la tabla seleccionada
+    $tablaSeleccionada = isset($_GET['tabla']) ? $_GET['tabla'] : 'prestamos_insumos';
+
+   // Configuración de paginación
+   $registrosPorPagina = 6;
+   $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+   $offset = ($paginaActual - 1) * $registrosPorPagina;
 
     // Consulta SQL con LIMIT para obtener registros de la página actual
-    $offset = ($paginaActual - 1) * $registrosPorPagina;
-    $sql = "SELECT * FROM prestamos_insumos LIMIT $offset, $registrosPorPagina";
+    $sql = "SELECT * FROM $tablaSeleccionada LIMIT $offset, $registrosPorPagina";
     $resultado = $conexion->query($sql);
 
     // Consulta SQL para obtener el número total de registros
-    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM prestamos_insumos")->fetch_assoc()['total'];
-
-    // Calcular el número total de páginas
+    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM $tablaSeleccionada")->fetch_assoc()['total'];
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
     if ($resultado->num_rows >= 0) {
@@ -274,32 +332,92 @@ $title = "PRÉSTAMOS DE INSUMOS";
 
         echo "<div class='tabla1'>";
         echo "<table border='1'>";
-        echo "<tr class='encabezado'>
-        <th style='width:150px;'>Insumo</th>
-        <th style='width:200px;'>Nombre de la Persona</th>
-        <th style='width:100px;'>Estado</th>
-        <th style='width:150px;'>Día del Préstamo</th>
-        <th style='width:150px;'>Hora del Préstamo</th>
-        <th style='width:150px;'>Acciones</th>
-        </tr>";
+        echo "<tr class='encabezado'>";
+
+        // Encabezados dinámicos según la tabla seleccionada
+        if ($tablaSeleccionada === 'prestamos_insumos') {
+            echo "
+                <th style='width:150px;'>Insumo</th>
+                <th style='width:200px;'>Nombre de la Persona</th>
+                <th style='width:100px;'>Estado</th>
+                <th style='width:150px;'>Día del Préstamo</th>
+                <th style='width:150px;'>Hora del Préstamo</th>
+                <th style='width:100px;'>Hora de Entrega</th>
+                <th style='width:100px;'>Hora de Regreso</th>
+                <th style='width:100px;'>Acciones</th>
+            ";
+        } else if ($tablaSeleccionada === 'prestamos_espacios') {
+            echo "
+                <th style='width:150px;'>Espacio</th>
+                <th style='width:200px;'>Nombre de la Persona</th>
+                <th style='width:100px;'>Estado</th>
+                <th style='width:150px;'>Fecha del Prestamo</th>
+                <th style='width:150px;'>Hora del prestamo</th>
+                <th style='width:150px;'>Fecha </th>
+                <th style='width:100px;'>Hora de Entrega</th>
+                <th style='width:100px;'>Hora de Regreso</th>
+                <th style='width:100px;'>Acciones</th>
+            ";
+        }
+        echo "</tr>";
+        // Mostrar los registros en la tabla seleccionada
 
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>" . $fila['insumo'] . "</td>";
-            echo "<td>" . $fila['nombre_persona_prestamo'] . "</td>";
-            echo "<td>" . $fila['estado'] . "</td>";
-            echo "<td>" . $fila['dia_prestamo'] . "</td>";
-            echo "<td>" . $fila['hora_prestamo'] . "</td>";
-            echo "<td>
-                <button onclick=\"openModal('" . $fila['id_prestamo'] . "', '" . $fila['insumo'] . "', '" . $fila['nombre_persona_prestamo'] . "', '" . $fila['estado'] . "', '" . $fila['dia_prestamo'] . "', '" . $fila['hora_prestamo'] . "')\">Editar</button>
-            </td>";
+            if ($tablaSeleccionada === 'prestamos_insumos') {
+                echo "
+                    <td>" . $fila['insumo'] . "</td>
+                    <td>" . $fila['nombre_persona_prestamo'] . "</td>
+                    <td>" . $fila['estado'] . "</td>
+                    <td>" . $fila['dia_prestamo'] . "</td>
+                    <td>" . $fila['hora_prestamo'] . "</td>
+                    <td>" . $fila['desde'] . "</td>
+                    <td>" . $fila['hasta'] . "</td>
+                    <td>
+                    <button onclick=\"openModal(
+                        '{$fila['id_prestamo']}',
+                        '{$fila['insumo']}',
+                        '{$fila['nombre_persona_prestamo']}',
+                        '{$fila['estado']}',
+                        '{$fila['dia_prestamo']}',
+                        '{$fila['hora_prestamo']}'
+                    )\">Editar</button>
+                </td>
+                ";
+            } elseif ($tablaSeleccionada === 'prestamos_espacios') {
+                echo "
+                    <td>" . $fila['espacio'] . "</td>
+                    <td>" . $fila['nom_persona'] . "</td>
+                    <td>" . $fila['estado'] . "</td>
+                    <td>" . $fila['dia_prestamo'] . "</td>
+                    <td>" . $fila['hora_prestamo'] . "</td>
+                    <td>" . $fila['fecha_entrega'] . "</td>
+                    <td>" . $fila['desde'] . "</td>
+                    <td>" . $fila['hasta'] . "</td>
+                    <td>
+                    <button onclick=\"openEspaciosModal(
+                        '{$fila['id_prestamo_espacio']}',
+                        '{$fila['espacio']}',
+                        '{$fila['nom_persona']}',
+                        '{$fila['estado']}',
+                        '{$fila['dia_prestamo']}',
+                        '{$fila['hora_prestamo']}',
+                        '{$fila['fecha_entrega']}'
+                    )\">Editar</button>
+                </td>
+                ";
+            }
             echo "</tr>";
         }
         echo "</table>";
         echo "</div>";
+    } else {
+        echo "<p style='text-align: center;'>No se encontraron registros en la tabla seleccionada.</p>";
     }
+
     $conexion->close();
     ?>
+    
     <div class="pagination">
         <?php
         for ($i = 1; $i <= $numTotalPaginas; $i++) {

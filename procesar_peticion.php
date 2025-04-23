@@ -1,45 +1,55 @@
 <?php
-// filepath: c:\xampp\htdocs\proyectofinal\procesar_peticion.php
-
-// Configuración de la base de datos
-$host = "localhost";
-$dbname = "basededatos";
-$username = "root";
-$password = "";
-
 // Conexión a la base de datos
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error al conectar con la base de datos: " . $e->getMessage());
-}
+$servername = "localhost";
+$username = "root"; // Cambia esto si tienes un usuario diferente
+$password = ""; // Cambia esto si tienes una contraseña configurada
+$dbname = "basededatos";
 
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}   
 // Verificar si se enviaron los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $equipo = $_POST['equipo'];
-    $nombre = $_POST['nombre'];
-    $horario_salida = $_POST['horario_salida'];
-    $horario_devolucion = $_POST['horario_devolucion'];
+    // Validar que los campos no estén vacíos
+    if (!empty($_POST['equipo']) && !empty($_POST['nom_persona']) && !empty($_POST['hora_entrega']) && !empty($_POST['hora_regreso'])) {
+        $equipo = $_POST['equipo'];
+        $nombre = $_POST['nom_persona'];
+        $horario_salida = $_POST['hora_entrega'];
+        $horario_devolucion = $_POST['hora_regreso'];
 
-    // Insertar los datos en la tabla peticiones_insumos
-    $sql = "INSERT INTO peticiones_insumos (equipo, pide, horario_salida, horario_devolucion) 
-            VALUES (:equipo, :nombre, :horario_salida, :horario_devolucion)";
-    $stmt = $conn->prepare($sql);
+        $sql = "INSERT INTO peticiones_insumos (equipo, nom_persona, hora_entrega, hora_regreso) 
+                VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
 
-    try {
-        $stmt->execute([
-            ':equipo' => $equipo,
-            ':nombre' => $nombre,
-            ':horario_salida' => $horario_salida,
-            ':horario_devolucion' => $horario_devolucion
-        ]);
-        echo "<script>alert('Petición registrada exitosamente.');
+        if ($stmt) {
+            // Vincular parámetros
+            $stmt->bind_param("ssss", $equipo, $nombre, $horario_salida, $horario_devolucion);
+
+            // Ejecutar la consulta
+            if ($stmt->execute()) {
+                echo "<script>alert('Petición registrada exitosamente.');
+                window.location.href = 'peticiones_insumos.html';
+                </script>";
+            } else {
+                echo "<script>alert('Error al registrar la petición: " . $stmt->error . "');
+                window.location.href = 'peticiones_insumos.html';
+                </script>";
+            }
+
+            $stmt->close();
+        } else {
+            echo "<script>alert('Error en la preparación de la consulta: " . $conn->error . "');
+            window.location.href = 'peticiones_insumos.html';
+            </script>";
+        }
+    } else {
+        // Si algún campo está vacío
+        echo "<script>alert('Por favor, completa todos los campos.');
         window.location.href = 'peticiones_insumos.html';
         </script>";
-
-    } catch (PDOException $e) {
-        echo "Error al registrar la petición: " . $e->getMessage();
     }
 } else {
     echo "Método de solicitud no válido.";

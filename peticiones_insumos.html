@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Petición de Insumos</title>
+    <title>Formulario de Peticiones</title>
     <style>
         html{background: linear-gradient(to bottom, white,70%, #d89785 ); margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
         }
@@ -33,6 +33,14 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        input[type="time"] {
+            /* Estilos específicos para los inputs tipo time */
+            width: 30%; /* Ajusta el ancho según sea necesario */
+            padding: 5px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+}
         button {
             background-color: red;
             color: white;
@@ -74,26 +82,72 @@
 </head>
 <body>
     <div class="container">
-        <h1 >Formulario de Petición de Insumos</h1>
+        <h1 >Formulario de Peticiones</h1>
     </div>
-    <form action="procesar_peticion.php" method="POST">
-        <label for="equipo">Equipo</label>
-        <select name="equipo" id="equipo" required>
-            <option value="Portatil">Portátil</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Sonido">Sonido</option>
+    <form id="miFormulario" method="post" >
+        <label for="tipo">Selecciona tipo:</label>
+        <select name="tipo" id="tipo" onchange="mostrarOpciones()">
+            <option value="">-- Selecciona --</option>
+            <option value="espacio">Espacio</option>
+            <option value="insumo">Insumo</option>
         </select>
-
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
-
-        <label for="horario_salida">Hora de Recogida</label>
-        <input type="time" id="horario_salida" name="horario_salida" required>
-
-        <label for="horario_devolucion">Hora de Devolución</label>
-        <input type="time" id="horario_devolucion" name="horario_devolucion" required>
-
-        <button type="submit">Enviar Petición</button>
+    <!--- espacio--->
+        <div id="opcionesEspacio" style="display:none; margin-top: 15px;">
+                <label for="pide">¿Cual es tu nombre?:</label>
+                <input type="text" name="pide" id="pide">
+                <br>
+                <label for="nom_espacio">¿Cual espacio quisieras solicitar?:</label>
+                <input type="text" name="nom_espacio" id="nom_espacio">
+                <br>
+                <label for="fecha_entrega">¿Que dia necesitas el espacio?</label>
+                <input type="date" name="fecha_entrega" id="fecha_entrega">
+                <br>
+                <label for="hora_entrega_espacio" style="display: inline-block; margin-right: 10px;">¿En qué horario necesitas el espacio?</label>
+                <br>
+                <input type="time" name="hora_entrega_espacio" id="hora_entrega_espacio" style="display: inline-block; margin-right: 10px;">
+                <label for="" style="display: inline-block; margin-right: 10px;">hasta</label>
+                <input type="time" name="hora_regreso_espacio" id="hora_regreso_espacio" style="display: inline-block;">
+        </div>
+    <!--- insumos--->
+        <div id="opcionesInsumo" style="display:none; margin-top: 15px;">
+                <label for="nom_persona">¿Cual es tu nombre?:</label>
+                <input type="text" name="nom_persona" id="nom_persona">
+                <br>
+                <label for="equipo">¿Qué insumo deseas solicitar?:</label>
+                <select name="equipo" id="equipo">
+                    <option value="Portatil">Portátil</option>
+                    <option value="Tablet">Tablet</option>
+                    <option value="Sonido">Sonido</option>
+                </select>
+                <br>
+                <label for="hora_entrega">¿En qué horario necesitas el insumo?</label>
+                <br>
+                <input type="time" name="hora_entrega" id="hora_entrega" style="display: inline-block; margin-right: 10px;">
+                <label for="" style="display: inline-block; margin-right: 10px;">hasta</label>
+                <input type="time" name="hora_regreso" id="hora_regreso" style="display: inline-block;"> 
+        </div>
+        <button type="submit" style="margin-top: 20px;">Enviar</button>
     </form>
+    <script>
+        function mostrarOpciones() {
+            var tipoSeleccionado = document.getElementById('tipo').value;
+            var formulario = document.getElementById('miFormulario');
+        
+            // Ocultamos todo primero
+            document.getElementById('opcionesEspacio').style.display = 'none';
+            document.getElementById('opcionesInsumo').style.display = 'none';
+        
+            // Mostramos y cambiamos acción según la selección
+            if (tipoSeleccionado === 'espacio') {
+                document.getElementById('opcionesEspacio').style.display = 'block';
+                formulario.action = 'procesar_peticion_espacios.php'; // Acción para espacios
+            } else if (tipoSeleccionado === 'insumo') {
+                document.getElementById('opcionesInsumo').style.display = 'block';
+                formulario.action = 'procesar_peticion.php'; // Acción para insumos
+            } else {
+                formulario.action = ''; // Si no elige nada, no ponemos acción
+            }
+        }
+    </script>
 </body>
 </html>
