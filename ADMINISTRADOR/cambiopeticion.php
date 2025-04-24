@@ -25,7 +25,7 @@ if (!empty($estado)) {
 }
 
 if (!empty($nombre_persona)) {
-    $set[] = "pide = ?";
+    $set[] = "nom_persona = ?";
     $tipos .= 's';
     $valores[] = $nombre_persona;
 }

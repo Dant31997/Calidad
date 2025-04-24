@@ -163,12 +163,12 @@
             echo "<tr>";
             echo "<td>" . $fila['id'] . "</td>";
             echo "<td>" . $fila['equipo'] . "</td>";
-            echo "<td>" . $fila['pide'] . "</td>";
+            echo "<td>" . $fila['nom_persona'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
             echo "<td>" . $fila['dia_entrega'] . "</td>";
-            echo "<td>" . $fila['horario_salida'] . "</td>";
-            echo "<td>" . $fila['horario_devolucion'] . "</td>";
-            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&horario_salida=" .  $fila['horario_salida'] ."&horario_devolucion=" . $fila['horario_devolucion'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td>" . $fila['hora_entrega'] . "</td>";
+            echo "<td>" . $fila['hora_regreso'] . "</td>";
+            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] ."&nom_persona=" . $fila['nom_persona'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&hora_entrega=" .  $fila['hora_entrega'] ."&hora_regreso=" . $fila['hora_regreso'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -181,7 +181,7 @@
         <?php
         for ($i = 1; $i <= $numTotalPaginas; $i++) {
             $claseActiva = ($i == $paginaActual) ? "active" : "";
-            echo "<a class='$claseActiva' href='inventario.php?pagina=$i'>$i</a>";
+            echo "<a class='$claseActiva' href='verificarPeticionesInsumos.php?pagina=$i'>$i</a>";
         }
         ?>
     </div>

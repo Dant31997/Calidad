@@ -317,8 +317,13 @@ $title = "PRÉSTAMOS";
    $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
    $offset = ($paginaActual - 1) * $registrosPorPagina;
 
-    // Consulta SQL con LIMIT para obtener registros de la página actual
-    $sql = "SELECT * FROM $tablaSeleccionada LIMIT $offset, $registrosPorPagina";
+    // Consulta SQL con filtro según el estado
+if ($tablaSeleccionada === 'prestamos_insumos') {
+    $sql = "SELECT * FROM prestamos_insumos WHERE estado = 'Prestado' LIMIT $offset, $registrosPorPagina";
+} elseif ($tablaSeleccionada === 'prestamos_espacios') {
+    $sql = "SELECT * FROM prestamos_espacios WHERE estado = 'Reservado' LIMIT $offset, $registrosPorPagina";
+}
+    
     $resultado = $conexion->query($sql);
 
     // Consulta SQL para obtener el número total de registros

@@ -93,7 +93,7 @@
             
         }
         .tabla1 {
-            margin-top: 7%;
+            margin-top: 8%;
         }
         .custom-button3 {
             display: inline-block;
@@ -142,11 +142,7 @@ if ($resultado->num_rows > 0) {
     <th>Cód.espacio</th>
     <th style=width:200px; > Nombre del espacio </th>
     <th style=width:80px;> Estado </th>
-    <th style=width:300px;> Nombre del encargado </th>
-    <th style=width:100px;> Fecha de entrega </th>
-    <th style=width:100px> Hora de entrega</th>
-    <th style=width:100px;> Fecha de regreso </th>
-    <th style=width:100px> Hora de regreso</th>
+    <th style=width:200px;> Descripción </th>
     <th style=width:100px>Acciones</th>
     </tr>";
     
@@ -156,12 +152,8 @@ if ($resultado->num_rows > 0) {
         echo "<td>" . $fila['cod_espacio'] . "</td>";
         echo "<td>" . $fila['nom_espacio'] . "</td>";
         echo "<td>" . $fila['estado_espacio'] . "</td>";
-        echo "<td>" . $fila['persona_encargada'] . "</td>";
-        echo "<td>" . $fila['fecha_entrega'] . "</td>";
-        echo "<td>" . $fila['hora_entrega'] . "</td>";
-        echo "<td>" . $fila['fecha_regreso'] . "</td>";
-        echo "<td>" . $fila['hora_regreso'] . "</td>";
-        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&nom_espacio=" . $fila['nom_espacio'] ."&persona_encargada=" . $fila['persona_encargada'] ."&estado_espacio=" . $fila['estado_espacio'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "&hora_entrega=" . $fila['hora_entrega'] . "&fecha_regreso=" . $fila['fecha_regreso'] . "&hora_regreso=" . $fila['hora_regreso'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+        echo "<td>" . $fila['Descripcion'] . "</td>";
+        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&nom_espacio=" . $fila['nom_espacio'] ."&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
         echo "</tr>";
     }
 

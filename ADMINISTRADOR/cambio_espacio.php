@@ -11,9 +11,7 @@ if ($conexion->connect_error) {
 $cod_espacio = $_POST['cod_espacio'];
 $nom_espacio = $_POST['nom_espacio'];
 $estado_espacio = $_POST['estado_espacio'];
-$persona_encargada = ($_POST['estado_espacio'] == 'ocupado') ? $persona_encargada = $_POST['persona_encargada'] : "-";
-$dia_uso = $_POST['dia_uso'];
-$fecha_regreso = $_POST['dh_regreso'];
+$Descripcion = $_POST['Descripcion'];
 
 // Inicializa la parte SET de la consulta SQL
 $set = array();
@@ -26,36 +24,16 @@ if (!empty($nom_espacio)) {
     $valores[] = $nom_espacio;
 }
 
-if (!empty($persona_encargada)){
-    $set[] = "persona_encargada = ?";
-    $tipos .= 's';
-    $valores[] = $persona_encargada;
-}
-
 if (!empty($estado_espacio)) {
     $set[] = "estado_espacio = ?";
     $tipos .= 's';
     $valores[] = $estado_espacio;
 }
 
-if (!empty($dia_uso)) {
-    $set[] = "dh_espacio = ?";
+if (!empty($Descripcion)) {
+    $set[] = "Descripcion = ?";
     $tipos .= 's';
-    $valores[] = $dia_uso;
-} else {
-    $set[] = "dh_espacio = ?";
-    $tipos .= 's';
-    $valores[] = "-";
-}
-
-if (!empty($fecha_regreso)) {
-    $set[] = "dh_regreso = ?";
-    $tipos .= 's';
-    $valores[] = $fecha_regreso;
-} else {
-    $set[] = "dh_regreso = ?";
-    $tipos .= 's';
-    $valores[] = "-";
+    $valores[] = $Descripcion;
 }
 
 // Consulta SQL para actualizar los campos especificados

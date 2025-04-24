@@ -10,9 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 
     $id = $_GET['id'];
 }
-
-
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nom_persona'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -21,9 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $pide = $_GET['pide'];
+    $pide = $_GET['nom_persona'];
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['equipo'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -35,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['equipo'])) {
 
     $equipo = $_GET['equipo'];
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_peticion'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -204,12 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
                 </select>
             </div>
             <br>
-            
-            <br>
-            
-            
-            <br>
-
             <input class="btno" type="submit" name= "editar" value="Actualizar">
             <br>
         </form>

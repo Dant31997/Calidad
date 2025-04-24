@@ -173,18 +173,20 @@
         <th style=width:100px;>Espacio</th>
         <th style=width:200px;>Estado del insumo</th>
         <th>Dia que se necesita</th>
-        <th>Horario de uso</th>
+        <th>Hora de entrega</th>
+        <th>Hora de regreso</th>
        
         <th>Acciones</th> </tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $fila['id'] . "</td>";
             echo "<td>" . $fila['pide'] . "</td>";
-            echo "<td>" . $fila['espacio'] . "</td>";
+            echo "<td>" . $fila['nom_espacio'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
-            echo "<td>" . $fila['dia_entrega'] . "</td>";
-            echo "<td>" . $fila['horario_prestamo'] . "</td>";
-            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&espacio=" . $fila['espacio'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&horario_prestamo=" . $fila['horario_prestamo'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td>" . $fila['fecha_entrega'] . "</td>";
+            echo "<td>" . $fila['hora_entrega'] . "</td>";
+            echo "<td>" . $fila['hora_regreso'] . "</td>";
+            echo "<td><a href='editarpeticion_espacio.php?id=" . $fila['id'] . "&nom_espacio=" . $fila['nom_espacio'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&fecha_entrega=" . $fila['fecha_entrega'] ."&hora_entrega=" . $fila['hora_entrega'] ."&hora_regreso=" . $fila['hora_regreso'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -197,7 +199,7 @@
         <?php
         for ($i = 1; $i <= $numTotalPaginas; $i++) {
             $claseActiva = ($i == $paginaActual) ? "active" : "";
-            echo "<a class='$claseActiva' href='inventario.php?pagina=$i'>$i</a>";
+            echo "<a class='$claseActiva' href='verificarPeticionesEspacios.php?pagina=$i'>$i</a>";
         }
         ?>
     </div>
