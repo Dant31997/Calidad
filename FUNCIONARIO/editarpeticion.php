@@ -1,6 +1,4 @@
-<title> Editar Peticion de Espacio</title>
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -12,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
 
     $id = $_GET['id'];
 }
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nom_persona'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -21,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['pide'])) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $pide = $_GET['pide'];
+    $pide = $_GET['nom_persona'];
 }
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nom_espacio'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['equipo'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -32,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nom_espacio'])) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $nom_espacio = $_GET['nom_espacio'];
+    $equipo = $_GET['equipo'];
 }
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_peticion'])) {
     // Conexión a la base de datos
@@ -45,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_peticion'])) {
 
     $estado_peticion = $_GET['estado_peticion'];
 }
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['fecha_entrega'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['dia_entrega'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -54,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['fecha_entrega'])) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $dia_entrega = $_GET['fecha_entrega'];
+    $dia_entrega = $_GET['dia_entrega'];
 }
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
     // Conexión a la base de datos
@@ -171,19 +169,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
 <div class="login-box">
 <h3>Actualizar estado de la Peticion</h3>
 <br>
-        <form action="cambiopeticion_espacios.php" method="POST">
+        <form action="cambiopeticion.php" method="POST">
             <div class="form-group">
-                <input hidden class="inputcentrado" type="number" style="width : 50px; heigth : 1px" id="cod_inventario" name="cod_inventario" value="<?php echo $id; ?>">
+                <label for="cod_inventario">ID de la peticion:</label>
+                <input readonly class="inputcentrado" type="number" style="width : 50px; heigth : 1px" id="cod_inventario" name="cod_inventario" value="<?php echo $id; ?>">
             </div>
             <br>
             <div class="form-group">
-                <label for="nombre_persona">Encargado:</label>
+                <label for="nombre_persona">Nombre de la persona:</label>
                 <input readonly type="text" style="width : 200px; " id="nombre_persona" name="nombre_persona" value="<?php echo $pide; ?>">
             </div>
             <br>
             <div class="form-group">
-                <label for="equipo">Espacio:</label>
-                <input readonly type="text" style="width : 200px; " id="equipo" name="equipo" value="<?php echo $nom_espacio; ?>">
+                <label for="equipo">Equipo necesario:</label>
+                <input readonly type="text" style="width : 200px; " id="equipo" name="equipo" value="<?php echo $equipo; ?>">
             </div>
             <br>
             <div class="form-group">
@@ -205,4 +204,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
         </form>
         </div>
     <br>
-    <a class ="regresar" href="verificarPeticionesEspacios.php">Volver a peticiones</a>
+    <a class ="regresar" href="verificarPeticionesInsumos.php">Volver a peticiones</a>

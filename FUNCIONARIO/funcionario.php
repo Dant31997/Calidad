@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
-    // Conexión a la base de datos
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
 
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión: " . $conexion->connect_error);
-    }
-
-    $nombre = $_GET['nombre'];
-}
 ?>
 <html>
     
 <head>
     <title>Funcionario</title>
 <style>
-
+     html{background: linear-gradient(to bottom, white,70%, #FADBD8 ); margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+     }
         body {
             font-family: Arial, sans-serif;
             
@@ -27,13 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             color: white;
             display: flex;
             align-items: center;
+            width: 95%;
             height: 70px;
-            padding: 10px;
+            padding: 5px;
             background-color: red;
             border-radius: 10px;
             border: 1px solid #ccc;
             border-radius: 10px; /* Ajusta el valor para cambiar la curvatura de las esquinas */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 1%; left:2%;
         }
         
       
@@ -51,28 +45,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             background-color: #0056b3;
         }
 
-    .logout-button {
-            width: 30px;
-            height: 50px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: small;
+        .logout-button {
+            background-color: #ff0000;
             color: white;
+            font-size: large;
+            padding: 10px 20px;
             text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            position: absolute;
+            top: 15px; left: 80%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            
         }
         .logout-button:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         nav a {
-            font-weight: 800;
             padding-right: 10px;
         }
 
         h2 {
-            text-align: center;
+            position: absolute;
+            top: 8px; left: 40%;    
         }
 
         .login-box {
@@ -159,7 +154,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
-            margin-top: 9px; 
+            position: absolute;
+            top: 70%; left: 43%;
         }
         .custom-button5:hover {
             background-color: #D62828;
@@ -201,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             position: absolute;
             right: 0; /* Alinea al lado derecho */
             top: 22%; /* Ajusta la posición vertical */
-            width: 50%; /* Ajusta el ancho del contenedor */
+            width: 40%; /* Ajusta el ancho del contenedor */
             height: 60%; /* Ajusta la altura del contenedor */
             padding: 20px;
             display: flex;
@@ -212,12 +208,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-align: center;
             gap: 15px; /* Espaciado entre los elementos */
         }
+        .imgprestamos {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 20%; left: 35%;
+        }
 </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h2>Bienvenido <?php echo $nombre; ?></h2>
+            <h2>Bienvenido Funcionario</h2>
         </div>
         <nav>
             <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
@@ -226,14 +228,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
 
     <div class="container-izq">
         <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
-        <a class='custom-button3' href='equipos_profesor.php?nombre=$nombre'>Peticiones de equipos</a>
-        <a class='custom-button5' href='equipos_prestados.php?nombre=$nombre'>Equipos prestados</a>
+        <a class='custom-button3' href='verificarPeticionesInsumos.php'>Peticiones de insumos</a>
+        
     </div>
+    <div>
+        <a class="imgprestamos"><img src='imagenes/prestamos.PNG' /></a>
+        <a class='custom-button5' href='prestamos_insumos.php'>Prestamos</a>
+    </div>  
 
     <div class="container-der">
         <a class="imgesp" ><img src='imagenes/espacio1.jpg' /></a>
-        <a class='custom-button4' href='espacios_profesor.php?nombre=$nombre'>Peticiones de espacios</a>
-        <a class='custom-button6' href='espacios_prestados.php?nombre=$nombre'>Espacios prestados</a>
+        <a class='custom-button4' href='verificarPeticionesEspacios.php'>Peticiones de espacios</a>
     </div>
 </body>
 </html>

@@ -129,9 +129,7 @@
     $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
-    $offset = ($paginaActual - 1) * $registrosPorPagina;
-    $sql = "SELECT * FROM peticiones_insumos LIMIT $offset, $registrosPorPagina";
-    $resultado = $conexion->query($sql);
+    $offset = ($paginaActual - 1) * $registrosPorPagina;    
 
     // Consulta SQL con LIMIT para obtener registros de la página actual y filtrar por estado_peticion
     $sql = "SELECT * FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar' LIMIT $offset, $registrosPorPagina";
@@ -139,9 +137,6 @@
 
     // Consulta SQL para obtener el número total de registros con estado "Sin Revisar"
     $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar'")->fetch_assoc()['total'];
-    
-    // Consulta SQL para obtener el número total de registros
-    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_insumos")->fetch_assoc()['total'];
     
     // Calcular el número total de páginas
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);

@@ -153,12 +153,11 @@
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
     $offset = ($paginaActual - 1) * $registrosPorPagina;
-
-    $sql = "SELECT * FROM peticiones_espacios WHERE estado_peticion = 'Sin Revisar' LIMIT $offset, $registrosPorPagina";
+    $sql = "SELECT * FROM peticiones_espacios LIMIT $offset, $registrosPorPagina";
     $resultado = $conexion->query($sql);
     
     // Consulta SQL para obtener el número total de registros
-    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_espacios WHERE estado_peticion = 'Sin Revisar'")->fetch_assoc()['total'];
+    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_espacios")->fetch_assoc()['total'];
     
     // Calcular el número total de páginas
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
@@ -204,7 +203,7 @@
         }
         ?>
     </div>
-    <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
-    <a class ="custom-button3" href="asignar_espacio.php">Asignar Espacio</a>   
+    <a class ="custom-button2" href="funcionario.php">Volver al inicio</a>
+    <a class ="custom-button3" href="1tabla.php">Asignar Espacio</a>    
 </body>
 </html>

@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Peticiones de espacios</title>
+    <title>Peticiones</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
@@ -16,13 +17,17 @@
         }
         .panel-box-admin {
             width: 100%;
-            height: 50px;
+            height: 60px;
             position: absolute;
             padding-bottom: 8px;
             top: 0%; left:0%;
             background-color: red;
             border-bottom: #943126 10px solid;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabla1 {
+            margin-top: 60%;
         }
 
         h2{
@@ -38,7 +43,8 @@
         }
         table {     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             font-size: 14px;
-            margin-left: 20px;       
+            margin-left: 20px;
+                 
             border-collapse: collapse; 
         }
 
@@ -70,7 +76,6 @@
         border: 1px solid #000;
     }
 
-
     .custom-button2 {
             display: inline-block;
             padding: 10px 20px;
@@ -80,15 +85,17 @@
             border-radius: 5px;
             font-size: 16px;
             position: absolute;
-            top: 2%; left: 85%;
+            top: 90%; left: 45%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .custom-button2:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .custom-button3 {
+        .encabezado{
+        background-color: red;
+    }
+    .custom-button3 {
             display: inline-block;
             padding: 10px 20px;
             background-color: #ff0000;
@@ -104,42 +111,12 @@
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .custom-button4 {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff0000;
-            color: #FFF;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            position: absolute;
-            top: 2%; left: 18%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .custom-button4:hover {
-            background-color: #D62828;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        
-        .encabezado{
-        background-color: red;
-    }
-
-    .tabla1 {
-        margin-top: 40%;
-        margin-bottom: 2%;
-    }
-
-    
 </style>
 </head>
 <body>
 <div class="panel-box-admin">
-    <h2>PETICIONES DE ESPACIOS</h2>
+    <h2>PETICIONES DE INSUMOS</h2>
 </div>
-
     <?php
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -147,18 +124,33 @@
     if ($conexion->connect_error) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
+
+    session_start();
+    if (isset($_GET['nombre'])) {
+        $_SESSION['nombre'] = $_GET['nombre'];
+    }
+    $nombre = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : '';
+
     
-    $registrosPorPagina = 3;
+    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
+
+    
+    
+    $registrosPorPagina = 6;
     $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
     $offset = ($paginaActual - 1) * $registrosPorPagina;
-
-    $sql = "SELECT * FROM peticiones_espacios WHERE estado_peticion = 'Sin Revisar' LIMIT $offset, $registrosPorPagina";
+    $sql = "SELECT * FROM peticiones_insumos LIMIT $offset, $registrosPorPagina";
     $resultado = $conexion->query($sql);
+
+    // Consulta SQL con LIMIT para obtener registros de la página actual y filtrar por estado_peticion
+    $sql = "SELECT * FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar' AND equipo != 'Portatil' LIMIT $offset, $registrosPorPagina";
+    $resultado = $conexion->query($sql);
+
+    // Consulta SQL para obtener el número total de registros con estado "Sin Revisar"
+    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar'")->fetch_assoc()['total'];
     
-    // Consulta SQL para obtener el número total de registros
-    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_espacios WHERE estado_peticion = 'Sin Revisar'")->fetch_assoc()['total'];
     
     // Calcular el número total de páginas
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
@@ -168,26 +160,24 @@
 
         echo "<div class='tabla1'>";
         echo "<table border='1'>";
-        echo "<tr class='encabezado' >
-        <th style=width:50px;>ID</th>
+        echo "<tr class='encabezado' ><th style=width:50px;>ID</th>
+        <th style=width:100px;>Equipo</th>
         <th style=width:250px;>Nombre de la persona</th>
-        <th style=width:100px;>Espacio</th>
-        <th style=width:200px;>Estado del insumo</th>
-        <th>Dia que se necesita</th>
-        <th>Hora de entrega</th>
-        <th>Hora de regreso</th>
-       
+        <th style=width:150px;>Estado de la peticion</th>
+        <th style=width:130px>Fecha</th>
+        <th style=width:100px;>Hora de Salida</th>
+        <th style=width:100px;>Hora de Devolucion</th>
         <th>Acciones</th> </tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $fila['id'] . "</td>";
-            echo "<td>" . $fila['pide'] . "</td>";
-            echo "<td>" . $fila['nom_espacio'] . "</td>";
+            echo "<td>" . $fila['equipo'] . "</td>";
+            echo "<td>" . $fila['nom_persona'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
-            echo "<td>" . $fila['fecha_entrega'] . "</td>";
+            echo "<td>" . $fila['dia_entrega'] . "</td>";
             echo "<td>" . $fila['hora_entrega'] . "</td>";
             echo "<td>" . $fila['hora_regreso'] . "</td>";
-            echo "<td><a href='editarpeticion_espacio.php?id=" . $fila['id'] . "&nom_espacio=" . $fila['nom_espacio'] ."&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&fecha_entrega=" . $fila['fecha_entrega'] ."&hora_entrega=" . $fila['hora_entrega'] ."&hora_regreso=" . $fila['hora_regreso'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td><a href='editarpeticion.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] ."&nom_persona=" . $fila['nom_persona'] . "&estado_peticion=" . $fila['estado_peticion'] . "&dia_entrega=" . $fila['dia_entrega'] ."&hora_entrega=" .  $fila['hora_entrega'] ."&hora_regreso=" . $fila['hora_regreso'] ."'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -200,11 +190,11 @@
         <?php
         for ($i = 1; $i <= $numTotalPaginas; $i++) {
             $claseActiva = ($i == $paginaActual) ? "active" : "";
-            echo "<a class='$claseActiva' href='verificarPeticionesEspacios.php?pagina=$i'>$i</a>";
+            echo "<a class='$claseActiva' href='verificarPeticionesInsumos.php?pagina=$i'>$i</a>";
         }
         ?>
     </div>
-    <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
-    <a class ="custom-button3" href="asignar_espacio.php">Asignar Espacio</a>   
+    <a class ="custom-button2" href="funcionario.php">Volver al inicio</a>
+    <a class ="custom-button3" href="asignar_Insumo.php">Asignar Insumo</a>
 </body>
 </html>

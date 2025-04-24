@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_peticion'])) {
 
     $estado_peticion = $_GET['estado_peticion'];
 }
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['fecha_entrega'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['dia_entrega'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -54,8 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['fecha_entrega'])) {
         die("Error en la conexión: " . $conexion->connect_error);
     }
 
-    $dia_entrega = $_GET['fecha_entrega'];
+    $dia_entrega = $_GET['dia_entrega'];
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
     // Conexión a la base de datos
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -171,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado_prestamo'])) {
 <div class="login-box">
 <h3>Actualizar estado de la Peticion</h3>
 <br>
-        <form action="cambiopeticion_espacios.php" method="POST">
+        <form action="cambiopeticion.php" method="POST">
             <div class="form-group">
                 <input hidden class="inputcentrado" type="number" style="width : 50px; heigth : 1px" id="cod_inventario" name="cod_inventario" value="<?php echo $id; ?>">
             </div>
