@@ -31,9 +31,9 @@ if ($stmt->num_rows > 0) {
     
     // Redirige al usuario según su rol
     if ($rol == "Funcionario") {
-        header("Location: FUNCIONARIO/funcionario.php?nombre=$nombre");
+        header("Location: FUNCIONARIO/funcionario.php");
     }  elseif ($rol == "Administrador") {
-        header("Location: ADMINISTRADOR/admin_panel.php?nombre=$nombre");
+        header("Location: ADMINISTRADOR/admin_panel.php");
     } elseif ($rol == "Supervisor") {
         header("Location: SUPERVISOR/supervisor.php");
     }

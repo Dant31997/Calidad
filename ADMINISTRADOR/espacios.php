@@ -177,4 +177,4 @@ $conexion->close();
 <br>
 <a class="custom-button" href="agregarespacio.php">Agregar Espacio</a>
 <a class ="regresar" href="admin_panel.php">Volver al inicio</a>
-<a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>
+<a style="display: none" class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

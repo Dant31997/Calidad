@@ -192,4 +192,4 @@ if ($resultado->num_rows >= 0) {
     <a class="custom-button" href="agregarobjeto.php">Agregar insumo</a>
     
     <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
-    <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
+    <a style="display: none" class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
