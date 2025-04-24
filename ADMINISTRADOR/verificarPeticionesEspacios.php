@@ -203,7 +203,6 @@
         }
         ?>
     </div>
-    
     <a class ="custom-button2" href="admin_panel.php">Volver al inicio</a>
     <a class ="custom-button3" href="1tabla.php">Asignar Espacio</a>    
 </body>
