@@ -4,7 +4,7 @@
         }
     body{
         font-family: Arial, sans-serif;
-            margin-top: 3%;
+            
             margin-right: 7%;
     }
     .regresar {
@@ -84,17 +84,16 @@
     }
     .panel-box-admin {
         width: 100%;
-            height: 50px;
+            height: 60px;
             position: absolute;
             padding-bottom: 8px;
             top: 0%; left:0%;
             background-color: red;
-            border-bottom: #943126 10px solid;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             
         }
         .tabla1 {
-            margin-top: 3%;
+            margin-top: 8%;
         }
         .custom-button3 {
             display: inline-block;
@@ -120,7 +119,7 @@ $conexion = new mysqli("localhost", "root", "", "basededatos");
         die("Error en la conexión: " . $conexion->connect_error);
     }
     
-    $registrosPorPagina = 7;
+    $registrosPorPagina = 4;
     $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -143,11 +142,7 @@ if ($resultado->num_rows > 0) {
     <th>Cód.espacio</th>
     <th style=width:200px; > Nombre del espacio </th>
     <th style=width:80px;> Estado </th>
-    <th style=width:300px;> Nombre del encargado </th>
-    <th style=width:100px;> Fecha de entrega </th>
-    <th style=width:100px> Hora de entrega</th>
-    <th style=width:100px;> Fecha de regreso </th>
-    <th style=width:100px> Hora de regreso</th>
+    <th style=width:200px;> Descripción </th>
     <th style=width:100px>Acciones</th>
     </tr>";
     
@@ -157,12 +152,8 @@ if ($resultado->num_rows > 0) {
         echo "<td>" . $fila['cod_espacio'] . "</td>";
         echo "<td>" . $fila['nom_espacio'] . "</td>";
         echo "<td>" . $fila['estado_espacio'] . "</td>";
-        echo "<td>" . $fila['persona_encargada'] . "</td>";
-        echo "<td>" . $fila['fecha_entrega'] . "</td>";
-        echo "<td>" . $fila['hora_entrega'] . "</td>";
-        echo "<td>" . $fila['fecha_regreso'] . "</td>";
-        echo "<td>" . $fila['hora_regreso'] . "</td>";
-        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&nom_espacio=" . $fila['nom_espacio'] ."&persona_encargada=" . $fila['persona_encargada'] ."&estado_espacio=" . $fila['estado_espacio'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "&hora_entrega=" . $fila['hora_entrega'] . "&fecha_regreso=" . $fila['fecha_regreso'] . "&hora_regreso=" . $fila['hora_regreso'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+        echo "<td>" . $fila['Descripcion'] . "</td>";
+        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&nom_espacio=" . $fila['nom_espacio'] ."&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
         echo "</tr>";
     }
 
@@ -185,6 +176,5 @@ $conexion->close();
 </div>
 <br>
 <a class="custom-button" href="agregarespacio.php">Agregar Espacio</a>
-
-    <a class ="regresar" href="supervisor.php">Volver al inicio</a>
-    <a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>
+<a class ="regresar" href="supervisor.php">Volver al inicio</a>
+<a style="display: none" class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

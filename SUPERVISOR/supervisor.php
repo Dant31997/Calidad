@@ -209,7 +209,7 @@
     
     <a class="custom-button" href="inventario.php">INVENTARIO</a>
     <a class="custom-button2" href="espacios.php">ESPACIOS</a> 
-    <a class="custom-button3" href="verificarpeticiones.php">Peticiones Insumos</a>
-    <a class="custom-button4" href="verificarpeticionesprofesores.php">Peticiones Espacios</a>
+    <a class="custom-button3" href="verificarPeticionesInsumos.php">Peticiones Insumos</a>
+    <a class="custom-button4" href="verificarPeticionesEspacios.php">Peticiones Espacios</a>
 </body>
 </html>

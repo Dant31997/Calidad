@@ -259,7 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
 </head>
 <body>
     <div class="panel-box-admin">
-        <h2>Bienvenido Administrador!</h2>
+        <h2>Bienvenido Administrador</h2>
         
     </div>
         <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>

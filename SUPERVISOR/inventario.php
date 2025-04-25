@@ -51,7 +51,7 @@
             border-radius: 5px;
             font-size: 16px;
             position: absolute;
-            top: 3%; left: 75%;
+            top: 2%; left: 75%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .custom-button3:hover {
@@ -116,27 +116,11 @@
             
         }
         .tabla1 {
-            margin-top: 4%;
+            margin-top: 7%;
         }
     .encabezado{
         background-color: red;
     }
-    .custom-button3 {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff0000;
-            color: #FFF;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            position: absolute;
-            top: 2%; left: 75%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .custom-button3:hover {
-            background-color: #D62828;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
         
 
 </style>
@@ -149,7 +133,7 @@ $conexion = new mysqli("localhost", "root", "", "basededatos");
         die("Error en la conexión: " . $conexion->connect_error);
     }
     
-    $registrosPorPagina = 7;
+    $registrosPorPagina = 6;
     $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
     
     // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -173,13 +157,9 @@ if ($resultado->num_rows >= 0) {
     echo "<table border='1'>";
     echo "<tr  class= 'encabezado'>
     <th style=width:50px;>Cód.inv</th>
-    <th style=width:150px;> Nombre del equipo </th>
+    <th style=width:150px;> Nombre del insumo </th>
+    <th style=width:300px;> Descripcion</th>
     <th style=width:80px;> Estado </th>
-    <th style=width:300px;> Se presto a</th>
-    <th style=width:100px;> Fecha de entrega </th>
-    <th style=width:100px> Hora de entrega</th>
-    <th style=width:100px;> Fecha de regreso </th>
-    <th style=width:100px> Hora de regreso</th>
     <th style=width:150px;>Acciones</th>
     </tr>";
     
@@ -188,13 +168,9 @@ if ($resultado->num_rows >= 0) {
         echo "<tr class= 'encabezado'>";
         echo "<td>" . $fila['cod_inventario'] . "</td>";
         echo "<td>" . $fila['nom_inventario'] . "</td>";
+        echo "<td>" . $fila['Descripcion'] . "</td>";
         echo "<td>" . $fila['estado'] . "</td>";
-        echo "<td>" . $fila['nombre_persona'] . "</td>";
-        echo "<td>" . $fila['fecha_entrega'] . "</td>";
-        echo "<td>" . $fila['hora_entrega'] . "</td>";
-        echo "<td>" . $fila['fecha_regreso'] . "</td>";
-        echo "<td>" . $fila['hora_regreso'] . "</td>";
-        echo "<td><a href='editarobjeto.php?cod_inventario=" . $fila['cod_inventario'] . "&nom_inventario=" . $fila['nom_inventario'] ."&estado=" . $fila['estado'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "&hora_entrega=" . $fila['hora_entrega'] . "&fecha_regreso=" . $fila['fecha_regreso'] . "&hora_regreso=" . $fila['hora_regreso'] .  "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_objeto.php?cod_inventario=" . $fila['cod_inventario'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+        echo "<td><a href='editarobjeto.php?cod_inventario=" . $fila['cod_inventario'] . "&nom_inventario=" . $fila['nom_inventario'] ."&estado=" . $fila['estado'] . "&Descripcion=" . $fila['Descripcion'] .  "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_objeto.php?cod_inventario=" . $fila['cod_inventario'] . "'><img src='imagenes/eliminar.png' /></a></td>";
         echo "</tr>";
     }
 
@@ -213,7 +189,7 @@ if ($resultado->num_rows >= 0) {
         ?>
     </div>
     <br>
-    <a class="custom-button" href="agregarobjeto.php">Agregar Objeto</a>
+    <a class="custom-button" href="agregarobjeto.php">Agregar insumo</a>
     
     <a class ="custom-button2" href="supervisor.php">Volver al inicio</a>
-    <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
+    <a style="display: none" class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
