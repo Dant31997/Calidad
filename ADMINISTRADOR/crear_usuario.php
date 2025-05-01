@@ -29,7 +29,7 @@
     </div>
     </div>
 
-    <style>
+<style>
     /* Estilos del fondo del modal */
     .modal {
       display: none; 
@@ -65,7 +65,7 @@
     .close:hover {
       color: #000;
     }
-  </style>
+</style>
 </html>
 <?php
 // Conexión a la base de datos
@@ -83,10 +83,11 @@ $nombre_usuario = $_POST['nombre_usuario'];
 $contrasena = $_POST['contrasena'];
 $nombre = $_POST['nombre'];
 $rol = $_POST['rol'];
+$ciudad = $_POST['ciudad'];
 
 try{
-    $stmt = $conexion->prepare("INSERT INTO usuarios (nombre_usuario, contrasena, nombre, rol) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param('ssss', $nombre_usuario, $contrasena, $nombre, $rol);
+    $stmt = $conexion->prepare("INSERT INTO usuarios (nombre_usuario, contrasena, nombre, rol, ciudad) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param('sssss', $nombre_usuario, $contrasena, $nombre, $rol, $ciudad);
     
     
     if ($stmt->execute()) {

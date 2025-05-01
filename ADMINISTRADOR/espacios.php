@@ -66,22 +66,22 @@
         text-align: center;
         margin-top: 2%;
         margin-left: 10%;
-    }
+        }
 
-    .pagination a {
-        display: inline-block;
-        padding: 5px 10px;
-        margin-left: 1%;
-        border: 1px solid #d0dafd;
-        text-decoration: none;
-        color: #000;
-    }
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-left: 1%;
+            border: 1px solid #d0dafd;
+            text-decoration: none;
+            color: #000;
+        }
 
-    .pagination a.active {
-        background-color: #ff0000;
-        color: #fff;
-        border: 1px solid #000;
-    }
+        .pagination a.active {
+            background-color: #ff0000;
+            color: #fff;
+            border: 1px solid #000;
+        }
     .panel-box-admin {
         width: 100%;
             height: 60px;

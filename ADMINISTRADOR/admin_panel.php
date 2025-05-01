@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
-    // Conexión a la base de datos
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
+$conexion = new mysqli("localhost", "root", "", "basededatos");
 
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión: " . $conexion->connect_error);
-    }
-
-    global $nombre_admin;
-    $nombre_admin = $_GET['nombre'];
+// Verifica la conexión
+if ($conexion->connect_error) {
+    die("Error en la conexión: " . $conexion->connect_error);
 }
+
+$query = "SELECT nombre_rol FROM roles";
+$resultado = $conexion->query($query);
+
 ?>
 
 <html>
+
 <head>
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Panel de Administrador</title>
 
-<style>
-            html{background: linear-gradient(to bottom, white,70%, #FADBD8 ); margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+    <style>
+        html {
+            background: linear-gradient(to bottom, white, 70%, #FADBD8);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0px;
             margin-bottom: 48%;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
 
         }
+
         .logout-button {
             background-color: #ff0000;
             color: white;
@@ -44,45 +50,55 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             border-radius: 5px;
             margin-top: 10px;
             position: absolute;
-            top: 20px; left: 80%;
+            top: 20px;
+            left: 80%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .logout-button:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .panel-box {
             max-width: 800px;
-            height: 320px;
+            height: 440px;
             position: absolute;
-            top: 25%; left:39%;
+            top: 18%;
+            left: 39%;
             padding: 20px;
             width: 350px;
             background-color: #fff;
             border: 1px solid #ccc;
-            border-radius: 10px; /* Ajusta el valor para cambiar la curvatura de las esquinas */
+            border-radius: 10px;
+            /* Ajusta el valor para cambiar la curvatura de las esquinas */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .panel-box-admin {
             width: 390px;
             height: 65px;
             position: absolute;
-            top: 5%; left:39%;
+            top: 5%;
+            left: 39%;
             background-color: red;
             border: 1px solid #ccc;
-            border-radius: 10px; /* Ajusta el valor para cambiar la curvatura de las esquinas */
+            border-radius: 10px;
+            /* Ajusta el valor para cambiar la curvatura de las esquinas */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .lista {
             background-color: #ff0000;
             color: #fff;
-            font-size: small;
-            padding: 10px 20px;
+            font-size: 15px;
+            padding: 11px 20px;
             text-decoration: none;
             text-align: center;
             border-radius: 5px;
             position: absolute;
-            top: 82%; left: 33%;
+            top: 88%;
+            left: 50%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -99,35 +115,40 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             text-decoration: none;
             text-align: center;
             border-radius: 5px;
+            border-color: transparent;
             position: absolute;
-            top: 68%; left: 35%;
+            top: 88%;
+            left: 11%;
         }
 
         .crear_usu:hover {
             background-color: #D62828;
         }
+
         h2 {
-            color:white;
+            color: white;
             text-align: center;
         }
 
         h3 {
             text-align: center;
-        }   
-
-        .custom-button  {
-                padding: 10px 20px;
-                background-color: red;
-                color: #fff;
-                border: none;
-                width: 295px;
-                height: 50px;
-                border-radius: 5px;
-                text-decoration: none;
-                position: absolute;
-                top: 39%; left: 7% ;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: red;
+            color: #fff;
+            border: none;
+            width: 295px;
+            height: 50px;
+            border-radius: 5px;
+            text-decoration: none;
+            position: absolute;
+            top: 39%;
+            left: 7%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         .custom-button:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -146,7 +167,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 82%; left: 7% ;
+            top: 82%;
+            left: 7%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -157,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             animation-duration: 2s;
         }
 
-    
+
         .custom-button3 {
             padding: 10px 20px;
             background-color: red;
@@ -168,7 +190,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 58.5%; left: 73% ;
+            top: 58.5%;
+            left: 73%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -189,7 +212,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 68%; left: 73% ;
+            top: 68%;
+            left: 73%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -210,7 +234,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 78%; left: 73% ;
+            top: 78%;
+            left: 73%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -221,51 +246,111 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
             animation-duration: 2s;
         }
 
-        .rol{
-            left: 50%;}
-           
+        .rol {
+            left: 50%;
+        }
+
 
         .imginv {
             position: absolute;
-            top: 4%; left:11%;
+            top: 4%;
+            left: 11%;
         }
+
         .imginv:hover {
-            width: 20px ;
+            width: 20px;
             height: 20px;
             position: absolute;
         }
 
         .imgesp {
             position: absolute;
-            top: 49%; left:7%;
+            top: 49%;
+            left: 7%;
             resize: both;
         }
 
         .imgesp:hover {
-            width: 20px ;
+            width: 20px;
             height: 20px;
-            position: absolute; 
+            position: absolute;
         }
 
         .imgpet {
             position: absolute;
-            top: 26%; left:73%;
+            top: 26%;
+            left: 73%;
         }
 
         .imgpet:hover {
             position: absolute;
         }
-</style>
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #ff0000;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .rol select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .rol select:focus {
+            border-color: #ff0000;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+        }
+
+        .rol label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="panel-box-admin">
         <h2>Bienvenido Administrador</h2>
-        
+
     </div>
-        <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
+    <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
 
     <div class="panel-box">
-        
+
         <!-- Formulario para crear un nuevo usuario -->
         <h3>Crear Nuevo Usuario</h3>
         <form action="crear_usuario.php" method="POST">
@@ -278,33 +363,37 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
                 <input type="password" id="contrasena" name="contrasena" required>
             </div>
             <div class="form-group">
-                <label for="nombre">nombre completo:  &nbsp;&nbsp; </label>
+                <label for="nombre">Nombre completo: &nbsp;&nbsp; </label>
                 <input type="text" id="nombre" name="nombre" required>
             </div>
             <div class="rol">
-                <label for="rol"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rol:</label>
-                <select id="rol" name="rol">
-                
-                    <!--<option disabled selected default>Rol</option>--->
-                    <option value="Funcionario">Funcionario</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Supervisor">Supervisor</option>
+                <label for="rol">Rol:</label>
+                <select id="rol" name="rol" required>
+                    <option value="" disabled selected>Elige un rol</option>
+                    <?php
+                    if ($resultado->num_rows > 0) {
+                        while ($row = $resultado->fetch_assoc()) {
+                            echo "<option value='" . $row['nombre_rol'] . "'>" . $row['nombre_rol'] . "</option>";
+                        }
+                    }
+                    ?>
                 </select>
             </div>
-            <input class="crear_usu" type="submit" value="Crear Usuario" >
+            <br>
+            <input class="crear_usu" type="submit" value="Crear Usuario">
 
             <div>
-            <br>
-                <a class ="lista" href='listar_usuarios.php' class="lista">Lista de Usuarios</a>
+                <br>
+                <a class="lista" href='listar_usuarios.php' class="lista">Lista de Usuarios</a>
             </div>
         </form>
-    </div> 
+    </div>
     <form action="inventario.php" method="POST">
         <input class="custom-button" name="inv" type="submit" value="INVENTARIO">
-    </form>   
+    </form>
     <form action="espacios.php" method="POST">
         <input class="custom-button2" name="inv" type="submit" value="ESPACIOS">
-    </form>  
+    </form>
     <form action="verificarPeticionesInsumos.php" method="POST">
         <input class="custom-button3" name="inv" type="submit" value="PETICIONES DE INSUMOS">
     </form>
@@ -316,7 +405,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['nombre'])) {
     </form>
 
     <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
-    <a class="imgesp" ><img src='imagenes/espacio1.jpg' /></a>
-    <a class="imgpet" ><img src='imagenes/peticiones.png' /></a>
+    <a class="imgesp"><img src='imagenes/espacio1.jpg' /></a>
+    <a class="imgpet"><img src='imagenes/peticiones.png' /></a>
 </body>
+
 </html>
