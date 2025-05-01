@@ -1,26 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+</html>
+
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
-    // Conexión a la base de datos
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
+try {
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+        // Conexión a la base de datos
+        $conexion = new mysqli("localhost", "root", "", "basededatos");
 
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión: " . $conexion->connect_error);
-    }
+        // Verifica la conexión
+        if ($conexion->connect_error) {
+            throw new Exception("Error en la conexión: " . $conexion->connect_error);
+        }
 
-    $id = $_GET['id'];
+        $id = $_GET['id'];
 
-    // Consulta SQL para eliminar el usuario por ID
-    $sql = "DELETE FROM usuarios WHERE id = $id";
+        // Usar consulta preparada para mayor seguridad
+        $sql = "DELETE FROM usuarios WHERE id = ?";
+        $stmt = $conexion->prepare($sql);
+        
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta: " . $conexion->error);
+        }
 
-    if ($conexion->query($sql) === TRUE) {
-        header("Location: listar_usuarios.php");
+        $stmt->bind_param("i", $id);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al eliminar el usuario: " . $stmt->error);
+        }
+
+        ?>
+        <script>
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Usuario eliminado correctamente',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'listar_usuarios.php';
+                }
+            });
+        </script>
+        <?php
+
     } else {
-        echo "Error al eliminar el usuario: " . $conexion->error;
+        throw new Exception("ID de usuario no especificado.");
     }
 
-    $conexion->close();
-} else {
-    echo "ID de usuario no especificado.";
+} catch (Exception $e) {
+    ?>
+    <script>
+        Swal.fire({
+            title: 'Error',
+            text: '<?php echo $e->getMessage(); ?>',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'listar_usuarios.php';
+            }
+        });
+    </script>
+    <?php
+} finally {
+    // Cierra la conexión si existe
+    if (isset($conexion)) {
+        $conexion->close();
+    }
 }
 ?>

@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Descripcion'])) {
         font-size: 16px;
         position: absolute;
         top: 88%;
-        left: 35%;
+        left: 41%;
         border-color: transparent;
     }
 
@@ -200,9 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Descripcion'])) {
         opacity: 0.7;
     }
 
-    .form-group input[type="number"] {
-        -moz-appearance: textfield;
-    }
 
     .form-group input[type="number"]::-webkit-outer-spin-button,
     .form-group input[type="number"]::-webkit-inner-spin-button {
@@ -308,7 +305,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Descripcion'])) {
         </div>
         <br>
         <br>
-        <input class="btno" type="submit" name="editar" value="Editar Insumo">
+        <input class="btno" type="submit" name="editar" value="Editar">
         <br>
     </form>
 </div>

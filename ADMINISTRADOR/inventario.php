@@ -106,7 +106,6 @@
         color: #FCFCFC;
         font-weight: bold;
         border-radius: 5px;
-
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
