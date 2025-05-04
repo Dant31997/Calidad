@@ -11,10 +11,10 @@ if ($conexion->connect_error) {
 }
 
 // Obtén los datos enviados desde el formulario
-$nombre_trabajador = $_POST['Nombre_trabajador'];
+$nombre_trabajador = $_POST['nom_persona'];
 $cod_inventario = $_POST['inventario'];
 $nom_inventario = $_POST['nom_inventario'];
-$estado = $_POST['estado'];
+$estado = "Prestado";
 
 // Inserta en la tabla prestamos_insumos
 $sql_insert = "INSERT INTO prestamos_insumos (insumo, nombre_persona_prestamo, estado) VALUES (?, ?, ?)";

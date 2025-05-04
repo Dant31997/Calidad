@@ -78,7 +78,6 @@
 
     tr {
         text-align: center;
-
     }
 
     .tabla1 {
@@ -197,7 +196,7 @@
         height: 380px;
         position: absolute;
         top: 15%;
-        right: 2%;
+        right: 1%;
         padding: 5px 10px;
         background-color: #fff;
         border-radius: 10px;
@@ -318,7 +317,7 @@ $conexion->close();
         $claseActiva = ($i == $paginaActual) ? "active" : "";
         echo "<a class='$claseActiva' href='inventario.php?pagina1=$i";
         // Mantener el estado de la otra paginación
-        if(isset($_GET['pagina2'])) {
+        if (isset($_GET['pagina2'])) {
             echo "&pagina2=" . $_GET['pagina2'];
         }
         echo "'>$i</a>";
@@ -358,7 +357,7 @@ $conexion->close();
         $claseActiva2 = ($i2 == $paginaActual2) ? "active2" : "";
         echo "<a class='$claseActiva2' href='inventario.php?pagina2=$i2";
         // Mantener el estado de la otra paginación
-        if(isset($_GET['pagina1'])) {
+        if (isset($_GET['pagina1'])) {
             echo "&pagina1=" . $_GET['pagina1'];
         }
         echo "'>$i2</a>";

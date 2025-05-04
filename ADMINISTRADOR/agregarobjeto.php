@@ -14,7 +14,6 @@ $resultado = $conexion->query($sql);
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Administrador</title>
     <style>
@@ -114,7 +113,8 @@ $resultado = $conexion->query($sql);
             border-radius: 5px;
             font-size: 16px;
             margin-left: 30%;
-            margin-top: 1px ;
+            margin-top: 10px ;
+            border-color: transparent;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -173,7 +173,7 @@ $resultado = $conexion->query($sql);
             </select>
             <br>
             <label for="descripcion">Descripción:</label>
-            <input style="height: 100px;" type="textarea" name="descripcion" required>
+            <textarea name="descripcion" rows="5" cols="45" class="form-input" required></textarea>
             <br>
             <input class="btno" type="submit" name="agregar" value="Agregar Objeto">
             <br>
