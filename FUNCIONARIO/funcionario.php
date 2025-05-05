@@ -18,16 +18,12 @@
             color: white;
             display: flex;
             align-items: center;
-            width: 95%;
+            width: 100%;
             height: 70px;
             padding: 5px;
             background-color: red;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            border-radius: 10px; /* Ajusta el valor para cambiar la curvatura de las esquinas */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: absolute;
-            top: 1%; left:2%;
+            top: 0%; left:0%;
         }
         
       
@@ -54,7 +50,7 @@
             border-radius: 5px;
             margin-top: 10px;
             position: absolute;
-            top: 15px; left: 80%;
+            top: 10px; left: 80%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .logout-button:hover {
@@ -155,7 +151,7 @@
             text-decoration: none;
             border-radius: 5px;
             position: absolute;
-            top: 70%; left: 43%;
+            top: 62%; left: 43%;
         }
         .custom-button5:hover {
             background-color: #D62828;
@@ -209,10 +205,11 @@
             gap: 15px; /* Espaciado entre los elementos */
         }
         .imgprestamos {
-            width: 200px;
-            height: 200px;
+            size-adjust: auto;
+            width: 150px;
+            height: 150px;
             position: absolute;
-            top: 20%; left: 35%;
+            top: 25%; left: 39%;
         }
 </style>
 </head>
@@ -232,7 +229,7 @@
         
     </div>
     <div>
-        <a class="imgprestamos"><img src='imagenes/prestamos.PNG' /></a>
+        <a class="imgprestamos"><img  src='imagenes/prestamos.PNG' /></a>
         <a class='custom-button5' href='prestamos_insumos.php'>Prestamos</a>
     </div>  
 

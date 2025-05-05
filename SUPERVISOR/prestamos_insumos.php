@@ -150,7 +150,7 @@ $title = "PRÉSTAMOS";
 
         .modal-content {
             background-color: #fefefe;
-            margin: 3% auto;
+            margin: 1% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 50%;
@@ -224,24 +224,23 @@ $title = "PRÉSTAMOS";
             <form id="editForm" method="POST" action="actualizar_prestamo.php">
                 <input type="hidden" name="id_prestamo" id="id_prestamo">
                 <label for="insumo">Insumo:</label>
-                <input type="text" name="insumo" id="insumo" required>
+                <input readonly type="text" name="insumo" id="insumo" required>
                 <br>
                 <label for="nombre_persona_prestamo">Nombre de la Persona:</label>
-                <input type="text" name="nombre_persona_prestamo" id="nombre_persona_prestamo" required>
+                <input readonly type="text" name="nombre_persona_prestamo" id="nombre_persona_prestamo" required>
                 <br>
                 <label for="estado">Estado:</label>
                 <select name="estado" id="estado" required>
                     <option value="Prestado">Prestado</option>
                     <option value="Devuelto">Devuelto</option>
-                </select>
-                <br>
-                <label for="dia_prestamo">Día del Prestamo:</label>
-                <input type="date" name="dia_prestamo" id="dia_prestamo" required>
-                <br>
-                <label for="hora_prestamo">Hora del Préstamo:</label>
-                <input type="time" name="hora_prestamo" id="hora_prestamo" required>
-                <br>
-                <button type="submit">Actualizar</button>
+                    <br>
+                    <label for="dia_prestamo">Día del Prestamo:</label>
+                    <input readonly type="date" name="dia_prestamo" id="dia_prestamo" required>
+                    <br>
+                    <label for="hora_prestamo">Hora del Préstamo:</label>
+                    <input readonly type="time" name="hora_prestamo" id="hora_prestamo" required>
+                    <br>
+                    <button type="submit">Actualizar</button>
             </form>
         </div>
     </div>
@@ -254,10 +253,10 @@ $title = "PRÉSTAMOS";
             <form id="editEspaciosForm" method="POST" action="actualizar_prestamo_espacios.php">
                 <input type="hidden" name="id_prestamo_espacio" id="id_prestamo_espacio">
                 <label for="espacio">Espacio:</label>
-                <input type="text" name="espacio" id="espacio" required>
+                <input readonly type="text" name="espacio" id="espacio" required>
                 <br>
                 <label for="nom_persona">Nombre de la Persona:</label>
-                <input type="text" name="nom_persona" id="nom_persona" required>
+                <input readonly type="text" name="nom_persona" id="nom_persona" required>
                 <br>
                 <label for="estado">Estado:</label>
                 <select name="estado" id="estado" required>
@@ -267,13 +266,13 @@ $title = "PRÉSTAMOS";
                 </select>
                 <br>
                 <label for="dia_prestamo_espacio">Día del Préstamo:</label>
-                <input type="date" name="dia_prestamo_espacio" id="dia_prestamo_espacio" required>
+                <input readonly type="date" name="dia_prestamo_espacio" id="dia_prestamo_espacio" required>
                 <br>
                 <label for="hora_prestamo_espacio">Hora del Préstamo:</label>
-                <input type="time" name="hora_prestamo_espacio" id="hora_prestamo_espacio" required>
+                <input readonly type="time" name="hora_prestamo_espacio" id="hora_prestamo_espacio" required>
                 <br>
                 <label for="fecha_entrega">Fecha de Entrega:</label>
-                <input type="date" name="fecha_entrega" id="fecha_entrega" required>
+                <input readonly type="date" name="fecha_entrega" id="fecha_entrega" required>
                 <br>
                 <button type="submit">Actualizar</button>
             </form>
@@ -372,7 +371,8 @@ $title = "PRÉSTAMOS";
         // Encabezados dinámicos según la tabla seleccionada
         if ($tablaSeleccionada === 'prestamos_insumos') {
             echo "
-                <th style='width:150px;'>Insumo</th>
+                <th style='width:100px;'>Insumo</th>
+                <th style='width:100px;'>Cantidad</th>
                 <th style='width:200px;'>Nombre de la Persona</th>
                 <th style='width:100px;'>Estado</th>
                 <th style='width:150px;'>Día del Préstamo</th>
@@ -402,6 +402,7 @@ $title = "PRÉSTAMOS";
             if ($tablaSeleccionada === 'prestamos_insumos') {
                 echo "
                     <td>" . $fila['insumo'] . "</td>
+                    <td>" . $fila['cantidad'] . "</td>
                     <td>" . $fila['nombre_persona_prestamo'] . "</td>
                     <td>" . $fila['estado'] . "</td>
                     <td>" . $fila['dia_prestamo'] . "</td>
@@ -462,7 +463,7 @@ $title = "PRÉSTAMOS";
         ?>
     </div>
     <br>
-    <a class="custom-button" href="admin_panel.php">Volver al inicio</a>
+    <a class="custom-button" href="supervisor.php">Volver al inicio</a>
 </body>
 
 </html>
