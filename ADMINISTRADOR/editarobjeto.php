@@ -299,8 +299,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Descripcion'])) {
         <div class="form-group">
             <label for="estado">Estado actual:</label>
             <select id="estado" name="estado" class="select-field">
-                <option value="libre" <?php echo ($estado == 'libre') ? 'selected' : ''; ?>>Libre</option>
-                <option value="prestado" <?php echo ($estado == 'prestado') ? 'selected' : ''; ?>>Prestado</option>
+                <option value="libre" <?php echo ($estado == 'Libre') ? 'selected' : ''; ?>>Libre</option>
+                <option value="prestado" <?php echo ($estado == 'Prestado') ? 'selected' : ''; ?>>Prestado</option>
             </select>
         </div>
         <br>

@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    
+</body>
+</html>
 <?php
 // Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -45,23 +57,48 @@ $stmt = $conexion->prepare($sql);
 $stmt->bind_param($tipos, ...$valores);
 
 try { 
-if ($stmt->execute()) {
-    echo "Campos actualizados correctamente.";
+    if ($stmt->execute()) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Campos actualizados correctamente.',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'inventario.php';
+                }
+            });
+        </script>";
     }
 } catch (mysqli_sql_exception $e) {
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
     if ($e->getCode() == 1062) { // Código de error para "Duplicate entry"
-        echo "<script>alert('Error: El objeto ya existe en el inventario.');
-        window.history.back();
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El objeto ya existe en el inventario.',
+                confirmButtonText: 'Volver'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.history.back();
+                }
+            });
         </script>";
-        
     } else {
-        echo "Error al actualizar el objeto de inventario: " . $e->getMessage();
+        echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al actualizar el objeto de inventario: " . $e->getMessage() . "',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>";
     }
 }
-    
 
 // Cierra la conexión
 $conexion->close();
 ?>
-
-<meta http-equiv="Refresh" content="1; url='http://localhost/proyectofinal/ADMINISTRADOR/inventario.php'" />

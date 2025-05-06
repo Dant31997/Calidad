@@ -388,19 +388,19 @@ $resultado = $conexion->query($query);
             </div>
         </form>
     </div>
-    <form action="inventario.php" method="POST">
+    <form action="inventario.php">
         <input class="custom-button" name="inv" type="submit" value="INVENTARIO">
     </form>
-    <form action="espacios.php" method="POST">
+    <form action="espacios.php">
         <input class="custom-button2" name="inv" type="submit" value="ESPACIOS">
     </form>
-    <form action="verificarPeticionesInsumos.php" method="POST">
+    <form action="verificarPeticionesInsumos.php">
         <input class="custom-button3" name="inv" type="submit" value="PETICIONES DE INSUMOS">
     </form>
-    <form action="verificarPeticionesEspacios.php" method="POST">
+    <form action="verificarPeticionesEspacios.php">
         <input class="custom-button4" name="inv" type="submit" value="PETICIONES DE ESPACIOS">
     </form>
-    <form action="prestamos_insumos.php" method="POST">
+    <form action="prestamos_insumos.php" >
         <input class="custom-button5" name="inv" type="submit" value="PRESTAMOS">
     </form>
 
