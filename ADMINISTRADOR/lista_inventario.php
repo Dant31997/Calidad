@@ -44,7 +44,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
         }
 
         body {
-            padding: 20px;
+            padding: 10px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -139,7 +139,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
             cursor: pointer;
             font-size: 16px;
             position: absolute;
-            top: 14%;
+            top: 10%;
             left: 82%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -220,17 +220,26 @@ $resultadoInventario = $conexion->query($sqlInventario);
             /* Color para el botón activo */
             color: #fff;
         }
-    </style>
-    <script>
-        function filtrarTabla() {
-            const filtro = document.getElementById('filtro').value.toLowerCase();
-            const filas = document.querySelectorAll('#tabla-inventario tbody tr');
-            filas.forEach(fila => {
-                const nombre = fila.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                fila.style.display = nombre.includes(filtro) ? '' : 'none';
-            });
+
+        .volver-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #FFF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            position: absolute;
+            top: 18%;
+            left: 85%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-    </script>
+
+        .volver-button:hover {
+            background-color: #D62828;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -240,7 +249,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
 
     <!-- Formulario con los datos del préstamo -->
     <div class="form-container">
-        <form>
+        <form method="POST">
             <div class="form-group">
                 <label for="idPrestamo">ID Préstamo:</label>
                 <input type="text" id="idPrestamo" value="<?php echo $idPrestamo; ?>" readonly>
@@ -268,6 +277,8 @@ $resultadoInventario = $conexion->query($sqlInventario);
 
     <!-- Tabla dinámica -->
     <form action="procesar_inventario.php" method="POST">
+    <input type="hidden" name="nombrePersona" value="<?php echo $nombrePersona; ?>">
+    <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo; ?>">
         <table id="tabla-inventario">
             <thead>
                 <tr class='encabezado'>
@@ -298,40 +309,68 @@ $resultadoInventario = $conexion->query($sqlInventario);
         <button type="submit" class="action-button">Asignar Equipos</button>
     </form>
 
+    <a class="volver-button" href="asignar_inventario.php">Volver</a>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const rowsPerPage = 5; // Número de registros por página
+            // Configuración inicial
+            const rowsPerPage = 5;
             const table = document.getElementById('tabla-inventario');
             const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const allRows = Array.from(tbody.querySelectorAll('tr')); // Todas las filas originales
+            let visibleRows = [...allRows]; // Filas visibles actualmente
             const paginationControls = document.getElementById('pagination-controls');
             let currentPage = 1;
 
-            function renderTable() {
-                // Oculta todas las filas
-                rows.forEach((row, index) => {
-                    row.style.display = 'none';
-                    if (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) {
-                        row.style.display = '';
-                    }
+            // Filtrar tabla y actualizar paginación
+            function filtrarTabla() {
+                const filtro = document.getElementById('filtro').value.toLowerCase();
+
+                // Actualizar las filas visibles basadas en el filtro
+                visibleRows = allRows.filter(row => {
+                    const nombre = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    return nombre.includes(filtro);
                 });
+
+                currentPage = 1; // Reiniciar a la primera página al filtrar
+                renderTable(); // Actualizar la tabla
+            }
+
+            // Renderizar la tabla con paginación
+            function renderTable() {
+                // Primero, ocultar todas las filas
+                allRows.forEach(row => {
+                    row.style.display = 'none';
+                });
+
+                // Luego, mostrar solo las filas de la página actual
+                const startIndex = (currentPage - 1) * rowsPerPage;
+                const endIndex = Math.min(startIndex + rowsPerPage, visibleRows.length);
+
+                for (let i = startIndex; i < endIndex; i++) {
+                    visibleRows[i].style.display = '';
+                }
 
                 renderPaginationControls();
             }
 
+            // Renderizar controles de paginación
             function renderPaginationControls() {
-                paginationControls.innerHTML = ''; // Limpia los controles de paginación
-                const totalPages = Math.ceil(rows.length / rowsPerPage);
+                paginationControls.innerHTML = '';
+                const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+
+                // Si no hay páginas o solo hay una, no mostrar paginación
+                if (totalPages <= 1) {
+                    return;
+                }
 
                 for (let i = 1; i <= totalPages; i++) {
                     const button = document.createElement('button');
                     button.textContent = i;
-                    button.style.margin = '0 5px';
-                    button.style.padding = '5px 10px';
-                    button.style.border = '1px solid #ddd';
-                    button.style.backgroundColor = i === currentPage ? '#d62828' : '#fff';
-                    button.style.color = i === currentPage ? '#fff' : '#000';
-                    button.style.cursor = 'pointer';
+
+                    if (i === currentPage) {
+                        button.classList.add('active');
+                    }
 
                     button.addEventListener('click', function() {
                         currentPage = i;
@@ -342,7 +381,11 @@ $resultadoInventario = $conexion->query($sqlInventario);
                 }
             }
 
-            renderTable(); // Renderiza la tabla inicialmente
+            // Asignar evento de filtrado al input
+            document.getElementById('filtro').addEventListener('keyup', filtrarTabla);
+
+            // Renderizar la tabla inicialmente
+            renderTable();
         });
     </script>
 </body>

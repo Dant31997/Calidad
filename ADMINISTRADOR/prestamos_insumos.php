@@ -56,7 +56,7 @@ $title = "PRÉSTAMOS";
             left: 5%;
             padding: 10px;
             width: 1200px;
-            height: 800px;
+            height: 400px;
         }
 
         table {
@@ -220,28 +220,32 @@ $title = "PRÉSTAMOS";
     <div id="editModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="modal.style.display='none';">&times;</span>
-            <h2>Editar Préstamo</h2>
+            <h2>Devolucion del Préstamo</h2>
             <form id="editForm" method="POST" action="actualizar_prestamo.php">
                 <input type="hidden" name="id_prestamo" id="id_prestamo">
-                <label for="insumo">Insumo:</label>
-                <input type="text" name="insumo" id="insumo" required>
+
+                <!-- Tabla de inventario relacionado -->
+                <h3>Items de Inventario Relacionados</h3>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr style="background:red; color: white;">
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Prestado a</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventario-tabla">
+                            <!-- La tabla se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
                 <br>
-                <label for="nombre_persona_prestamo">Nombre de la Persona:</label>
-                <input type="text" name="nombre_persona_prestamo" id="nombre_persona_prestamo" required>
-                <br>
-                <label for="estado">Estado:</label>
-                <select name="estado" id="estado" required>
-                    <option value="Prestado">Prestado</option>
-                    <option value="Devuelto">Devuelto</option>
-                </select>
-                <br>
-                <label for="dia_prestamo">Día del Prestamo:</label>
-                <input type="date" name="dia_prestamo" id="dia_prestamo" required>
-                <br>
-                <label for="hora_prestamo">Hora del Préstamo:</label>
-                <input type="time" name="hora_prestamo" id="hora_prestamo" required>
-                <br>
-                <button type="submit">Actualizar</button>
+                <h3>¿Los equipos devueltos son los mismos que estan relacionados con este préstamo?</h3>
+                <button type="submit">Si</button>
+                <button style="position: relative; right: 250px;" type="button" onclick="document.getElementById('editModal').style.display = 'none';">No</button>
             </form>
         </div>
     </div>
@@ -298,13 +302,31 @@ $title = "PRÉSTAMOS";
         // Función para abrir el modal con los datos del registro
         function openModal(id_prestamo, insumo, nombre_persona_prestamo, estado, dia_prestamo, hora_prestamo) {
             document.getElementById("id_prestamo").value = id_prestamo;
-            document.getElementById("insumo").value = insumo;
-            document.getElementById("nombre_persona_prestamo").value = nombre_persona_prestamo;
-            document.getElementById("estado").value = estado;
-            document.getElementById("dia_prestamo").value = dia_prestamo;
-            document.getElementById("hora_prestamo").value = hora_prestamo;
-            document.getElementById("hora_prestamo").value = hora_prestamo;
+
+            // Cargar datos del inventario relacionados con este préstamo
+            cargarInventario(id_prestamo);
+
             modal.style.display = "block";
+        }
+
+        // Función para cargar los datos del inventario mediante AJAX
+        function cargarInventario(id_prestamo) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_inventory.php?id_prestamo=' + id_prestamo, true);
+
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    document.getElementById('inventario-tabla').innerHTML = this.responseText;
+                } else {
+                    document.getElementById('inventario-tabla').innerHTML = '<tr><td colspan="4">Error al cargar datos del inventario</td></tr>';
+                }
+            };
+
+            xhr.onerror = function() {
+                document.getElementById('inventario-tabla').innerHTML = '<tr><td colspan="4">Error de conexión</td></tr>';
+            };
+
+            xhr.send();
         }
 
         // Función para abrir el modal de edición de préstamos de espacios
@@ -349,7 +371,7 @@ $title = "PRÉSTAMOS";
 
     // Consulta SQL con filtro según el estado
     if ($tablaSeleccionada === 'prestamos_insumos') {
-        $sql = "SELECT * FROM prestamos_insumos WHERE estado = 'Prestado' LIMIT $offset, $registrosPorPagina";
+        $sql = "SELECT * FROM prestamos_insumos WHERE estado = 'Prestado' AND estado_equipos = 'Asignado' LIMIT $offset, $registrosPorPagina";
     } elseif ($tablaSeleccionada === 'prestamos_espacios') {
         $sql = "SELECT * FROM prestamos_espacios WHERE estado = 'Reservado' LIMIT $offset, $registrosPorPagina";
     }
@@ -416,7 +438,7 @@ $title = "PRÉSTAMOS";
                         '{$fila['estado']}',
                         '{$fila['dia_prestamo']}',
                         '{$fila['hora_prestamo']}'
-                    )\">Editar</button>
+                    )\">Devolver</button>
                 </td>
                 ";
             } elseif ($tablaSeleccionada === 'prestamos_espacios') {
@@ -438,7 +460,7 @@ $title = "PRÉSTAMOS";
                         '{$fila['dia_prestamo']}',
                         '{$fila['hora_prestamo']}',
                         '{$fila['fecha_entrega']}'
-                    )\">Editar</button>
+                    )\">Devolver</button>
                 </td>
                 ";
             }
