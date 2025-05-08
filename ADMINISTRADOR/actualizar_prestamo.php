@@ -1,18 +1,21 @@
 <?php
-// filepath: c:\xampp\htdocs\proyectofinal\ADMINISTRADOR\actualizar_prestamo.php
+// Inicia la sesión para poder pasar mensajes entre páginas
+session_start();
 
 // Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
 
 // Verifica la conexión
 if ($conexion->connect_error) {
-    die("Error en la conexión: " . $conexion->connect_error);
+    $_SESSION['alert_type'] = 'error';
+    $_SESSION['alert_message'] = "Error en la conexión: " . $conexion->connect_error;
+    header("Location: prestamos_insumos.php");
+    exit();
 }
 
 // Obtén los datos enviados desde el formulario
 $id_prestamo = $_POST['id_prestamo'];
 $estado = "Devuelto";
-
 
 // Actualiza el registro en la tabla prestamos_insumos
 $sql = "UPDATE prestamos_insumos 
@@ -28,10 +31,21 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_inventario);
     }
 
-    // Redirige de vuelta a la página de préstamos con un mensaje de éxito
-    header("Location: prestamos_insumos.php?mensaje=actualizado");
+    // Guarda mensaje de éxito en la sesión
+    $_SESSION['alert_type'] = 'success';
+    $_SESSION['alert_message'] = 'El préstamo ha sido devuelto correctamente';
+    
+    // Redirige de vuelta a la página de préstamos
+    header("Location: prestamos_insumos.php");
+    exit();
 } else {
-    echo "Error al actualizar el registro: " . $conexion->error;
+    // Guarda mensaje de error en la sesión
+    $_SESSION['alert_type'] = 'error';
+    $_SESSION['alert_message'] = "Error al actualizar el registro: " . $conexion->error;
+    
+    // Redirige de vuelta a la página de préstamos
+    header("Location: prestamos_insumos.php");
+    exit();
 }
 
 // Cierra la conexión

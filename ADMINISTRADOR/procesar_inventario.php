@@ -38,7 +38,7 @@ if (isset($_POST['equipos']) && is_array($_POST['equipos']) && count($_POST['equ
         // Iterar sobre cada equipo seleccionado
         foreach ($_POST['equipos'] as $codInventario) {
             // Vincular parámetros y ejecutar
-            $stmt->bind_param("i    ss", $idPrestamo, $nombrePersona, $codInventario);
+            $stmt->bind_param("iss", $idPrestamo, $nombrePersona, $codInventario);
             
             if ($stmt->execute()) {
                 $equiposActualizados++;

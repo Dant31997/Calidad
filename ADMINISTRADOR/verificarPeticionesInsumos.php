@@ -255,12 +255,14 @@
             echo "<td>" . $fila['nom_persona'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
             echo "<td>" . $fila['dia_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_regreso'] . "</td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_entrega'])) . "</td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_regreso'])) . "</td>";
             echo "<td>  
-                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_Insumo.php?id=" . $fila['id'] . "&equipo=" . $fila['equipo'] . "&cantidad=" . $fila['cantidad'] . "&nom_persona=" . $fila['nom_persona'] . "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] . "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
+                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_Insumo.php?id=" 
+                    . $fila['id'] . "&equipo=" . $fila['equipo'] . "&cantidad=" . $fila['cantidad'] . "&nom_persona=" . $fila['nom_persona'] . 
+                    "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] .
+                     "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
                 </td>";
-
             echo "</tr>";
         }
         echo "</table>";

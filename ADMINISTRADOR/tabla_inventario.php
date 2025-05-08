@@ -13,21 +13,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 
     $offset2 = ($paginaActual2 - 1) * $registrosPorPagina2;
     $sql2 = "SELECT 
-                ti.nombre_insumo, 
-                COALESCE(COUNT(i.nom_inventario), 0) as cantidad 
-            FROM tipo_insumo ti 
-            LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
-            GROUP BY ti.nombre_insumo 
-            ORDER BY ti.nombre_insumo ASC 
-            LIMIT $offset2, $registrosPorPagina2";
+    ti.nombre_insumo, 
+    COALESCE(COUNT(i.nom_inventario), 0) as cantidad,
+    COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres
+FROM tipo_insumo ti 
+LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
+GROUP BY ti.nombre_insumo 
+ORDER BY ti.nombre_insumo ASC 
+LIMIT $offset2, $registrosPorPagina2";
     $resultado2 = $conexion->query($sql2);
 
     // Consulta SQL para obtener el número total de registros
     $totalRegistros2 = $conexion->query("SELECT COUNT(*) as total FROM (
-            SELECT ti.nombre_insumo 
-            FROM tipo_insumo ti 
-            GROUP BY ti.nombre_insumo
-        ) as subquery")->fetch_assoc()['total'];
+    SELECT ti.nombre_insumo 
+    FROM tipo_insumo ti 
+    GROUP BY ti.nombre_insumo
+) as subquery")->fetch_assoc()['total'];
+
 
     // Calcular el número total de páginas
     $numTotalPaginas2 = ceil($totalRegistros2 / $registrosPorPagina2);
@@ -38,6 +40,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
         <tr>
             <th>Nombre del Insumo</th>
             <th>Cantidad</th>
+            <th>Libres</th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +50,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
                 echo "<tr>";
                 echo "<td>" . $row['nombre_insumo'] . "</td>";
                 echo "<td>" . $row['cantidad'] . "</td>";
+                echo "<td>" . $row['libres'] . "</td>";
                 echo "</tr>";
             }
         } else {

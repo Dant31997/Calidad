@@ -46,7 +46,7 @@ $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
         position: absolute;
         top: 5%;
         left: 30%;
-        padding: 25px;
+        padding: 10px 25px;
         background-color: #fff;
         border: 1px solid #ccc;
         border-radius: 10px;
@@ -134,6 +134,11 @@ $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
 
     h2 {
         text-align: center;
+        color: red;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
     }
 
     .tabla-container {

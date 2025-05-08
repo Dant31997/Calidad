@@ -344,8 +344,7 @@ $resultado = $conexion->query($sql);
 
     <script>
         function asignar(idPrestamo) {
-            // Aquí puedes agregar la lógica para manejar la acción de asignar
-            // Por ejemplo, redirigir a otra página o realizar una solicitud AJAX
+            
             alert('Asignar el préstamo con ID: ' + idPrestamo);
         }
     </script>
