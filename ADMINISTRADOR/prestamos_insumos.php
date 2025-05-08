@@ -285,32 +285,14 @@
         <div id="editEspaciosModal" class="modal" style="display:none;">
             <div class="modal-content">
                 <span class="close" onclick="document.getElementById('editEspaciosModal').style.display='none';">&times;</span>
-                <h2>Editar Préstamo de Espacios</h2>
+                <h2 style="text-align: center;">Préstamo de Espacios</h2>
                 <form id="editEspaciosForm" method="POST" action="actualizar_prestamo_espacios.php">
                     <input type="hidden" name="id_prestamo_espacio" id="id_prestamo_espacio">
-                    <label for="espacio">Espacio:</label>
-                    <input type="text" name="espacio" id="espacio" required>
+                    <input type="hidden" name="espacio" id="espacio">
+                    <h3>¿El encargado trajo los implementos prestados con el espacio y el espacio ya ha sido desocupado?</h3>
                     <br>
-                    <label for="nom_persona">Nombre de la Persona:</label>
-                    <input type="text" name="nom_persona" id="nom_persona" required>
-                    <br>
-                    <label for="estado">Estado:</label>
-                    <select name="estado" id="estado" required>
-                        <option value="Reservado">Reservado</option>
-                        <option value="Terminado">Terminado</option>
-                        <option value="Cancelado">Cancelado</option>
-                    </select>
-                    <br>
-                    <label for="dia_prestamo_espacio">Día del Préstamo:</label>
-                    <input type="date" name="dia_prestamo_espacio" id="dia_prestamo_espacio" required>
-                    <br>
-                    <label for="hora_prestamo_espacio">Hora del Préstamo:</label>
-                    <input type="time" name="hora_prestamo_espacio" id="hora_prestamo_espacio" required>
-                    <br>
-                    <label for="fecha_entrega">Fecha de Entrega:</label>
-                    <input type="date" name="fecha_entrega" id="fecha_entrega" required>
-                    <br>
-                    <button type="submit">Actualizar</button>
+                    <button type="submit">Si</button>
+                    <button style="position: relative; right: 250px;" type="button" onclick="document.getElementById('editEspaciosModal').style.display = 'none';">No</button>
                 </form>
             </div>
         </div>
@@ -361,14 +343,9 @@
             }
 
             // Función para abrir el modal de edición de préstamos de espacios
-            function openEspaciosModal(id_prestamo_espacio, espacio, nom_persona, estado, dia_prestamo, hora_prestamo, fecha_entrega) {
+            function openEspaciosModal(id_prestamo_espacio, espacio) {
                 document.getElementById("id_prestamo_espacio").value = id_prestamo_espacio;
                 document.getElementById("espacio").value = espacio;
-                document.getElementById("nom_persona").value = nom_persona;
-                document.getElementById("estado").value = estado;
-                document.getElementById("dia_prestamo_espacio").value = dia_prestamo;
-                document.getElementById("hora_prestamo_espacio").value = hora_prestamo;
-                document.getElementById("fecha_entrega").value = fecha_entrega;
                 document.getElementById("editEspaciosModal").style.display = "block";
             }
 
@@ -440,7 +417,6 @@
                 <th style='width:200px;'>Nombre de la Persona</th>
                 <th style='width:100px;'>Estado</th>
                 <th style='width:150px;'>Fecha del Prestamo</th>
-                <th style='width:150px;'>Hora del prestamo</th>
                 <th style='width:150px;'>Fecha </th>
                 <th style='width:100px;'>Hora de Entrega</th>
                 <th style='width:100px;'>Hora de Regreso</th>
@@ -476,19 +452,13 @@
                     <td>" . $fila['nom_persona'] . "</td>
                     <td>" . $fila['estado'] . "</td>
                     <td>" . $fila['dia_prestamo'] . "</td>
-                    <td>" . $fila['hora_prestamo'] . "</td>
                     <td>" . $fila['fecha_entrega'] . "</td>
                     <td>" . date("g:i A", strtotime($fila['desde'])) . "</td>
                     <td>" . date("g:i A", strtotime($fila['hasta'])) . "</td>
                     <td>
                     <button onclick=\"openEspaciosModal(
                         '{$fila['id_prestamo_espacio']}',
-                        '{$fila['espacio']}',
-                        '{$fila['nom_persona']}',
-                        '{$fila['estado']}',
-                        '{$fila['dia_prestamo']}',
-                        '{$fila['hora_prestamo']}',
-                        '{$fila['fecha_entrega']}'
+                        '{$fila['espacio']}'
                     )\">Devolver</button>
                 </td>
                 ";

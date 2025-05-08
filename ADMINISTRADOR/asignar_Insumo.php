@@ -14,8 +14,6 @@ $cantidad = isset($_GET['cantidad']) ? $_GET['cantidad'] : '';
 $nom_persona = isset($_GET['nom_persona']) ? $_GET['nom_persona'] : '';
 $hora_entrega = isset($_GET['hora_entrega']) ? $_GET['hora_entrega'] : '';
 $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
-
-// Imprime el formulario HTML
 ?>
 <!DOCTYPE html>
 <html lang="es">

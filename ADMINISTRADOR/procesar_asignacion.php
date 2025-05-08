@@ -16,7 +16,6 @@
 
 <?php
 header('Content-Type: text/html; charset=UTF-8');
-
 // Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -44,11 +43,13 @@ $Hora_entrega = $_POST['Hora_entrega'];
 $Hora_regreso = $_POST['Hora_regreso'];
 
 // Inserta en la tabla prestamos_insumos
-$sql_insert = "INSERT INTO prestamos_insumos (insumo, cantidad, nombre_persona_prestamo, estado, desde, hasta) VALUES (?, ?, ?, ?, ?, ?)";
+$sql_insert = "INSERT INTO prestamos_insumos (insumo, cantidad, nombre_persona_prestamo, estado, desde, hasta) 
+                VALUES (?, ?, ?, ?, ?, ?)";
 $stmt_insert = $conexion->prepare($sql_insert);
 
 if ($stmt_insert) {
     $stmt_insert->bind_param("ssssss", $inventario, $cantidad, $nombre_trabajador, $estado, $Hora_entrega, $Hora_regreso);
+    
     if ($stmt_insert->execute()) {
         $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -105,7 +106,6 @@ if ($stmt_insert) {
     </script>";
 }
 
-// Cierra la conexión
+
 $conexion->close();
 ?>
-<!-- Incluye SweetAlert2 -->

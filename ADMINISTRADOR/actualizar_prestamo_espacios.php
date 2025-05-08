@@ -1,29 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    
+</body>
+</html>
 <?php
 // Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
 
 // Verifica la conexión
 if ($conexion->connect_error) {
-    die("Error en la conexión: " . $conexion->connect_error);
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error en la conexión a la base de datos.'
+        }).then(() => {
+            window.history.back();
+        });
+    </script>";
+    exit;
 }
 
 // Obtén los datos enviados desde el formulario
 $id_prestamo_espacio = $_POST['id_prestamo_espacio'];
 $espacio = $_POST['espacio'];
-$nom_persona = $_POST['nom_persona'];
-$estado = $_POST['estado'];
-$fecha_entrega = $_POST['fecha_entrega'];
+$estado = "Terminado";
 
 // Actualiza el registro en la tabla prestamos_espacios
 $sql = "UPDATE prestamos_espacios 
-        SET espacio = '$espacio', 
-            nom_persona = '$nom_persona', 
-            estado = '$estado',  
-            fecha_entrega = '$fecha_entrega'
+        SET estado = '$estado', fecha_devolucion = NOW() 
         WHERE id_prestamo_espacio = $id_prestamo_espacio";
 
 if ($conexion->query($sql) === TRUE) {
-    // Si el estado del préstamo es "Cancelado", puedes realizar acciones adicionales aquí si es necesario
+    // Si el estado del préstamo es "Cancelado" o "Terminado", actualiza el estado del espacio
     if ($estado === "Cancelado" || $estado === "Terminado") {
         $sql_espacios = "UPDATE espacios 
                          SET estado_espacio = 'Libre' 
@@ -31,12 +47,28 @@ if ($conexion->query($sql) === TRUE) {
         $conexion->query($sql_espacios);
     }
 
-    // Redirige de vuelta a la página de préstamos con un mensaje de éxito
-    header("Location: prestamos_insumos.php?mensaje=actualizado");
+    // Mostrar mensaje de éxito con SweetAlert2
+    echo "<script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'El préstamo se actualizó correctamente.'
+        }).then(() => {
+            window.location.href = 'prestamos_insumos.php?mensaje=actualizado';
+        });
+    </script>";
 } else {
-    echo "Error al actualizar el registro: " . $conexion->error;
+    // Mostrar mensaje de error con SweetAlert2
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al actualizar el registro: " . $conexion->error . "'
+        }).then(() => {
+            window.history.back();
+        });
+    </script>";
 }
 
 // Cierra la conexión
 $conexion->close();
-?>

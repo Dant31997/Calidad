@@ -13,20 +13,6 @@ $nom_espacio = isset($_GET['nom_espacio']) ? $_GET['nom_espacio'] : '';
 $hora_entrega = isset($_GET['hora_entrega']) ? $_GET['hora_entrega'] : '';
 $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
 $fecha_entrega = isset($_GET['fecha_entrega']) ? $_GET['fecha_entrega'] : '';
-
-$sql = "SELECT id, nombre FROM usuarios WHERE rol = 'Funcionario'";
-$resultado = $conexion->query($sql);
-
-$sql1 = "SELECT cod_espacio, nom_espacio FROM espacios WHERE estado_espacio = 'Libre'";
-$resultado1 = $conexion->query($sql1);
-
-
-// Comprueba si hay resultados
-if ($resultado->num_rows > 0) {
-    // Imprime la etiqueta de conexión
-
-
-    // Imprime el formulario HTML
 ?>
     <!DOCTYPE html>
     <html lang="es">
@@ -35,7 +21,6 @@ if ($resultado->num_rows > 0) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Asignacion de espacios</title>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
             /* Base styles */
             :root {
@@ -271,7 +256,7 @@ if ($resultado->num_rows > 0) {
 
     <body>
         <div class="panel-box">
-            <form id="asignarInsumoForm">
+            <form id="asignarInsumoForm" method="POST" action="procesar_asignacion_espacio.php">
                 <h2>Revisión de petición</h2>
                 <input type="hidden" id="id" name="id" value="<?php echo htmlspecialchars($id); ?>">
 
@@ -310,6 +295,7 @@ if ($resultado->num_rows > 0) {
                 </div>
             </form>
         </div>
+
 
         <div class="navigation-buttons">
             <a class="custom-button4" href="verificarPeticionesEspacios.php">Volver atrás</a>
@@ -438,101 +424,11 @@ if ($resultado->num_rows > 0) {
             if (isset($stmt_count)) $stmt_count->close();
             ?>
         </div>
-
-        <script>
-            document.getElementById('asignarInsumoForm').addEventListener('submit', function(event) {
-                event.preventDefault(); // Evita el envío tradicional del formulario
-
-                const formData = new FormData(this);
-
-                // Mostrar loader mientras se procesa
-                Swal.fire({
-                    title: 'Procesando',
-                    text: 'Asignando espacio...',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                fetch('procesar_asignacion_espacio.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Error HTTP: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            // Mensaje de éxito
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Éxito!',
-                                text: 'El espacio ha sido asignado correctamente',
-                                confirmButtonColor: '#28a745',
-                                confirmButtonText: 'Aceptar'
-                            }).then((result) => {
-                                if (result.isConfirmed && data.reload) {
-                                    window.location.href = 'verificarPeticionesEspacios.php';
-                                }
-                            });
-                        } else {
-                            // Mensaje de error
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: data.message || 'Ocurrió un error al asignar el espacio',
-                                confirmButtonColor: '#ff0000',
-                                confirmButtonText: 'Entendido'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        // Network or other error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de conexión',
-                            text: 'No se pudo conectar con el servidor. Por favor intente nuevamente.',
-                            footer: 'Detalles: ' + error.message,
-                            confirmButtonColor: '#ff0000',
-                            confirmButtonText: 'Cerrar'
-                        });
-                        console.error('Error:', error);
-                    });
-            });
-
-            document.querySelector('.eliminar-btn').addEventListener('click', function(event) {
-                event.preventDefault();
-                const url = this.getAttribute('href');
-
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "¿Desea rechazar esta petición de espacio?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, rechazar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = url;
-                    }
-                });
-            });
-        </script>
     </body>
 
     </html>
 <?php
-} else {
-    echo "No se encontraron roles de estudiante en la base de datos.";
-}
+
 
 // Cierra la conexión a la base de datos
 $conexion->close();
