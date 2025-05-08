@@ -145,7 +145,7 @@
             font-size: 16px;
             position: absolute;
             top: 2%;
-            left: 5%;
+            left: 18%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -201,6 +201,24 @@
             /* Cambia el color del borde */
         }
 
+        .asignar-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #D62828;
+            color: #FFF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            position: absolute;
+            top: 2%;
+            left: 5%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .asignar-button:hover {
+            background-color: #943126;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -258,10 +276,10 @@
             echo "<td>" . date('g:i A', strtotime($fila['hora_entrega'])) . "</td>";
             echo "<td>" . date('g:i A', strtotime($fila['hora_regreso'])) . "</td>";
             echo "<td>  
-                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_Insumo.php?id=" 
-                    . $fila['id'] . "&equipo=" . $fila['equipo'] . "&cantidad=" . $fila['cantidad'] . "&nom_persona=" . $fila['nom_persona'] . 
-                    "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] .
-                     "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
+                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_Insumo.php?id="
+                . $fila['id'] . "&equipo=" . $fila['equipo'] . "&cantidad=" . $fila['cantidad'] . "&nom_persona=" . $fila['nom_persona'] .
+                "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] .
+                "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
                 </td>";
             echo "</tr>";
         }
@@ -282,6 +300,8 @@
 
 
     <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
+    <a class="asignar-button" href="asignar_inventario.php">Asignar insumos</a>
+    <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 
 </html>

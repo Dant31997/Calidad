@@ -24,31 +24,12 @@
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 1.5%;
-        left: 5%;
+        top: 13%;
+        left: 3%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .custom-button:hover {
-        background-color: #D62828;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .asignar-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #ff0000;
-        color: #FFF;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 16px;
-        position: absolute;
-        top: 1.5%;
-        left: 20%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .asignar-button:hover {
         background-color: #D62828;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -75,7 +56,7 @@
     .custom-button3 {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #ff0000;
+        background-color: #D62828;
         color: #FFF;
         text-decoration: none;
         border-radius: 5px;
@@ -87,6 +68,25 @@
     }
 
     .custom-button3:hover {
+        background-color: #943126;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .TipoInsumo-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff0000;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 13%;
+        left: 16%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .TipoInsumo-button:hover {
         background-color: #D62828;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -101,7 +101,7 @@
 
     .tabla1 {
         position: absolute;
-        top: 13%;
+        top: 19%;
         left: 1%;
         padding: 10px;
         width: 880px;
@@ -148,7 +148,7 @@
     .pagination {
         text-align: center;
         position: absolute;
-        top: 80%;
+        top: 83%;
         left: 30%;
     }
 
@@ -308,7 +308,7 @@ if ($resultado->num_rows >= 0) {
     echo "<table>";
     echo "<tr  class= 'encabezado'>
     <th style=width:50px;>Cód.inv</th>
-    <th style=width:100px;> Insumo </th>
+    <th style=width:100px;> Tipo de Insumo </th>
     <th style=width:250px;> Descripcion</th>
     <th style=width:150px;> Prestado a</th>
     <th style=width:60px;> Estado </th>
@@ -357,7 +357,7 @@ $conexion->close();
     <table class="tabla-resumen">
         <thead>
             <tr>
-                <th>Insumo</th>
+                <th>Tipo de Insumo</th>
                 <th>Cantidad</th>
                 <th>Libres</th>
             </tr>
@@ -396,6 +396,6 @@ $conexion->close();
 
 <br>
 <a class="custom-button" href="agregarobjeto.php">Agregar insumo</a>
-<a class="asignar-button" href="asignar_inventario.php">Asignar insumo</a>
+<a class="TipoInsumo-button" href="tipo_insumo.php">Tipos de Insumo</a>
 <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
 <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>

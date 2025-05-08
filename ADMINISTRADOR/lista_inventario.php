@@ -306,7 +306,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
             </tbody>
         </table>
         <div id="pagination-controls" class="pagination-controls"></div>
-        <button type="submit" class="action-button">Asignar Equipos</button>
+        <button type="submit" class="action-button">Asignar Insumos</button>
     </form>
 
     <a class="volver-button" href="asignar_inventario.php">Volver</a>

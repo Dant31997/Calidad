@@ -349,7 +349,7 @@ $resultado = $conexion->query($sql);
         }
     </script>
 
-    <a class="custom-button2" href="inventario.php">Volver al inventario</a>
+    <a class="custom-button2" href="verificarPeticionesInsumos.php">Volver al inventario</a>
 </body>
 
 </html>

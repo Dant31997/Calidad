@@ -179,7 +179,7 @@ $resultado = $conexion->query($sql);
             <br>
         </form>
     </div>
-    <a class="custom-button2" href="tipo_insumo.php" style="margin-top: 10px; margin-left: 25%;">Tipos de Insumo</a>
+    
     <a class="regresar" href="inventario.php">Volver al inventario</a>
 </body>
 

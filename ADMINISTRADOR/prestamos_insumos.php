@@ -251,12 +251,12 @@
         <div id="editModal" class="modal" style="display:none;">
             <div class="modal-content">
                 <span class="close" onclick="modal.style.display='none';">&times;</span>
-                <h2>Devolucion del Préstamo</h2>
+                <h2 style="text-align: center;">Devolucion del Préstamo</h2>
                 <form id="editForm" method="POST" action="actualizar_prestamo.php">
                     <input type="hidden" name="id_prestamo" id="id_prestamo">
 
                     <!-- Tabla de inventario relacionado -->
-                    <h3>Items de Inventario Relacionados</h3>
+                    <h3>Insumos del Inventario Relacionados</h3>
                     <div style="max-height: 200px; overflow-y: auto;">
                         <table style="width: 100%;">
                             <thead>
@@ -406,7 +406,7 @@
                 <th style='width:150px;'>Insumo</th>
                 <th style='width:250px;'>Nombre del Encargado</th>
                 <th style='width:100px;'>Estado</th>
-                <th style='width:150px;'>Día del Préstamo</th>
+                <th style='width:150px;'>Fecha del Aprobado</th>
                 <th style='width:100px;'>Hora de Salida</th>
                 <th style='width:150px;'>Hora de Devolución</th>
                 <th style='width:100px;'>Acciones</th>

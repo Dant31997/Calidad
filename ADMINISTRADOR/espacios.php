@@ -23,7 +23,7 @@
         font-size: 16px;
         position: absolute;
         top: 90.5%;
-        left: 55%;
+        left: 52%;
     }
 
     .regresar:hover {
@@ -41,7 +41,7 @@
         font-size: 16px;
         position: absolute;
         top: 90.5%;
-        left: 35%;
+        left: 30%;
     }
 
     .custom-button:hover {
@@ -141,7 +141,7 @@
     .custom-button3 {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #ff0000;
+        background-color: #D62828;
         color: #FFF;
         text-decoration: none;
         border-radius: 5px;
@@ -149,6 +149,10 @@
         position: absolute;
         top: 2%;
         left: 75%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .custom-button3:hover {
+        background-color: #ff0000;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 </style>
@@ -223,4 +227,4 @@ $conexion->close();
 <br>
 <a class="custom-button" href="agregarespacio.php">Agregar Espacio</a>
 <a class="regresar" href="admin_panel.php">Volver al inicio</a>
-<a style="display: none" class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>
+<a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

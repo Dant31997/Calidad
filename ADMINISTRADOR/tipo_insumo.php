@@ -201,6 +201,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
                 <tr>
                     <th>ID</th>
                     <th>Nombre del Insumo</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -210,6 +211,12 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
                         echo "<tr>";
                         echo "<td>" . $row['id_insumo'] . "</td>";
                         echo "<td>" . $row['nombre_insumo'] . "</td>";
+                        echo "<td>
+                                    <a href='eliminar_tipo_insumo.php?id_insumo=" . $row['id_insumo'] . "' 
+                                    onclick=\"return confirm('¿Estás seguro de que deseas eliminar este tipo de insumo?');\">
+                                    <img src='imagenes/eliminar.png' alt='Eliminar' title='Eliminar' style='width:20px; height:20px;'>
+                                    </a>
+                             </td>";
                         echo "</tr>";
                     }
                 } else {
@@ -229,7 +236,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
         ?>
     </div>
 
-    <a class="regresar" href="agregarobjeto.php">Volver al inicio</a>
+    <a class="regresar" href="inventario.php">Volver al inicio</a>
 </body>
 
 </html>
