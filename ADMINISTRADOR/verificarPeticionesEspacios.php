@@ -250,7 +250,7 @@
         }
         ?>
     </div>
-    <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
+    <a class="custom-button2" href="espacios.php">Volver al inicio</a>
 </body>
 
 </html>

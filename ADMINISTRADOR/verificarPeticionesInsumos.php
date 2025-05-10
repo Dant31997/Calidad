@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -121,8 +120,8 @@
             border-radius: 5px;
             font-size: 16px;
             position: absolute;
-            top: 2%;
-            left: 85%;
+            top: 90%;
+            right: 45%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
@@ -145,7 +144,7 @@
             font-size: 16px;
             position: absolute;
             top: 2%;
-            left: 18%;
+            right: 10%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -221,7 +220,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="panel-box-admin">
         <h2>PETICIONES DE INSUMOS</h2>
@@ -299,8 +297,7 @@
     </div>
 
 
-    <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
-    <a class="asignar-button" href="asignar_inventario.php">Asignar insumos</a>
+    <a class="custom-button2" href="inventario.php">Volver al inicio</a>
     <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 

@@ -10,10 +10,12 @@ if ($conexion->connect_error) {
 }
 
 // Obtiene los datos del préstamo desde la URL
-$idPrestamo = $_GET['id_prestamo'];
-$insumo = $_GET['insumo'];
-$cantidad = $_GET['cantidad'];
-$nombrePersona = $_GET['nombre_persona_prestamo'];
+$idPrestamo2 = isset($_GET['prestamo_id']) ? $_GET['prestamo_id'] : '';
+$idPrestamo = isset($_GET['id']) ? $_GET['id'] : '';
+$insumo = isset($_GET['inventario']) ? $_GET['inventario'] : '';
+$cantidad = isset($_GET['cantidad']) ? $_GET['cantidad'] : '';
+$nombrePersona = isset($_GET['nombre_trabajador']) ? $_GET['nombre_trabajador'] : '';
+
 
 // Consulta para obtener los registros de la tabla inventario
 $sqlInventario = "SELECT cod_inventario, nom_inventario, descripcion 
@@ -278,7 +280,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
     <!-- Tabla dinámica -->
     <form action="procesar_inventario.php" method="POST">
     <input type="hidden" name="nombrePersona" value="<?php echo $nombrePersona; ?>">
-    <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo; ?>">
+    <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo2; ?>">
         <table id="tabla-inventario">
             <thead>
                 <tr class='encabezado'>
@@ -308,8 +310,6 @@ $resultadoInventario = $conexion->query($sqlInventario);
         <div id="pagination-controls" class="pagination-controls"></div>
         <button type="submit" class="action-button">Asignar Insumos</button>
     </form>
-
-    <a class="volver-button" href="asignar_inventario.php">Volver</a>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

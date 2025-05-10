@@ -98,8 +98,10 @@ $resultado = $conexion->query($query);
             border-radius: 5px;
             position: absolute;
             top: 88%;
-            left: 50%;
+            left: 49%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .lista:hover {
@@ -118,7 +120,9 @@ $resultado = $conexion->query($query);
             border-color: transparent;
             position: absolute;
             top: 88%;
-            left: 11%;
+            left: 6%;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .crear_usu:hover {
@@ -147,6 +151,8 @@ $resultado = $conexion->query($query);
             top: 39%;
             left: 7%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .custom-button:hover {
@@ -170,6 +176,8 @@ $resultado = $conexion->query($query);
             top: 82%;
             left: 7%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .custom-button2:hover {
@@ -193,6 +201,8 @@ $resultado = $conexion->query($query);
             top: 58.5%;
             left: 73%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .custom-button3:hover {
@@ -215,6 +225,8 @@ $resultado = $conexion->query($query);
             top: 68%;
             left: 73%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .custom-button4:hover {
@@ -234,9 +246,11 @@ $resultado = $conexion->query($query);
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 78%;
-            left: 73%;
+            top: 59%;
+            left: 73.5%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .custom-button5:hover {
@@ -394,12 +408,8 @@ $resultado = $conexion->query($query);
     <form action="espacios.php">
         <input class="custom-button2" name="inv" type="submit" value="ESPACIOS">
     </form>
-    <form action="verificarPeticionesInsumos.php">
-        <input class="custom-button3" name="inv" type="submit" value="PETICIONES DE INSUMOS">
-    </form>
-    <form action="verificarPeticionesEspacios.php">
-        <input class="custom-button4" name="inv" type="submit" value="PETICIONES DE ESPACIOS">
-    </form>
+    
+    
     <form action="prestamos_insumos.php" >
         <input class="custom-button5" name="inv" type="submit" value="PRESTAMOS">
     </form>

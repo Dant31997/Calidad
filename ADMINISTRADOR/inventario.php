@@ -34,6 +34,25 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .peticiones-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #D62828;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 2%;
+        left: 7%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .peticiones-button:hover {
+        background-color: #ff0000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
     .custom-button2 {
         display: inline-block;
         padding: 10px 20px;
@@ -148,7 +167,7 @@
     .pagination {
         text-align: center;
         position: absolute;
-        top: 83%;
+        top: 80%;
         left: 30%;
     }
 
@@ -211,7 +230,7 @@
     }
 
     .tabla-container {
-        width: 400px;
+        width: 450px;
         height: 380px;
         position: absolute;
         top: 15%;
@@ -278,7 +297,9 @@ $offset2 = ($paginaActual2 - 1) * $registrosPorPagina2;
 $sql2 = "SELECT 
     ti.nombre_insumo, 
     COALESCE(COUNT(i.nom_inventario), 0) as cantidad,
-    COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres
+    COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres,
+    COALESCE(SUM(CASE WHEN i.estado = 'Averiado' THEN 1 ELSE 0 END), 0) as averiados,
+    COALESCE(SUM(CASE WHEN i.estado = 'Bodega' THEN 1 ELSE 0 END), 0) as bodega
 FROM tipo_insumo ti 
 LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
 GROUP BY ti.nombre_insumo 
@@ -353,13 +374,15 @@ $conexion->close();
 
 ?>
 <div class="tabla-container">
-    <h2 style="text-align: center;">Cantidad por insumo</h2>
+    <h2 style="text-align: center;">Cantidades por insumo</h2>
     <table class="tabla-resumen">
         <thead>
             <tr>
-                <th>Tipo de Insumo</th>
-                <th>Cantidad</th>
+                <th>Tipo</th>
+                <th>Total</th>
                 <th>Libres</th>
+                <th>Averiados</th>
+                <th>En bodega</th>
             </tr>
         </thead>
         <tbody>
@@ -370,10 +393,12 @@ $conexion->close();
                     echo "<td>" . $row['nombre_insumo'] . "</td>";
                     echo "<td>" . $row['cantidad'] . "</td>";
                     echo "<td>" . $row['libres'] . "</td>";
+                    echo "<td>" . $row['averiados'] . "</td>";
+                    echo "<td>" . $row['bodega'] . "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='2'>No hay datos disponibles</td></tr>";
+                echo "<tr><td colspan='5'>No hay datos disponibles</td></tr>";
             }
             ?>
         </tbody>
@@ -399,3 +424,4 @@ $conexion->close();
 <a class="TipoInsumo-button" href="tipo_insumo.php">Tipos de Insumo</a>
 <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
 <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
+<a class="peticiones-button" href="verificarPeticionesInsumos.php" >PETICIONES DE INSUMOS </a> 

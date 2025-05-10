@@ -379,7 +379,7 @@
 
         // Consulta SQL con filtro según el estado
         if ($tablaSeleccionada === 'prestamos_insumos') {
-            $sql = "SELECT * FROM prestamos_insumos WHERE estado = 'Prestado' AND estado_equipos = 'Asignado' LIMIT $offset, $registrosPorPagina";
+            $sql = "SELECT * FROM prestamos_insumos WHERE estado = 'Prestado' LIMIT $offset, $registrosPorPagina";
         } elseif ($tablaSeleccionada === 'prestamos_espacios') {
             $sql = "SELECT * FROM prestamos_espacios WHERE estado = 'Reservado' LIMIT $offset, $registrosPorPagina";
         }

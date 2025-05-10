@@ -11,88 +11,80 @@ if ($conexion->connect_error) {
 }
 
 // Recuperar los parámetros necesarios
-$idPrestamo = $_POST['idPrestamo'];
-$nombrePersona = $_POST['nombrePersona'];
+$idPrestamo = isset($_POST['idPrestamo']) ? (int)$_POST['idPrestamo'] : 0;
+$nombrePersona = isset($_POST['nombrePersona']) ? trim($_POST['nombrePersona']) : '';
 
 // Variables para el mensaje de alerta
 $mensaje = "";
 $tipo = ""; // success, error, warning, info
 $titulo = "";
 
-// Verificar si tenemos los equipos seleccionados
-if (isset($_POST['equipos']) && is_array($_POST['equipos']) && count($_POST['equipos']) > 0) {
-    
-    // Preparar la consulta SQL para actualizar múltiples registros
-    $stmt = $conexion->prepare("UPDATE inventario 
-                              SET id_prestamo = ?,
-                                    estado = 'Prestado', 
-                                  prestado_a = ?, 
-                                  dia_prestamo = CURRENT_TIMESTAMP 
-                              WHERE cod_inventario = ?");
-    
-    // Verificar que la preparación fue exitosa
-    if ($stmt) {
+// Verificar si tenemos los equipos seleccionados y parámetros válidos
+if (isset($_POST['equipos']) && is_array($_POST['equipos']) && count($_POST['equipos']) > 0 && $idPrestamo > 0 && !empty($nombrePersona)) {
+
+    // Iniciar transacción para asegurar consistencia
+    $conexion->begin_transaction();
+
+    try {
+        // Preparar la consulta SQL para actualizar múltiples registros
+        $stmt = $conexion->prepare("UPDATE inventario 
+                                  SET id_prestamo = ?,
+                                      estado = 'Prestado', 
+                                      prestado_a = ?, 
+                                      dia_prestamo = CURRENT_TIMESTAMP 
+                                  WHERE cod_inventario = ?");
+
+        // Verificar que la preparación fue exitosa
+        if (!$stmt) {
+            throw new Exception("Error al preparar la consulta: " . $conexion->error);
+        }
+
         // Contador de equipos actualizados
         $equiposActualizados = 0;
-        
+
         // Iterar sobre cada equipo seleccionado
         foreach ($_POST['equipos'] as $codInventario) {
+            // Sanitizar el código de inventario
+            $codInventario = trim($codInventario);
+
             // Vincular parámetros y ejecutar
             $stmt->bind_param("iss", $idPrestamo, $nombrePersona, $codInventario);
-            
+
             if ($stmt->execute()) {
                 $equiposActualizados++;
+            } else {
+                throw new Exception("Error al actualizar el equipo $codInventario: " . $stmt->error);
             }
         }
-        
+
         // Cerrar el statement
         $stmt->close();
-        
-        // Verificar si se actualizaron equipos
-        if ($equiposActualizados > 0) {
-            // Actualizar la tabla prestamos_insumos
-            $stmtPrestamo = $conexion->prepare("UPDATE prestamos_insumos 
-                                               SET estado_equipos = 'Asignado' 
-                                               WHERE id_prestamo = ?");
-            
-            if ($stmtPrestamo) {
-                $stmtPrestamo->bind_param("s", $idPrestamo);
-                
-                if ($stmtPrestamo->execute()) {
-                    // Mensaje de éxito completo
-                    $titulo = "¡Operación Exitosa!";
-                    $mensaje = "Se han asignado $equiposActualizados equipos y actualizado el estado del préstamo exitosamente.";
-                    $tipo = "success";
-                } else {
-                    // Se actualizaron los equipos pero no el estado del préstamo
-                    $titulo = "Advertencia";
-                    $mensaje = "Se han asignado los equipos pero no se pudo actualizar el estado del préstamo.";
-                    $tipo = "warning";
-                }
-                
-                $stmtPrestamo->close();
-            } else {
-                // Error en la preparación de la segunda consulta
-                $titulo = "Advertencia";
-                $mensaje = "Se han asignado los equipos pero hubo un error al preparar la actualización del préstamo.";
-                $tipo = "warning";
-            }
-        } else {
-            // No se actualizó ningún equipo
-            $titulo = "Advertencia";
-            $mensaje = "No se pudo asignar ningún equipo.";
-            $tipo = "warning";
-        }
-    } else {
-        // Error en la preparación de la consulta
+
+        // Si todo está bien, confirmar la transacción
+        $conexion->commit();
+
+        // Mensaje de éxito completo
+        $titulo = "¡Operación Exitosa!";
+        $mensaje = "Se han asignado $equiposActualizados equipos y actualizado el estado del préstamo exitosamente.";
+        $tipo = "success";
+    } catch (Exception $e) {
+        // Revertir cambios en caso de error
+        $conexion->rollback();
+
         $titulo = "Error";
-        $mensaje = "Error al preparar la consulta: " . $conexion->error;
+        $mensaje = $e->getMessage();
         $tipo = "error";
     }
 } else {
-    // No hay equipos seleccionados
+    // Datos insuficientes o inválidos
     $titulo = "Advertencia";
-    $mensaje = "No se seleccionaron equipos para asignar.";
+    if (!isset($_POST['equipos']) || !is_array($_POST['equipos']) || count($_POST['equipos']) == 0) {
+        $mensaje = "No se seleccionaron equipos para asignar.";
+    } else if ($idPrestamo <= 0) {
+        $mensaje = "ID de préstamo inválido.";
+    } else {
+        $mensaje = "Nombre de persona inválido.";
+    }
     $tipo = "warning";
 }
 
@@ -102,6 +94,7 @@ $conexion->close();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,6 +102,7 @@ $conexion->close();
     <!-- Incluir SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -120,9 +114,10 @@ $conexion->close();
                 confirmButtonColor: '#d33'
             }).then((result) => {
                 // Redirigir después de cerrar el alert
-                window.location.href = 'asignar_inventario.php';
+                window.location.href = 'verificarPeticionesInsumos.php';
             });
         });
     </script>
 </body>
+
 </html>

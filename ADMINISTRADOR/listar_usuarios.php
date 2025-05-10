@@ -13,6 +13,15 @@
 
         h2 {
             text-align: center;
+            padding: 10px;
+            background: red;
+            color: white;
+            font-weight: bold;
+            width: 260px;
+            height: 30px;
+            border-radius: 5px;
+            margin-left: 40%;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         body {

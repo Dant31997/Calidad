@@ -49,6 +49,24 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .peticiones-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #D62828;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 2%;
+        left: 10%;
+    }
+
+    .peticiones-button:hover {
+        background-color: #ff0000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
     th {
         text-align: center;
     }
@@ -225,6 +243,8 @@ $conexion->close();
     ?>
 </div>
 <br>
+        
+<a class="peticiones-button" href="verificarPeticionesEspacios.php">PETICIONES DE ESPACIOS</a>
 <a class="custom-button" href="agregarespacio.php">Agregar Espacio</a>
 <a class="regresar" href="admin_panel.php">Volver al inicio</a>
 <a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

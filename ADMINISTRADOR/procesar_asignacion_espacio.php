@@ -43,6 +43,49 @@ $fecha_entrega = $_POST['fecha_entrega'];
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
 
+// Verificar si el espacio ya está reservado en el rango de tiempo solicitado
+$sql_verificar = "SELECT * FROM prestamos_espacios 
+                 WHERE espacio = ? 
+                 AND fecha_entrega = ? 
+                 AND ((desde <= ? AND hasta > ?) OR (desde < ? AND hasta >= ?) OR (desde >= ? AND hasta <= ?))";
+
+$stmt_verificar = $conexion->prepare($sql_verificar);
+
+if (!$stmt_verificar) {
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al preparar la consulta de verificación.'
+        }).then(() => {
+            window.history.back();
+        });
+    </script>";
+    $conexion->close();
+    exit;
+}
+
+$stmt_verificar->bind_param("ssssssss", $nom_espacio, $fecha_entrega, $hasta, $desde, $hasta, $desde, $desde, $hasta);
+$stmt_verificar->execute();
+$resultado = $stmt_verificar->get_result();
+
+if ($resultado->num_rows > 0) {
+    // Ya existe una reserva para este espacio en el horario solicitado
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Conflicto de horarios',
+            text: 'El espacio ya está reservado en el rango de tiempo solicitado.'
+        }).then(() => {
+            window.history.back();
+        });
+    </script>";
+    $stmt_verificar->close();
+    $conexion->close();
+    exit;
+}
+$stmt_verificar->close();
+
 // Inserta en la tabla prestamos_espacios
 $sql_insert = "INSERT INTO prestamos_espacios (espacio, nom_persona, estado, fecha_entrega, desde, hasta) 
                VALUES (?, ?, ?, ?, ?, ?)";
@@ -81,7 +124,7 @@ if ($stmt_insert) {
         $stmt_update_espacio->bind_param("s", $nom_espacio);
         $stmt_update_espacio->execute();
         $stmt_update_espacio->close();
-        
+
         echo "<script>
             Swal.fire({
                 icon: 'success',
