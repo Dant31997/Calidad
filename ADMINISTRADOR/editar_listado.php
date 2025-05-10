@@ -43,6 +43,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rol'])) {
 
     $rol = $_GET['rol'];
 }
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['estado'])) {
+    // Conexión a la base de datos
+    $conexion = new mysqli("localhost", "root", "", "basededatos");
+
+    // Verifica la conexión
+    if ($conexion->connect_error) {
+        die("Error en la conexión: " . $conexion->connect_error);
+    }
+
+    $estado = $_GET['estado'];
+}
+
 ?>
 <style>
     html {
@@ -118,13 +130,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rol'])) {
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 90%;
+        top: 92%;
         left: 43%;
     }
 
     .regresar:hover {
         background-color: #D62828;
-        margin-left: 45%;
     }
 
     .button-container {
@@ -153,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rol'])) {
     .login-box {
         width: 350px;
         position: absolute;
-        top: 8%;
+        top: 2%;
         left: 35%;
         padding: 10px;
         background-color: #fff;
@@ -210,8 +221,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rol'])) {
 <!-- Formulario para editar un usuario existente -->
 <br>
 <div class="login-box">
-
-
     <h3>Editar Usuario</h3>
     <br>
     <form action="editar_usuario.php" method="POST">
@@ -225,15 +234,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rol'])) {
             <input type="text" id="nuevo_nombre" name="nuevo_nombre" value="<?php echo $nombre; ?>">
         </div>
         <div class="form-group">
-            <label for="rolact">Rol Actual:</label>
-            <input disabled type="text"  id="rolact" name="rolact" value="<?php echo $rol; ?>">
-        </div>
-        <div class="form-group">
             <label for="nuevo_rol">Nuevo Rol:</label>
             <select id="nuevo_rol" name="nuevo_rol">
-                <option value="Funcionario">Funcionario</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Supervisor">Supervisor</option>
+                <option value="Funcionario" <?php echo ($rol == 'Funcionario' ? 'selected' : ''); ?>>Funcionario</option>
+                <option value="Administrador" <?php echo ($rol == 'Administrador' ? 'selected' : ''); ?>>Administrador</option>
+                <option value="Supervisor" <?php echo ($rol == 'Supervisor' ? 'selected' : ''); ?>>Supervisor</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado">
+                <option value="1" <?php echo ($estado == '1' ? 'selected' : ''); ?>>Activo</option>
+                <option value="0" <?php echo ($estado == '0' ? 'selected' : ''); ?>>Inactivo</option>
             </select>
         </div>
         <input class="btno" type="submit" name="editar" value="Editar Usuario">

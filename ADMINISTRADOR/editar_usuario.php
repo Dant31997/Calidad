@@ -19,6 +19,7 @@ try {
     $nuevo_usuario = $_POST['nuevo_usuario'];
     $nuevo_nombre = $_POST['nuevo_nombre'];
     $nuevo_rol = $_POST['nuevo_rol'];
+    $estado = $_POST['estado'];
 
     // Validaciones
     if (empty($usuario_id)) {
@@ -44,6 +45,11 @@ try {
         $set[] = "rol = ?";
         $tipos .= 's';
         $valores[] = $nuevo_rol;
+    }
+    if (isset($estado)) {
+        $set[] = "estado = ?";
+        $tipos .= 'i';
+        $valores[] = $estado;
     }
 
     if (empty($set)) {

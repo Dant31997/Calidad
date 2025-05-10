@@ -229,15 +229,22 @@
     if ($resultado->num_rows > 0) {
 
         echo "<table >";
-        echo "<th style=width:50px;>ID</th><th style=width:150px;>Nombre de Usuario</th><th>Rol</th><th style=width:250px;>Nombre de la persona</th><th style=width:250px;>Contraseña</th><th>Acciones</th></tr>";
+        echo "<th style=width:50px;>ID</th>
+                <th style=width:250px;>Nombre de la persona</th>
+                <th style=width:150px;>Nombre de Usuario</th>
+                <th style=width:250px;>Contraseña</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $fila['id'] . "</td>";
-            echo "<td>" . $fila['nombre_usuario'] . "</td>";
-            echo "<td>" . $fila['rol'] . "</td>";
             echo "<td>" . $fila['nombre'] . "</td>";
+            echo "<td>" . $fila['nombre_usuario'] . "</td>";
             echo "<td>" . $fila['contrasena'] . "</td>";
-            echo "<td><a href='editar_listado.php?id=" . $fila['id'] . "&nombre_usuario=" . $fila['nombre_usuario'] . "&nombre=" . $fila['nombre'] . "&rol=" . $fila['rol'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_usuario.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td>" . $fila['rol'] . "</td>";
+            echo "<td>" . ($fila['estado'] == 1 ? 'Activo' : 'Inactivo') . "</td>";
+            echo "<td><a href='editar_listado.php?id=" . $fila['id'] . "&estado=" . $fila['estado'] . "&nombre_usuario=" . $fila['nombre_usuario'] . "&nombre=" . $fila['nombre'] . "&rol=" . $fila['rol'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_usuario.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
             echo "</tr>";
         }
         echo "</table>";
