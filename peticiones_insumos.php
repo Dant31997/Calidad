@@ -157,7 +157,7 @@
                 $resultado = $conexion->query($sql);
                 // Genera dinámicamente las opciones del select
                 while ($fila = $resultado->fetch_assoc()) {
-                    echo "<option value='{$fila['cod_espacio']}' data-nom-espacio='{$fila['nom_espacio']}'>{$fila['nom_espacio']}</option>";
+                    echo "<option value='{$fila['nom_espacio']}' data-cod-espacio='{$fila['cod_espacio']}'>{$fila['nom_espacio']}</option>";
                 }
                 ?>
             </select>

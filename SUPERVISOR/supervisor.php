@@ -1,3 +1,10 @@
+<?php
+session_start();
+include_once('../session_helper.php');
+verificarSesion("Supervisor");
+$nombre = $_SESSION['nombre'];
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -246,10 +253,10 @@
 <body>
     <div class="panel-box-admin">
         <div class="container">
-            <h2>Bienvenido Supervisor</h2>
+            <h2>Bienvenido <?php echo htmlspecialchars($nombre); ?></h2>
         </div>
     </div>
-    <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
+    <a href="../cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
 
 
     <br>

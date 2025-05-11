@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <?php
-
+session_start();
+include_once('../session_helper.php');
+verificarSesion("Funcionario");
+$nombre = $_SESSION['nombre'];
 ?>
 <html>
     
@@ -63,7 +66,7 @@
 
         h2 {
             position: absolute;
-            top: 8px; left: 40%;    
+            top: 8px; left: 35%;    
         }
 
         .login-box {
@@ -216,10 +219,10 @@
 <body>
     <header>
         <div class="container">
-            <h2>Bienvenido Funcionario</h2>
+            <h2>Bienvenido <?php echo htmlspecialchars($nombre); ?></h2>
         </div>
         <nav>
-            <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
+            <a href="../cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
         </nav>
     </header>
 

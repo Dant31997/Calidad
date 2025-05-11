@@ -227,9 +227,13 @@
             echo "<td>" . $fila['nom_espacio'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
             echo "<td>" . $fila['fecha_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_regreso'] . "</td>";
-            echo "<td><a href='editarpeticion_espacio.php?id=" . $fila['id'] . "&nom_espacio=" . $fila['nom_espacio'] . "&pide=" . $fila['pide'] . "&estado_peticion=" . $fila['estado_peticion'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminarpeticion.php?id=" . $fila['id'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_entrega'])) . "</td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_regreso'])) . "</td>";
+            echo "<td>  
+                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_espacio.php?id=" . $fila['id'] 
+                    . "&nom_espacio=" . $fila['nom_espacio'] . "&pide=" . $fila['pide'] . "&hora_entrega=" . $fila['hora_entrega'] . 
+                    "&hora_regreso=" . $fila['hora_regreso'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
+                </td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -247,7 +251,6 @@
         ?>
     </div>
     <a class="custom-button2" href="funcionario.php">Volver al inicio</a>
-    <a class="custom-button3" href="asignar_espacio.php">Asignar Espacio</a>
 </body>
 
 </html>

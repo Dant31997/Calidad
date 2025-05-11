@@ -32,18 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idPeticion = $conn->insert_id;
             echo "<script>
                 alert('Petición registrada exitosamente. El ID de tu petición es: " . $idPeticion . "');
-                window.location.href = 'peticiones_insumos.html';
+                window.location.href = 'peticiones_insumos.php';
             </script>";
         } else {
             echo "<script>
                 alert('Error al registrar la petición: " . $conn->error . "');
-                window.location.href = 'peticiones_insumos.html';
+                window.location.href = 'peticiones_insumos.php';
             </script>";
         }
     } else {
         echo "<script>
             alert('Por favor, completa todos los campos.');
-            window.location.href = 'peticiones_insumos.html';
+            window.location.href = 'peticiones_insumos.php';
         </script>";
     }
 }

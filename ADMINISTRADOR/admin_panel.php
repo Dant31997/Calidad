@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <?php
+session_start();
+include_once('../session_helper.php');
+verificarSesion("Administrador");
+
+$nombre = $_SESSION['nombre'];
+
+// Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
 
 // Verifica la conexión
 if ($conexion->connect_error) {
     die("Error en la conexión: " . $conexion->connect_error);
 }
-
-$query = "SELECT nombre_rol FROM roles";
-$resultado = $conexion->query($query);
 
 ?>
 
@@ -76,11 +80,11 @@ $resultado = $conexion->query($query);
         }
 
         .panel-box-admin {
-            width: 390px;
+            width: 550px;
             height: 65px;
             position: absolute;
             top: 5%;
-            left: 39%;
+            left: 33%;
             background-color: red;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -358,10 +362,9 @@ $resultado = $conexion->query($query);
 
 <body>
     <div class="panel-box-admin">
-        <h2>Bienvenido Administrador</h2>
-
+        <h2>Bienvenido <?php echo htmlspecialchars($nombre); ?></h2>
     </div>
-    <a href="cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
+    <a href="../cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
 
     <div class="panel-box">
 
@@ -408,9 +411,9 @@ $resultado = $conexion->query($query);
     <form action="espacios.php">
         <input class="custom-button2" name="inv" type="submit" value="ESPACIOS">
     </form>
-    
-    
-    <form action="prestamos_insumos.php" >
+
+
+    <form action="prestamos_insumos.php">
         <input class="custom-button5" name="inv" type="submit" value="PRESTAMOS">
     </form>
 

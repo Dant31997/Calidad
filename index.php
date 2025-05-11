@@ -1,3 +1,19 @@
+<?php
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['rol']) && isset($_SESSION['estado'])) {
+    // User is already logged in, redirect to appropriate dashboard
+    if ($_SESSION['rol'] == "Funcionario") {
+        header("Location: FUNCIONARIO/funcionario.php");
+        exit();
+    } elseif ($_SESSION['rol'] == "Administrador") {
+        header("Location: ADMINISTRADOR/admin_panel.php");
+        exit();
+    } elseif ($_SESSION['rol'] == "Supervisor") {
+        header("Location: SUPERVISOR/supervisor.php");
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
   <head>

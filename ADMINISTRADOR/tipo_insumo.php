@@ -16,7 +16,7 @@ $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
 // Consulta SQL con LIMIT para obtener registros de la página actual
 $offset = ($paginaActual - 1) * $registrosPorPagina;
-$sql2 = "SELECT id_insumo, nombre_insumo FROM tipo_insumo ORDER BY id_insumo ASC LIMIT $offset, $registrosPorPagina";
+$sql2 = "SELECT id_insumo, nombre_insumo, nivel_insumo FROM tipo_insumo ORDER BY id_insumo ASC LIMIT $offset, $registrosPorPagina";
 $resultado2 = $conexion->query($sql2);
 
 // Consulta SQL para obtener el número total de registros
@@ -51,7 +51,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
         .login-box2 {
             width: 330px;
             text-align: center;
-            height: 200px;
+            height: 250px;
             position: absolute;
             top: 20%;
             left: 10%;
@@ -143,7 +143,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
         .pagination {
             text-align: center;
             position: absolute;
-            top: 75%;
+            top: 77%;
             left: 68%;
         }
 
@@ -190,7 +190,13 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
         <form action="p_tipo_insumo.php" method="post">
             <label for="nombre_insumo">Nombre del tipo de insumo:</label>
             <input type="text" name="nombre_insumo" required>
-            <br><br>
+            <br>
+            <label for="nivel_acceso">Nivel de acceso:</label>
+            <select name="nivel_acceso">
+                <option value="1">Nivel 1</option>
+                <option value="2">Nivel 2</option>
+                <option value="3">Nivel 3</option>
+            <br>
             <input class="btno" type="submit" name="agregar" value="Agregar">
         </form>
     </div>
@@ -201,6 +207,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
                 <tr>
                     <th>ID</th>
                     <th>Nombre del Insumo</th>
+                    <th>Nivel de acceso</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -211,7 +218,14 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
                         echo "<tr>";
                         echo "<td>" . $row['id_insumo'] . "</td>";
                         echo "<td>" . $row['nombre_insumo'] . "</td>";
+                        echo "<td>" . $row['nivel_insumo'] . "</td>";
                         echo "<td>
+                                    <a href='modificar_tipo_insumo.php?id_insumo=" . $row['id_insumo'] . 
+                                    "&nivel_insumo=" . $row['nivel_insumo'] . 
+                                    "&nombre_insumo=" . urlencode($row['nombre_insumo']) . "' 
+                                    onclick=\"return confirm('¿Estás seguro de que deseas modificar este tipo de insumo?');\">
+                                        <img src='imagenes/editar.png' alt='Modificar' title='Modificar' style='width:20px; height:20px;'>
+                                    </a>
                                     <a href='eliminar_tipo_insumo.php?id_insumo=" . $row['id_insumo'] . "' 
                                     onclick=\"return confirm('¿Estás seguro de que deseas eliminar este tipo de insumo?');\">
                                     <img src='imagenes/eliminar.png' alt='Eliminar' title='Eliminar' style='width:20px; height:20px;'>

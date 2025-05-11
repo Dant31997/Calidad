@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta http-equiv="Refresh" content="1; url='agregarobjeto.php'" />
 </head>
+
 <body> </body>
+
 </html>
 
 <?php
 // Conexión a la base de datos
 $conexion = new mysqli("localhost", "root", "", "basededatos");
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Habilita excepciones
 
 // Verifica la conexión
 if ($conexion->connect_error) {
@@ -21,11 +25,19 @@ if (isset($_POST['agregar'])) {
     $nombre_objeto = $_POST['nombre'];
     $estado = "libre";
     $descripcion = $_POST['descripcion'];
-    
 
-    $sql = "INSERT INTO inventario (nom_inventario, estado, descripcion) VALUES (?, ?, ?)";
+    $nivel_insumo = null;
+    $stmt_nivel = $conexion->prepare("SELECT nivel_insumo FROM tipo_insumo WHERE nombre_insumo = ?");
+    $stmt_nivel->bind_param('s', $nombre_objeto);
+    $stmt_nivel->execute();
+    $stmt_nivel->bind_result($nivel_insumo);
+    $stmt_nivel->fetch();
+    $stmt_nivel->close();
+
+    $sql = "INSERT INTO inventario (nivel_acceso, nom_inventario, estado, descripcion) 
+            VALUES (?, ?, ?, ?)";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param('sss', $nombre_objeto, $estado, $descripcion);
+    $stmt->bind_param('ssss', $nivel_insumo, $nombre_objeto, $estado, $descripcion);
 
     try {
         if ($stmt->execute()) {
@@ -36,15 +48,19 @@ if (isset($_POST['agregar'])) {
                     icon: 'success',
                     confirmButtonText: 'Aceptar',
                     confirmButtonColor: '#3085d6',
-                    timer: 3000,  // Durará 3 segundos
-                    timerProgressBar: true  // Muestra una barra de progreso
+                    timer: 3000,
+                    timerProgressBar: true
                 }).then((result) => {
                     window.location.href = 'agregarobjeto.php';
                 });
             </script>";
+            $stmt->close();
+            $conexion->close();
             exit();
         }
     } catch (mysqli_sql_exception $e) {
+        $stmt->close();
+        $conexion->close();
         if ($e->getCode() == 1062) {
             echo "<script>
                 Swal.fire({
@@ -53,7 +69,7 @@ if (isset($_POST['agregar'])) {
                     icon: 'error',
                     confirmButtonText: 'Entendido',
                     confirmButtonColor: '#d33',
-                    timer: 2500,  // Durará 2.5 segundos
+                    timer: 2500,
                     timerProgressBar: true
                 }).then((result) => {
                     window.history.back();
@@ -67,11 +83,11 @@ if (isset($_POST['agregar'])) {
                     icon: 'error',
                     confirmButtonText: 'Entendido',
                     confirmButtonColor: '#d33',
-                    timer: 2500,  // Durará 2.5 segundos
+                    timer: 2500,
                     timerProgressBar: true
                 });
             </script>";
         }
-    }  
+    }
 }
 ?>

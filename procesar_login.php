@@ -12,22 +12,22 @@ $nombre_usuario = $_POST['nombre_usuario'];
 $contrasena = $_POST['contrasena'];
 
 // Consulta SQL para verificar las credenciales del usuario
-$sql = "SELECT id, rol, nombre FROM usuarios WHERE nombre_usuario = ? AND contrasena = ?";
+$sql = "SELECT id, rol, nombre, estado FROM usuarios WHERE nombre_usuario = ? AND contrasena = ? AND estado = 1";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("ss", $nombre_usuario, $contrasena);
 $stmt->execute();
 $stmt->store_result();
 
-
 // Verifica si se encontró un usuario
 if ($stmt->num_rows > 0) {
-    $stmt->bind_result($id, $rol, $nombre);
+    $stmt->bind_result($id, $rol, $nombre, $estado);
     $stmt->fetch();
     
     session_start();
     $_SESSION['id'] = $id;
     $_SESSION['rol'] = $rol;
     $_SESSION['nombre'] = $nombre;
+    $_SESSION['estado'] = $estado;
     
     // Redirige al usuario según su rol
     if ($rol == "Funcionario") {
