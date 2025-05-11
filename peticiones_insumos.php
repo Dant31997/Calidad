@@ -187,11 +187,11 @@
                     die("Error en la conexión: " . $conexion2->connect_error);
                 }
 
-                $sql2 = "SELECT cod_inventario, nom_inventario FROM inventario WHERE estado = 'Libre'";
+                $sql2 = "SELECT nombre_insumo FROM tipo_insumo";
                 $resultado2 = $conexion2->query($sql2);
                 // Genera dinámicamente las opciones del select
                 while ($fila2 = $resultado2->fetch_assoc()) {
-                    echo "<option value='{$fila2['nom_inventario']}' data-cod-inventario='{$fila2['nom_inventario']}'>{$fila2['nom_inventario']}</option>";
+                    echo "<option value='{$fila2['nombre_insumo']}' data-cod-inventario='{$fila2['nombre_insumo']}'>{$fila2['nombre_insumo']}</option>";
                 }
                 ?>
             </select>

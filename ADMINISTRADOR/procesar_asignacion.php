@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body>
 </body>
+
 </html>
 <?php
 header('Content-Type: text/html; charset=UTF-8');
@@ -104,13 +107,13 @@ if ($stmt_insert) {
             exit;
         }
         // Actualiza la tabla peticiones_insumos
-        $sql_update = "UPDATE peticiones_insumos SET estado_peticion = 'Aprobada' WHERE id = ?";
+        $sql_update = "UPDATE peticiones_insumos SET estado_peticion = 'Aprobada', id_prestamo = ? WHERE id = ?";
         $stmt_update = $conexion->prepare($sql_update);
-        $stmt_update->bind_param("i", $id);
+        $stmt_update->bind_param("ii", $ultimo_id, $id);
         $stmt_update->execute();
         $stmt_update->close();
 
-       echo "<script>
+        echo "<script>
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
