@@ -115,7 +115,7 @@
         }
 
         .boton_consulta:hover {
-            background-color: rebeccapurple;
+            background-color: #D62828;
             /* Cambia el color al pasar el mouse */
         }
 
@@ -229,7 +229,7 @@
             }
         }
     </script>
-    <button class="boton_consulta" onclick="window.location.href='consulta_peticion.html'" style="margin-top: 20px; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+    <button class="boton_consulta" onclick="window.location.href='consulta_peticion.php'" style="margin-top: 20px; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
         Consultar Petición
     </button>
 </body>

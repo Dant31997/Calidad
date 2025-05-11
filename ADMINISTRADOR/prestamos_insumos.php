@@ -57,7 +57,7 @@
             .custom-button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #ff0000;
+                background-color: #943126;
                 color: #FFF;
                 text-decoration: none;
                 border-radius: 5px;
@@ -69,6 +69,24 @@
             }
 
             .custom-button:hover {
+                background-color: #D62828;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .export-button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #943126;
+                color: #FFF;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 16px;
+                position: absolute;
+                top: 1.5%;
+                left: 5%;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .export-button:hover {
                 background-color: #D62828;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
@@ -496,6 +514,7 @@
         </div>
         <br>
         <a class="custom-button" href="admin_panel.php">Volver al inicio</a>
+        <a class="export-button" target="_blank" href="exportar_prestamos.php">Exportar a PDF</a>
     </body>
 
     </html>

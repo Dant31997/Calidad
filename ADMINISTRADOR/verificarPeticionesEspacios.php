@@ -251,6 +251,7 @@
         ?>
     </div>
     <a class="custom-button2" href="espacios.php">Volver al inicio</a>
+    <a class="custom-button3" target="_blank" href="exportar_PeticionesEspacios.php">Exportar a PDF</a>
 </body>
 
 </html>

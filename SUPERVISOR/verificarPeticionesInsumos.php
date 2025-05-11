@@ -53,7 +53,7 @@
             left: 1%;
             padding: 10px;
             width: 1280px;
-            height: 800px;
+            height: 400px;
         }
 
         table {
@@ -121,8 +121,8 @@
             border-radius: 5px;
             font-size: 16px;
             position: absolute;
-            top: 2%;
-            left: 85%;
+            top: 90%;
+            right: 45%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
@@ -145,105 +145,13 @@
             font-size: 16px;
             position: absolute;
             top: 2%;
-            left: 5%;
+            right: 10%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .custom-button3:hover {
             background-color: #943126;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* CSS para el modal */
-        #asignarModal {
-            display: none;
-            /* Oculto por defecto */
-            position: fixed;
-            z-index: 1000;
-            /* Asegura que esté por encima de otros elementos */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            /* Habilita el scroll si el contenido es demasiado grande */
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Fondo semitransparente */
-        }
-
-        #asignarModal>div {
-            background-color: white;
-            margin: 15% auto;
-            /* Centra el modal verticalmente */
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            position: relative;
-            animation: fadeIn 0.3s ease-in-out;
-            /* Animación de entrada */
-        }
-
-        #asignarModal h3 {
-            margin-top: 0;
-            text-align: center;
-            color: #333;
-        }
-
-        #asignarModal label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        #asignarModal input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        #asignarModal button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        #asignarModal button[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            margin-right: 10px;
-        }
-
-        #asignarModal button[type="submit"]:hover {
-            background-color: #218838;
-        }
-
-        #asignarModal button#closeModal {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        #asignarModal button#closeModal:hover {
-            background-color: #c82333;
-        }
-
-        /* Animación de entrada */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         select {
@@ -292,6 +200,25 @@
             border-color: #bbb;
             /* Cambia el color del borde */
         }
+
+        .asignar-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #D62828;
+            color: #FFF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            position: absolute;
+            top: 2%;
+            left: 5%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .asignar-button:hover {
+            background-color: #943126;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -299,122 +226,6 @@
     <div class="panel-box-admin">
         <h2>PETICIONES DE INSUMOS</h2>
     </div>
-
-    <!-- Modal para asignar insumo -->
-    <div id="asignarModal" style="display: none;">
-        <div style="background: white; padding: 20px; border-radius: 10px; width: 400px; margin: auto; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
-            <h3>Asignar Insumo</h3>
-            <form action="asignar_insumo.php" method="POST">
-                <input type="hidden" name="id" id="modal-id">
-                <label for="nom_persona">Nombre de la persona:</label>
-                <input type="text" name="nom_persona" id="modal-nom_persona"> </input>
-                <label for="inventario">Insumo:</label>
-                <select id="inventario" name="inventario">
-                    <option value="0" disabled selected>------</option>
-                    <?php
-                    $conexion2 = new mysqli("localhost", "root", "", "basededatos");
-
-                    // Verifica la conexión
-                    if ($conexion2->connect_error) {
-                        die("Error en la conexión: " . $conexion2->connect_error);
-                    }
-
-                    $sql1 = "SELECT cod_inventario, nom_inventario FROM inventario WHERE estado = 'Libre'";
-                    $resultado1 = $conexion2->query($sql1);
-                    // Genera dinámicamente las opciones del select
-                    while ($fila1 = $resultado1->fetch_assoc()) {
-                        echo "<option value='{$fila1['cod_inventario']}' data-nom-inventario='{$fila1['nom_inventario']}'>{$fila1['nom_inventario']}</option>";
-                    }
-                    ?>
-                </select>
-                <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidad" id="cantidad">
-                <br><br>
-                <button type="submit">Asignar</button>
-                <button type="button" style="background-color: orange; color:white">Rechazar</button>
-                <button type="button" id="closeModal">Cancelar</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const asignarButtons = document.querySelectorAll('.asignar-btn');
-            const modal = document.getElementById('asignarModal');
-            const closeModal = document.getElementById('closeModal');
-            const modalId = document.getElementById('modal-id');
-            const modalNom_persona = document.getElementById('modal-nom_persona');
-            const modalCantidad = document.getElementById('cantidad');
-            const inventarioSelect = document.getElementById('inventario');
-            const inventarioNom = document.querySelectorAll('option[data-nom-inventario]');
-            const messageContainer = document.createElement('p'); // Contenedor para el mensaje
-            messageContainer.style.color = 'red';
-            modal.appendChild(messageContainer);
-
-            asignarButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    modalId.value = this.dataset.id; // Asigna el ID al campo oculto
-                    modalNom_persona.value = this.dataset.nom_persona; // Asigna nom_persona al campo de texto
-                    modalCantidad.value = this.dataset.cantidad; // Asigna cantidad al campo de texto
-                    modal.style.display = 'block'; // Muestra el modal
-                });
-            });
-
-            closeModal.addEventListener('click', function() {
-                modal.style.display = 'none'; // Oculta el modal al hacer clic en "Cancelar"
-                messageContainer.textContent = ''; // Limpia el mensaje
-            });
-
-            window.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none'; // Oculta el modal al hacer clic fuera de él
-                    messageContainer.textContent = ''; // Limpia el mensaje
-                }
-            });
-
-            // Evento para verificar la cantidad de insumos
-            inventarioSelect.addEventListener('change', function() {
-                const selectedValue = inventarioSelect.options[inventarioSelect.selectedIndex].getAttribute('data-nom-inventario');
-                const cantidad = modalCantidad.value;
-                console.log('Selected Value:', selectedValue);
-                console.log('Cantidad:', cantidad);
-
-                if (selectedValue && cantidad) {
-                    fetch('verificar_insumos.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                nom_inventario: selectedValue,
-                                cantidad: cantidad
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (data.suficiente) {
-                                    messageContainer.textContent = 'Hay suficientes insumos para el préstamo.';
-                                    messageContainer.style.color = 'green';
-                                } else {
-                                    messageContainer.textContent = 'No hay suficientes insumos para cubrir el préstamo.';
-                                    messageContainer.style.color = 'red';
-                                }
-                            } else {
-                                messageContainer.textContent = 'Error al verificar los insumos.';
-                                messageContainer.style.color = 'red';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            messageContainer.textContent = 'Error al realizar la consulta.';
-                            messageContainer.style.color = 'red';
-                        });
-                }
-            });
-        });
-    </script>
     <?php
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
@@ -429,12 +240,47 @@
     // Consulta SQL con LIMIT para obtener registros de la página actual
     $offset = ($paginaActual - 1) * $registrosPorPagina;
 
-    // Consulta SQL con LIMIT para obtener registros de la página actual y filtrar por estado_peticion
-    $sql = "SELECT * FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar' LIMIT $offset, $registrosPorPagina";
+    $nombresInsumo = [];
+    $sqlInsumos = "SELECT nombre_insumo FROM tipo_insumo WHERE nivel_insumo IN (2,3)";
+    $resultInsumos = $conexion->query($sqlInsumos);
+    while ($row = $resultInsumos->fetch_assoc()) {
+        $nombresInsumo[] = $row['nombre_insumo'];
+    }
+
+    // Si hay nombres, armar la consulta con IN
+    if (count($nombresInsumo) > 0) {
+        // Escapar los nombres para la consulta SQL
+        $nombresInsumoEscapados = array_map(function ($nombre) use ($conexion) {
+            return "'" . $conexion->real_escape_string($nombre) . "'";
+        }, $nombresInsumo);
+        $listaNombres = implode(",", $nombresInsumoEscapados);
+
+        // Consulta principal
+        $sql = "SELECT * FROM peticiones_insumos 
+            WHERE estado_peticion = 'Sin Revisar' 
+            AND equipo IN ($listaNombres)
+            LIMIT $offset, $registrosPorPagina";
+    } else {
+        // Si no hay insumos, la consulta no traerá resultados
+        $sql = "SELECT * FROM peticiones_insumos WHERE 1=0";
+    }
+
     $resultado = $conexion->query($sql);
 
-    // Consulta SQL para obtener el número total de registros con estado "Sin Revisar"
-    $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM peticiones_insumos WHERE estado_peticion = 'Sin Revisar'")->fetch_assoc()['total'];
+    if (count($nombresInsumo) > 0) {
+        $nombresInsumoEscapados = array_map(function ($nombre) use ($conexion) {
+            return "'" . $conexion->real_escape_string($nombre) . "'";
+        }, $nombresInsumo);
+        $listaNombres = implode(",", $nombresInsumoEscapados);
+
+        // Consulta para contar solo los registros que cumplen ambas condiciones
+        $sqlTotal = "SELECT COUNT(*) as total FROM peticiones_insumos 
+                 WHERE estado_peticion = 'Sin Revisar' 
+                 AND equipo IN ($listaNombres)";
+        $totalRegistros = $conexion->query($sqlTotal)->fetch_assoc()['total'];
+    } else {
+        $totalRegistros = 0;
+    }
 
     // Calcular el número total de páginas
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
@@ -461,18 +307,20 @@
             echo "<td>" . $fila['nom_persona'] . "</td>";
             echo "<td>" . $fila['estado_peticion'] . "</td>";
             echo "<td>" . $fila['dia_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_entrega'] . "</td>";
-            echo "<td>" . $fila['hora_regreso'] . "</td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_entrega'])) . "</td>";
+            echo "<td>" . date('g:i A', strtotime($fila['hora_regreso'])) . "</td>";
             echo "<td>  
-                        <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='#' data-id='" . $fila['id'] . "' data-nom_persona='" . $fila['nom_persona'] . "'. data-cantidad='" . $fila['cantidad'] . "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
-                        </td>";
-
+                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_Insumo.php?id="
+                . $fila['id'] . "&equipo=" . $fila['equipo'] . "&cantidad=" . $fila['cantidad'] . "&nom_persona=" . $fila['nom_persona'] .
+                "&hora_entrega=" . $fila['hora_entrega'] . "&hora_regreso=" . $fila['hora_regreso'] .
+                "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
+                </td>";
             echo "</tr>";
         }
         echo "</table>";
         echo "</div>";
     } else {
-        echo "No hay usuarios en la base de datos.";
+        echo "No hay peticiones de insumos por responder.";
     }
     ?>
     <div class="pagination">
@@ -486,7 +334,7 @@
 
 
     <a class="custom-button2" href="supervisor.php">Volver al inicio</a>
-    <a class="custom-button3" href="asignar_Insumo.php">Asignar Insumo</a>
+    <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 
 </html>

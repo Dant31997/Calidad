@@ -334,7 +334,6 @@
 
 
     <a class="custom-button2" href="funcionario.php">Volver al inicio</a>
-    <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 
 </html>

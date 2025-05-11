@@ -10,18 +10,17 @@ $nombre = $_SESSION['nombre'];
 <head>
     <title>Funcionario</title>
 <style>
-     html{background: linear-gradient(to bottom, white,70%, #FADBD8 ); margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
-     }
+     
         body {
             font-family: Arial, sans-serif;
-            
+            background: linear-gradient(to bottom, white,70%, #FADBD8 ); margin: 0; height: 99.5vh; display: flex; justify-content: center; align-items: center; 
         }
 
         header{
             color: white;
             display: flex;
             align-items: center;
-            width: 100%;
+            width: 99.3%;
             height: 70px;
             padding: 5px;
             background-color: red;
@@ -81,97 +80,50 @@ $nombre = $_SESSION['nombre'];
             top: 19%; left: 10%;
             
         }
-        .login-box2 {
-            width: 390px;
-            height: 350px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px; /* Ajusta el valor para cambiar la curvatura de las esquinas */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 19%; left: 60%;
-            
-        }
-        .form-group {
-            margin-left: 16px;
-        }
-
-        .container {
-            max-width: 1000px;
-            padding: 1px;
-            font-size: medium;
-            text-align: center;
-            margin-left: 5%;
-            color: white;
-            margin-right: 45%;
-        }
-
-        .buttonM {
+        .inv-button {
             background-color: #ff0000;
             color: #fff;
-            font-size: small;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 1px; 
-        }
-        .buttonM:hover {
-            background-color: #D62828;
-        }
-
-        .custom-button3 {
-            background-color: #ff0000;
-            color: #fff;
-            font-size:larger;
+            font-size:25px;
+            font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
         }
-        .custom-button3:hover {
+        .inv-button:hover {
             background-color: #D62828;
         }
 
-        .custom-button4 {
+        .espacio-button {
             background-color: #ff0000;
             color: #fff;
-            font-size:larger;
+            font-size:25px;
+            font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 9px; 
         }
-        .custom-button4:hover {
+        .espacio-button:hover {
             background-color: #D62828;
         }
 
-        .custom-button5 {
+        .prestamos-button {
             background-color: #ff0000;
             color: #fff;
-            font-size:larger;
+            font-size:25px;
+            font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             position: absolute;
             top: 62%; left: 43%;
         }
-        .custom-button5:hover {
+        .prestamos-button:hover {
             background-color: #D62828;
         }
 
-        .custom-button6 {
-            background-color: #ff0000;
-            color: #fff;
-            font-size:larger;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 9px; 
-        }
-        .custom-button6:hover {
-            background-color: #D62828;
-        }
+       
         .inputtexto {
             position: absolute;
             top: 28%; left: 27%;
@@ -181,7 +133,7 @@ $nombre = $_SESSION['nombre'];
         left: 0; /* Alinea al lado izquierdo */
         top: 20%; /* Ajusta la posición vertical */
         width: 40%; /* Ajusta el ancho del contenedor */
-        height: 60%; /* Ajusta la altura del contenedor */
+        height: 30%; /* Ajusta la altura del contenedor */
         padding: 20px;
         display: flex;
         flex-direction: column; /* Coloca los elementos en una lista vertical */
@@ -197,7 +149,7 @@ $nombre = $_SESSION['nombre'];
             right: 0; /* Alinea al lado derecho */
             top: 22%; /* Ajusta la posición vertical */
             width: 40%; /* Ajusta el ancho del contenedor */
-            height: 60%; /* Ajusta la altura del contenedor */
+            height: 30%; /* Ajusta la altura del contenedor */
             padding: 20px;
             display: flex;
             flex-direction: column; /* Coloca los elementos en una lista vertical */
@@ -212,7 +164,7 @@ $nombre = $_SESSION['nombre'];
             width: 150px;
             height: 150px;
             position: absolute;
-            top: 25%; left: 39%;
+            top: 25%; left: 41%;
         }
 </style>
 </head>
@@ -228,17 +180,17 @@ $nombre = $_SESSION['nombre'];
 
     <div class="container-izq">
         <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
-        <a class='custom-button3' href='verificarPeticionesInsumos.php'>Peticiones de insumos</a>
+        <a class='inv-button' href='verificarPeticionesInsumos.php'>Peticiones de insumos</a>
         
     </div>
     <div>
         <a class="imgprestamos"><img  src='imagenes/prestamos.PNG' /></a>
-        <a class='custom-button5' href='prestamos_insumos.php'>Prestamos</a>
+        <a class='prestamos-button' href='prestamos_insumos.php'>Prestamos</a>
     </div>  
 
     <div class="container-der">
         <a class="imgesp" ><img src='imagenes/espacio1.jpg' /></a>
-        <a class='custom-button4' href='verificarPeticionesEspacios.php'>Peticiones de espacios</a>
+        <a class='espacio-button' href='verificarPeticionesEspacios.php'>Peticiones de espacios</a>
     </div>
 </body>
 </html>

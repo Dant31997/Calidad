@@ -57,8 +57,6 @@ $nombre = $_SESSION['nombre'];
         .custom-button:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: flash;
-            animation-duration: 2s;
         }
 
         .custom-button2 {
@@ -81,8 +79,6 @@ $nombre = $_SESSION['nombre'];
         .custom-button2:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: flash;
-            animation-duration: 2s;
         }
 
 
@@ -106,56 +102,29 @@ $nombre = $_SESSION['nombre'];
         .custom-button3:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: flash;
-            animation-duration: 2s;
         }
 
-        .custom-button4 {
+
+        .prestamos-button {
             padding: 10px 20px;
             text-align: center;
             background-color: red;
             color: #fff;
-            font-size: 30px;
+            font-size: 50px;
             border: none;
             width: 300px;
-            height: 30px;
+            height: 51px;
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 80%;
+            top: 69%;
             left: 69%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .custom-button4:hover {
+        .prestamos-button:hover {
             background-color: #D62828;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: flash;
-            animation-duration: 2s;
-        }
-
-        .custom-button5 {
-            padding: 10px 20px;
-            text-align: center;
-            background-color: red;
-            color: #fff;
-            font-size: 30px;
-            border: none;
-            width: 300px;
-            height: 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            position: absolute;
-            top: 62%;
-            left: 69%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .custom-button5:hover {
-            background-color: #D62828;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: flash;
-            animation-duration: 2s;
         }
 
         .title1 {
@@ -228,7 +197,7 @@ $nombre = $_SESSION['nombre'];
 
         .imgesp {
             position: absolute;
-            top: 35%;
+            top: 38%;
             left: 40%;
         }
 
@@ -240,7 +209,7 @@ $nombre = $_SESSION['nombre'];
 
         .imgpet {
             position: absolute;
-            top: 18%;
+            top: 26%;
             left: 66.5%;
         }
 
@@ -270,9 +239,7 @@ $nombre = $_SESSION['nombre'];
 
     <a class="custom-button" href="inventario.php">INVENTARIO</a>
     <a class="custom-button2" href="espacios.php">ESPACIOS</a>
-    <a class="custom-button5" href="prestamos_insumos.php">Prestamos</a>
-    <a class="custom-button3" href="verificarPeticionesInsumos.php">Peticiones Insumos</a>
-    <a class="custom-button4" href="verificarPeticionesEspacios.php">Peticiones Espacios</a>
+    <a class="prestamos-button" href="prestamos_insumos.php">Prestamos</a>
 </body>
 
 </html>

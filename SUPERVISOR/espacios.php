@@ -22,8 +22,8 @@
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 2.5%;
-        left: 85%;
+        top: 90.5%;
+        left: 42%;
     }
 
     .regresar:hover {
@@ -41,11 +41,29 @@
         font-size: 16px;
         position: absolute;
         top: 90.5%;
-        left: 35%;
+        left: 30%;
     }
 
     .custom-button:hover {
         background-color: #D62828;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .peticiones-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #D62828;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 2%;
+        left: 10%;
+    }
+
+    .peticiones-button:hover {
+        background-color: #ff0000;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -61,7 +79,7 @@
         margin-top: 5%;
         position: absolute;
         top: 2%;
-        left: 3%;   
+        left: 2%;   
     }
 
     table {
@@ -105,7 +123,7 @@
     .pagination {
         text-align: center;
         position: absolute;
-        top: 92%;
+        top: 82%;
         left: 45%;
     }
 
@@ -141,7 +159,7 @@
     .custom-button3 {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #ff0000;
+        background-color: #D62828;
         color: #FFF;
         text-decoration: none;
         border-radius: 5px;
@@ -149,6 +167,10 @@
         position: absolute;
         top: 2%;
         left: 75%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .custom-button3:hover {
+        background-color: #ff0000;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 </style>
@@ -162,7 +184,7 @@ if ($conexion->connect_error) {
     die("Error en la conexión: " . $conexion->connect_error);
 }
 
-$registrosPorPagina = 5;
+$registrosPorPagina = 4;
 $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
 // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -199,7 +221,7 @@ if ($resultado->num_rows > 0) {
         echo "<td>" . $fila['Descripcion'] . "</td>";
         echo "<td>" . $fila['capacidad'] . "</td>";
         echo "<td>" . $fila['estado_espacio'] . "</td>";
-        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&capacidad=" . $fila['capacidad']."&nom_espacio=" . $fila['nom_espacio'] . "&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a></td>";
+        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&capacidad=" . $fila['capacidad']."&nom_espacio=" . $fila['nom_espacio'] . "&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a>";
         echo "</tr>";
     }
 
@@ -221,5 +243,7 @@ $conexion->close();
     ?>
 </div>
 <br>
+        
+<a class="peticiones-button" href="verificarPeticionesEspacios.php">PETICIONES DE ESPACIOS</a>
 <a class="regresar" href="supervisor.php">Volver al inicio</a>
-<a style="display: none" class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>
+<a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

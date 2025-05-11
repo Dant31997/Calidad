@@ -14,6 +14,10 @@ if ($conexion->connect_error) {
     die("Error en la conexión: " . $conexion->connect_error);
 }
 
+// Consulta para obtener los roles del usuario
+$consulta = "SELECT * FROM roles";
+$resultado = $conexion->query($consulta);   
+
 ?>
 
 <html>

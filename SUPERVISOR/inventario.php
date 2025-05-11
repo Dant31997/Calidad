@@ -24,13 +24,32 @@
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 90.5%;
-        left: 35%;
+        top: 13%;
+        left: 3%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .custom-button:hover {
         background-color: #D62828;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .peticiones-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #D62828;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 2%;
+        left: 7%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .peticiones-button:hover {
+        background-color: #ff0000;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -43,8 +62,8 @@
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 1.5%;
-        left: 85%;
+        top: 90%;
+        left: 45%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -56,18 +75,37 @@
     .custom-button3 {
         display: inline-block;
         padding: 10px 20px;
+        background-color: #D62828;
+        color: #FFF;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        position: absolute;
+        top: 1.5%;
+        left: 85%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-button3:hover {
+        background-color: #943126;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .TipoInsumo-button {
+        display: inline-block;
+        padding: 10px 20px;
         background-color: #ff0000;
         color: #FFF;
         text-decoration: none;
         border-radius: 5px;
         font-size: 16px;
         position: absolute;
-        top: 2%;
-        left: 75%;
+        top: 13%;
+        left: 16%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-    .custom-button3:hover {
+    .TipoInsumo-button:hover {
         background-color: #D62828;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -82,16 +120,16 @@
 
     .tabla1 {
         position: absolute;
-        top: 13%;
+        top: 19%;
         left: 1%;
         padding: 10px;
         width: 880px;
-        height: 800px;
+        height: 400px;
     }
 
     table {
         font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-        font-size: 14px;
+        font-size: 12px;
         border-radius: 10px;
         padding: 10px;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
@@ -129,7 +167,7 @@
     .pagination {
         text-align: center;
         position: absolute;
-        top: 85%;
+        top: 80%;
         left: 30%;
     }
 
@@ -192,7 +230,7 @@
     }
 
     .tabla-container {
-        width: 400px;
+        width: 450px;
         height: 380px;
         position: absolute;
         top: 15%;
@@ -236,7 +274,7 @@ if ($conexion->connect_error) {
     die("Error en la conexión: " . $conexion->connect_error);
 }
 
-$registrosPorPagina = 6;
+$registrosPorPagina = 5;
 $paginaActual = isset($_GET['pagina1']) ? $_GET['pagina1'] : 1;
 
 // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -258,7 +296,10 @@ $paginaActual2 = isset($_GET['pagina2']) ? $_GET['pagina2'] : 1;
 $offset2 = ($paginaActual2 - 1) * $registrosPorPagina2;
 $sql2 = "SELECT 
     ti.nombre_insumo, 
-    COALESCE(COUNT(i.nom_inventario), 0) as cantidad 
+    COALESCE(COUNT(i.nom_inventario), 0) as cantidad,
+    COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres,
+    COALESCE(SUM(CASE WHEN i.estado = 'Averiado' THEN 1 ELSE 0 END), 0) as averiados,
+    COALESCE(SUM(CASE WHEN i.estado = 'Bodega' THEN 1 ELSE 0 END), 0) as bodega
 FROM tipo_insumo ti 
 LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
 GROUP BY ti.nombre_insumo 
@@ -288,10 +329,11 @@ if ($resultado->num_rows >= 0) {
     echo "<table>";
     echo "<tr  class= 'encabezado'>
     <th style=width:50px;>Cód.inv</th>
-    <th style=width:150px;> Nombre del insumo </th>
-    <th style=width:350px;> Descripcion</th>
-    <th style=width:80px;> Estado </th>
-    <th style=width:150px;>Acciones</th>
+    <th style=width:100px;> Tipo de Insumo </th>
+    <th style=width:250px;> Descripcion</th>
+    <th style=width:150px;> Prestado a</th>
+    <th style=width:60px;> Estado </th>
+    <th style=width:100px;>Acciones</th>
     </tr>";
 
 
@@ -300,8 +342,10 @@ if ($resultado->num_rows >= 0) {
         echo "<td>" . $fila['cod_inventario'] . "</td>";
         echo "<td>" . $fila['nom_inventario'] . "</td>";
         echo "<td>" . $fila['Descripcion'] . "</td>";
+        echo "<td>" . $fila['prestado_a'] . "</td>";
         echo "<td>" . $fila['estado'] . "</td>";
-        echo "<td><a href='editarobjeto.php?cod_inventario=" . $fila['cod_inventario'] . "&nom_inventario=" . $fila['nom_inventario'] . "&estado=" . $fila['estado'] . "&Descripcion=" . $fila['Descripcion'] .  "'><img src='imagenes/editar.png' /></a></td>";
+        echo "<td><a href='editarobjeto.php?cod_inventario=" . $fila['cod_inventario'] . "&nom_inventario=" . $fila['nom_inventario'] . "&estado=" . $fila['estado'] . "&Descripcion=" . $fila['Descripcion'] .  "'><img src='imagenes/editar.png' /></a>
+                  ";
         echo "</tr>";
     }
 
@@ -325,13 +369,20 @@ $conexion->close();
     ?>
 </div>
 
+<?php
+
+
+?>
 <div class="tabla-container">
-    <h2 style="text-align: center;">Cantidad por insumo</h2>
+    <h2 style="text-align: center;">Cantidades por insumo</h2>
     <table class="tabla-resumen">
         <thead>
             <tr>
-                <th>Nombre del Insumo</th>
-                <th>Cantidad</th>
+                <th>Tipo</th>
+                <th>Total</th>
+                <th>Libres</th>
+                <th>Averiados</th>
+                <th>En bodega</th>
             </tr>
         </thead>
         <tbody>
@@ -341,10 +392,13 @@ $conexion->close();
                     echo "<tr>";
                     echo "<td>" . $row['nombre_insumo'] . "</td>";
                     echo "<td>" . $row['cantidad'] . "</td>";
+                    echo "<td>" . $row['libres'] . "</td>";
+                    echo "<td>" . $row['averiados'] . "</td>";
+                    echo "<td>" . $row['bodega'] . "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='2'>No hay datos disponibles</td></tr>";
+                echo "<tr><td colspan='5'>No hay datos disponibles</td></tr>";
             }
             ?>
         </tbody>
@@ -367,4 +421,5 @@ $conexion->close();
 
 <br>
 <a class="custom-button2" href="supervisor.php">Volver al inicio</a>
-<a style="display: none" class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
+<a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
+<a class="peticiones-button" href="verificarPeticionesInsumos.php" >PETICIONES DE INSUMOS </a> 
