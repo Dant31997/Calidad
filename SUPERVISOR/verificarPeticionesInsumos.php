@@ -333,7 +333,7 @@
     </div>
 
 
-    <a class="custom-button2" href="supervisor.php">Volver al inicio</a>
+    <a class="custom-button2" href="inventario.php">Volver al inicio</a>
     <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 

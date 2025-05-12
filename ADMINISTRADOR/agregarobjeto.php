@@ -88,9 +88,9 @@ $resultado = $conexion->query($sql);
 
         .login-box {
             width: 360px;
-            height: 320px;
+            height: 370px;
             position: absolute;
-            top: 20%;
+            top: 15%;
             left: 35%;
             padding: 20px;
             background-color: #fff;
@@ -125,6 +125,7 @@ $resultado = $conexion->query($sql);
 
         input[type="textarea"],
         input[type="text"],
+        input[type="number"],
         select {
             width: 100%;
             padding: 8px 12px;
@@ -171,6 +172,8 @@ $resultado = $conexion->query($sql);
                 }
                 ?>
             </select>
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad" id="cantidad" required>
             <br>
             <label for="descripcion">Descripción:</label>
             <textarea name="descripcion" rows="5" cols="45" class="form-input" required></textarea>

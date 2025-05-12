@@ -83,7 +83,7 @@ $nombre = $_SESSION['nombre'];
         .inv-button {
             background-color: #ff0000;
             color: #fff;
-            font-size:25px;
+            font-size:35px;
             font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
@@ -97,7 +97,7 @@ $nombre = $_SESSION['nombre'];
         .espacio-button {
             background-color: #ff0000;
             color: #fff;
-            font-size:25px;
+            font-size:35px;
             font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
@@ -111,7 +111,7 @@ $nombre = $_SESSION['nombre'];
         .prestamos-button {
             background-color: #ff0000;
             color: #fff;
-            font-size:25px;
+            font-size:35px;
             font-weight: bold;
             padding: 10px 20px;
             text-decoration: none;
@@ -164,7 +164,7 @@ $nombre = $_SESSION['nombre'];
             width: 150px;
             height: 150px;
             position: absolute;
-            top: 25%; left: 41%;
+            top: 25%; left: 43%;
         }
 </style>
 </head>

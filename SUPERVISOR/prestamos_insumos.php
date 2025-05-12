@@ -56,7 +56,7 @@
             .export-button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #943126;
+                background-color: #D62828;
                 color: #FFF;
                 text-decoration: none;
                 border-radius: 5px;
@@ -68,14 +68,14 @@
             }
 
             .export-button:hover {
-                background-color: #D62828;
+                background-color: #943126;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 
             .custom-button {
                 display: inline-block;
                 padding: 10px 20px;
-                background-color: #ff0000;
+                background-color: #D62828;
                 color: #FFF;
                 text-decoration: none;
                 border-radius: 5px;
@@ -87,7 +87,7 @@
             }
 
             .custom-button:hover {
-                background-color: #D62828;
+                background-color: #943126;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 

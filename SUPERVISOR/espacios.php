@@ -63,7 +63,7 @@
     }
 
     .peticiones-button:hover {
-        background-color: #ff0000;
+        background-color: #9C2A1A;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -170,7 +170,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     .custom-button3:hover {
-        background-color: #ff0000;
+        background-color: #9C2A1A;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 </style>

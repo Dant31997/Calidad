@@ -25,6 +25,7 @@ if (isset($_POST['agregar'])) {
     $nombre_objeto = $_POST['nombre'];
     $estado = "libre";
     $descripcion = $_POST['descripcion'];
+    $cantidad = $_POST['cantidad'];
 
     $nivel_insumo = null;
     $stmt_nivel = $conexion->prepare("SELECT nivel_insumo FROM tipo_insumo WHERE nombre_insumo = ?");
@@ -40,11 +41,19 @@ if (isset($_POST['agregar'])) {
     $stmt->bind_param('ssss', $nivel_insumo, $nombre_objeto, $estado, $descripcion);
 
     try {
-        if ($stmt->execute()) {
+        $insertados = 0;
+        // Loop para insertar múltiples veces según la cantidad
+        for ($i = 0; $i < $cantidad; $i++) {
+            if ($stmt->execute()) {
+                $insertados++;
+            }
+        }
+
+        if ($insertados == $cantidad) {
             echo "<script>
                 Swal.fire({
                     title: '¡Éxito!',
-                    text: 'El objeto fue agregado correctamente',
+                    text: 'Se agregaron " . $cantidad . " objetos correctamente',
                     icon: 'success',
                     confirmButtonText: 'Aceptar',
                     confirmButtonColor: '#3085d6',
@@ -54,10 +63,24 @@ if (isset($_POST['agregar'])) {
                     window.location.href = 'agregarobjeto.php';
                 });
             </script>";
-            $stmt->close();
-            $conexion->close();
-            exit();
+        } else {
+            echo "<script>
+                Swal.fire({
+                    title: 'Parcialmente completado',
+                    text: 'Se agregaron " . $insertados . " de " . $cantidad . " objetos',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3000,
+                    timerProgressBar: true
+                }).then((result) => {
+                    window.location.href = 'agregarobjeto.php';
+                });
+            </script>";
         }
+        $stmt->close();
+        $conexion->close();
+        exit();
     } catch (mysqli_sql_exception $e) {
         $stmt->close();
         $conexion->close();

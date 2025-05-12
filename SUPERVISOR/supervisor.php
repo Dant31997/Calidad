@@ -117,7 +117,7 @@ $nombre = $_SESSION['nombre'];
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 69%;
+            top: 70%;
             left: 69%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -136,7 +136,7 @@ $nombre = $_SESSION['nombre'];
         }
 
         .logout-button {
-            background-color: #ff0000;
+            background-color: #D62828;
             color: #fff;
             font-size: small;
             padding: 10px 20px;
@@ -209,12 +209,12 @@ $nombre = $_SESSION['nombre'];
 
         .imgpet {
             position: absolute;
-            top: 26%;
+            top: 27%;
             left: 66.5%;
         }
 
         .imgpet:hover {
-            position: absolute;
+            
         }
     </style>
 </head>
@@ -239,7 +239,7 @@ $nombre = $_SESSION['nombre'];
 
     <a class="custom-button" href="inventario.php">INVENTARIO</a>
     <a class="custom-button2" href="espacios.php">ESPACIOS</a>
-    <a class="prestamos-button" href="prestamos_insumos.php">Prestamos</a>
+    <a class="prestamos-button" href="prestamos_insumos.php">PRESTAMOS</a>
 </body>
 
 </html>

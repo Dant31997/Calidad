@@ -49,7 +49,7 @@
     }
 
     .peticiones-button:hover {
-        background-color: #ff0000;
+        background-color: #943126;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -133,7 +133,7 @@
         border-radius: 10px;
         padding: 10px;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: white;
+        background-color: #fff;
     }
 
     th {
@@ -168,7 +168,7 @@
         text-align: center;
         position: absolute;
         top: 80%;
-        left: 30%;
+        left: 15%;
     }
 
     .pagination a {
@@ -264,6 +264,54 @@
     .tabla-resumen tr:hover td {
         background-color: #f5f5f5;
     }
+
+    .filtro-container {
+        position: absolute;
+        top: 11%;
+        left: 2%;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        padding: 10px;
+    }
+
+    .filtro-container select {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    }
+
+    .filtro-container button {
+        padding: 8px 15px;
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    }
+
+    .filtro-container button:hover {
+        background-color: #D62828;
+    }
+
+    .reset-button {
+        padding: 8px 15px;
+        background-color: #666;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 5px;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    }
+
+    .reset-button:hover {
+        background-color: #444;
+    }
 </style>
 <?php
 
@@ -274,16 +322,89 @@ if ($conexion->connect_error) {
     die("Error en la conexión: " . $conexion->connect_error);
 }
 
+$tiposInsumo = array();
+$sqlTipos = "SELECT DISTINCT nom_inventario FROM inventario ORDER BY cod_inventario ASC";
+$resultadoTipos = $conexion->query($sqlTipos);
+while ($fila = $resultadoTipos->fetch_assoc()) {
+    $tiposInsumo[] = $fila['nom_inventario'];
+}
+
+// Procesar el filtro si se ha seleccionado
+$filtroTipoInsumo = isset($_GET['filtro_tipo']) ? $_GET['filtro_tipo'] : '';
+
 $registrosPorPagina = 5;
 $paginaActual = isset($_GET['pagina1']) ? $_GET['pagina1'] : 1;
 
+// Construir la consulta SQL con filtro si es necesario
+$sqlWhere = '';
+$sqlParams = array();
+
+if (!empty($filtroTipoInsumo)) {
+    $sqlWhere = "WHERE nom_inventario = ?";
+    $sqlParams[] = $filtroTipoInsumo;
+}
+
 // Consulta SQL con LIMIT para obtener registros de la página actual
 $offset = ($paginaActual - 1) * $registrosPorPagina;
-$sql = "SELECT * FROM inventario LIMIT $offset, $registrosPorPagina";
-$resultado = $conexion->query($sql);
 
-// Consulta SQL para obtener el número total de registros
-$totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM inventario")->fetch_assoc()['total'];
+// Preparar la consulta con el filtro
+$sql = "SELECT * FROM inventario " . $sqlWhere . " LIMIT ?, ?";
+$stmt = $conexion->prepare($sql);
+
+if (!empty($sqlParams)) {
+    // Si hay filtro, añadir los parámetros de offset y limit
+    $allParams = $sqlParams;
+    $allParams[] = $offset;
+    $allParams[] = $registrosPorPagina;
+
+    // Crear la cadena de tipos para bind_param
+    $types = str_repeat('s', count($sqlParams)) . 'ii'; // 's' para strings, 'i' para integers
+
+    // Convertir todos los valores del array a referencias
+    $bindRefs = array();
+    $bindRefs[] = $types; // El primer parámetro es el string de tipos
+
+    // Convertir cada valor a una referencia
+    foreach ($allParams as $key => $value) {
+        $bindRefs[] = &$allParams[$key];
+    }
+
+    // Llamar a bind_param con referencias
+    call_user_func_array(array($stmt, 'bind_param'), $bindRefs);
+} else {
+    // Sin filtro, solo añadir offset y limit
+    $stmt->bind_param("ii", $offset, $registrosPorPagina);
+}
+
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+// Consulta SQL para obtener el número total de registros con filtro
+$sqlCount = "SELECT COUNT(*) as total FROM inventario " . $sqlWhere;
+$stmtCount = $conexion->prepare($sqlCount);
+
+if (!empty($sqlParams)) {
+    // Si hay filtro, preparar la consulta con el parámetro
+    $countParams = $sqlParams;
+    $typeCount = str_repeat('s', count($countParams)); // Solo los parámetros de filtro
+
+    // Convertir todos los valores del array a referencias
+    $bindCountRefs = array();
+    $bindCountRefs[] = $typeCount; // El primer parámetro es el string de tipos
+
+    // Convertir cada valor a una referencia
+    foreach ($countParams as $key => $value) {
+        $bindCountRefs[] = &$countParams[$key];
+    }
+
+    // Llamar a bind_param con referencias
+    call_user_func_array(array($stmtCount, 'bind_param'), $bindCountRefs);
+}
+
+// Ejecutar la consulta para contar registros
+$stmtCount->execute();
+$resultCount = $stmtCount->get_result();
+$totalRegistros = $resultCount->fetch_assoc()['total'];
 
 // Calcular el número total de páginas
 $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
@@ -315,20 +436,50 @@ $totalRegistros2 = $conexion->query("SELECT COUNT(*) as total FROM (
     GROUP BY ti.nombre_insumo
 ) as subquery")->fetch_assoc()['total'];
 
-
 // Calcular el número total de páginas
 $numTotalPaginas2 = ceil($totalRegistros2 / $registrosPorPagina2);
 
-
 if ($resultado->num_rows >= 0) {
-
     echo "<div class='panel-box-admin'>";
-    echo "<h2 class ='title1' align='center'>INVENTARIO</h2>";
+    echo "<h2 class='title1' align='center'>INVENTARIO</h2>";
+    echo "</div>";
+
+    // Agregar el formulario de filtro
+    echo "<div class='filtro-container'>";
+    echo "<form method='get' action=''>";
+
+    // Mantener estados de paginación
+    if (isset($_GET['pagina2'])) {
+        echo "<input type='hidden' name='pagina2' value='" . $_GET['pagina2'] . "'>";
+    }
+
+    echo "<label for='filtro_tipo'>Filtrar por tipo: </label>";
+    echo "<select name='filtro_tipo' id='filtro_tipo'>";
+    echo "<option value=''>Todos los tipos</option>";
+
+    foreach ($tiposInsumo as $tipo) {
+        $selected = ($tipo == $filtroTipoInsumo) ? 'selected' : '';
+        echo "<option value='$tipo' $selected>$tipo</option>";
+    }
+
+    echo "</select>";
+    echo "<button type='submit'>Filtrar</button>";
+
+    // Botón para reiniciar el filtro
+    if (!empty($filtroTipoInsumo)) {
+        echo "<a href='inventario.php";
+        if (isset($_GET['pagina2'])) {
+            echo "?pagina2=" . $_GET['pagina2'];
+        }
+        echo "' class='reset-button'>Reiniciar</a>";
+    }
+
+    echo "</form>";
     echo "</div>";
 
     echo "<div class='tabla1'>";
     echo "<table>";
-    echo "<tr  class= 'encabezado'>
+    echo "<tr class='encabezado'>
     <th style=width:50px;>Cód.inv</th>
     <th style=width:100px;> Tipo de Insumo </th>
     <th style=width:250px;> Descripcion</th>
@@ -337,9 +488,8 @@ if ($resultado->num_rows >= 0) {
     <th style=width:100px;>Acciones</th>
     </tr>";
 
-
     while ($fila = $resultado->fetch_assoc()) {
-        echo "<tr class= 'encabezado'>";
+        echo "<tr class='encabezado'>";
         echo "<td>" . $fila['cod_inventario'] . "</td>";
         echo "<td>" . $fila['nom_inventario'] . "</td>";
         echo "<td>" . $fila['Descripcion'] . "</td>";
@@ -361,19 +511,22 @@ $conexion->close();
     for ($i = 1; $i <= $numTotalPaginas; $i++) {
         $claseActiva = ($i == $paginaActual) ? "active" : "";
         echo "<a class='$claseActiva' href='inventario.php?pagina1=$i";
+
         // Mantener el estado de la otra paginación
         if (isset($_GET['pagina2'])) {
             echo "&pagina2=" . $_GET['pagina2'];
         }
+
+        // Mantener el filtro si está aplicado
+        if (!empty($filtroTipoInsumo)) {
+            echo "&filtro_tipo=" . urlencode($filtroTipoInsumo);
+        }
+
         echo "'>$i</a>";
     }
     ?>
 </div>
 
-<?php
-
-
-?>
 <div class="tabla-container">
     <h2 style="text-align: center;">Cantidades por insumo</h2>
     <table class="tabla-resumen">
@@ -417,6 +570,12 @@ $conexion->close();
         if (isset($_GET['pagina1'])) {
             echo "&pagina1=" . $_GET['pagina1'];
         }
+        
+        // Mantener el filtro si está aplicado
+        if (!empty($filtroTipoInsumo)) {
+            echo "&filtro_tipo=" . urlencode($filtroTipoInsumo);
+        }
+        
         echo "'>$i2</a>";
     }
     ?>
@@ -425,4 +584,4 @@ $conexion->close();
 <br>
 <a class="custom-button2" href="supervisor.php">Volver al inicio</a>
 <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
-<a class="peticiones-button" href="verificarPeticionesInsumos.php" >PETICIONES DE INSUMOS </a> 
+<a class="peticiones-button" href="verificarPeticionesInsumos.php">PETICIONES DE INSUMOS </a>
