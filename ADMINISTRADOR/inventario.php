@@ -299,7 +299,8 @@ $sql2 = "SELECT
     COALESCE(COUNT(i.nom_inventario), 0) as cantidad,
     COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres,
     COALESCE(SUM(CASE WHEN i.estado = 'Averiado' THEN 1 ELSE 0 END), 0) as averiados,
-    COALESCE(SUM(CASE WHEN i.estado = 'Bodega' THEN 1 ELSE 0 END), 0) as bodega
+    COALESCE(SUM(CASE WHEN i.estado = 'Bodega' THEN 1 ELSE 0 END), 0) as bodega,
+    COALESCE(SUM(CASE WHEN i.estado = 'Prestado' THEN 1 ELSE 0 END), 0) as prestados
 FROM tipo_insumo ti 
 LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
 GROUP BY ti.nombre_insumo 
@@ -381,6 +382,7 @@ $conexion->close();
                 <th>Tipo</th>
                 <th>Total</th>
                 <th>Libres</th>
+                <th>Prestados</th>
                 <th>Averiados</th>
                 <th>En bodega</th>
             </tr>
@@ -393,6 +395,7 @@ $conexion->close();
                     echo "<td>" . $row['nombre_insumo'] . "</td>";
                     echo "<td>" . $row['cantidad'] . "</td>";
                     echo "<td>" . $row['libres'] . "</td>";
+                    echo "<td>" . $row['prestados'] . "</td>";
                     echo "<td>" . $row['averiados'] . "</td>";
                     echo "<td>" . $row['bodega'] . "</td>";
                     echo "</tr>";
@@ -424,4 +427,4 @@ $conexion->close();
 <a class="TipoInsumo-button" href="tipo_insumo.php">Tipos de Insumo</a>
 <a class="custom-button2" href="admin_panel.php">Volver al inicio</a>
 <a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
-<a class="peticiones-button" href="verificarPeticionesInsumos.php" >PETICIONES DE INSUMOS </a> 
+<a class="peticiones-button" href="verificarPeticionesInsumos.php">PETICIONES DE INSUMOS </a>
