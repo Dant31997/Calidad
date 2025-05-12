@@ -1,35 +1,73 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "basededatos");
+// Manejo de errores
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // En producción mejor no mostrar errores
 
-// Verifica la conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión: " . $conexion->connect_error);
+// Variables para almacenar resultados y mensajes
+$idPeticion = '';
+$estado = '';
+$idPrestamo = '';
+$error = '';
+$hayResultados = false;
+
+try {
+    // Conexión a la base de datos - mejor usar constantes o variables de entorno
+    $conexion = new mysqli("localhost", "root", "", "basededatos");
+    
+    // Verificar la conexión
+    if ($conexion->connect_error) {
+        throw new Exception("Error en la conexión: " . $conexion->connect_error);
+    }
+    
+    // Validar y obtener el ID de petición
+    if (isset($_POST['idPeticion'])) {
+        $idPeticion = trim($_POST['idPeticion']);
+        
+        if (empty($idPeticion)) {
+            throw new Exception("Debe proporcionar un ID de petición");
+        }
+        
+        // Consulta el estado de la petición
+        $stmt = $conexion->prepare("SELECT estado_peticion, id_prestamo FROM peticiones_insumos WHERE id = ?");
+        if (!$stmt) {
+            throw new Exception("Error al preparar la consulta: " . $conexion->error);
+        }
+        
+        $stmt->bind_param("s", $idPeticion);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $estado = $row['estado_peticion'] ?? '';
+            $idPrestamo = $row['id_prestamo'] ?? '';
+            $stmt->close();
+            
+            // Solo si tenemos un ID de préstamo consultamos el inventario
+            if (!empty($idPrestamo)) {
+                $stmt2 = $conexion->prepare("SELECT * FROM inventario WHERE id_prestamo = ?");
+                if (!$stmt2) {
+                    throw new Exception("Error al preparar la consulta de inventario: " . $conexion->error);
+                }
+                
+                $stmt2->bind_param("s", $idPrestamo);
+                $stmt2->execute();
+                $resultado = $stmt2->get_result();
+                $hayResultados = ($resultado && $resultado->num_rows > 0);
+                $stmt2->close();
+            } else {
+                throw new Exception("No se encontró el ID de préstamo asociado");
+            }
+        } else {
+            throw new Exception("No se encontró la petición con ID: " . htmlspecialchars($idPeticion));
+        }
+    }
+} catch (Exception $e) {
+    // Registrar el error para el administrador
+    error_log("Error en tabla_insumo.php: " . $e->getMessage());
+    // Mostrar mensaje genérico al usuario
+    $error = $e->getMessage();
 }
-
-$idPeticion = $_POST['idPeticion'] ?? '';
-
-//Consulta el estado de la petición
-$stmt2 = $conexion->prepare("SELECT estado_peticion, id_prestamo FROM peticiones_insumos WHERE id = ?");
-$stmt2->bind_param("s", $idPeticion);
-$stmt2->execute();
-$result2 = $stmt2->get_result();
-
-$estado = "";
-if ($result2 && $row = $result2->fetch_assoc()) {
-    $estado = $row['estado_peticion'];
-} else {
-    echo "No se encontró la petición con ID: " . htmlspecialchars($idPeticion);
-}
-$idPrestamo = $row['id_prestamo'] ?? '';
-// Verifica si se obtuvo el ID de préstamo
-
-// Consulta para obtener items del inventario relacionados con el préstamo
-// Usar consulta preparada para prevenir SQL injection
-$stmt3 = $conexion->prepare("SELECT * FROM inventario WHERE id_prestamo = ?");
-$stmt3->bind_param("s", $idPrestamo);
-$stmt3->execute();
-$resultado = $stmt3->get_result();
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,12 +78,19 @@ $resultado = $stmt3->get_result();
     <title>Consulta de Insumos</title>
     <style>
         :root {
-            --primary-color: #4285f4;
+            --primary-color: black;
             --secondary-color: #f8f9fa;
             --text-color: #333;
             --border-color: #ddd;
             --success-color: #34a853;
             --error-color: #ea4335;
+        }
+        html {
+            background: linear-gradient(to bottom, white, 70%, #d89785);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .regresar {
@@ -69,9 +114,10 @@ $resultado = $stmt3->get_result();
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
+            background-color: transparent;
+            margin: auto;
+            margin-top: 10px;
+            padding: 10px;
         }
 
         #resultadoConsulta {
@@ -145,7 +191,7 @@ $resultado = $stmt3->get_result();
         }
 
         #tabla-inventario {
-            width: 100%;
+            width: 900px;
             border-collapse: collapse;
             margin-top: 10px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -175,10 +221,9 @@ $resultado = $stmt3->get_result();
 </head>
 
 <body>
-
     <div id="resultadoConsulta">
         <h3>Resultado de la consulta</h3>
-        <form id="consultaFormulario" onsubmit="return consultarEstado(event)">
+        <form id="consultaFormulario" method="POST" action="">
             <div>
                 <label for="idPeticion">ID de Petición:</label>
                 <input type="text" id="idPeticion" name="idPeticion" value="<?php echo htmlspecialchars($idPeticion); ?>" required>
@@ -186,8 +231,7 @@ $resultado = $stmt3->get_result();
 
             <div>
                 <label for="estadoPeticion">Estado de Petición:</label>
-                <input type="text" id="estadoPeticion" name="estadoPeticion" value="<?php
-                                                                                    echo htmlspecialchars($estado); ?>" readonly>
+                <input type="text" id="estadoPeticion" name="estadoPeticion" value="<?php echo htmlspecialchars($estado); ?>" readonly>
             </div>
         </form>
 
@@ -196,7 +240,7 @@ $resultado = $stmt3->get_result();
             <table id="tabla-inventario">
                 <thead>
                     <tr class='encabezado'>
-                        <th>Cod. Inventario</th>
+                        <th style="width: 100px;">Cod. Inventario</th>
                         <th>Equipo</th>
                         <th>Descripción</th>
                         <th>Encargado</th>
@@ -204,7 +248,9 @@ $resultado = $stmt3->get_result();
                 </thead>
                 <tbody>
                     <?php
-                    if ($resultado && $resultado->num_rows > 0) {
+                    if (!empty($error)) {
+                        echo "<tr><td colspan='4'>" . htmlspecialchars($error) . "</td></tr>";
+                    } elseif (isset($resultado) && $hayResultados) {
                         // Mostrar registros
                         while ($fila = $resultado->fetch_assoc()) {
                             echo "<tr>";
@@ -214,27 +260,23 @@ $resultado = $stmt3->get_result();
                             echo "<td>" . htmlspecialchars($fila['prestado_a']) . "</td>";
                             echo "</tr>";
                         }
-                    } else {
+                    } elseif (isset($_POST['idPeticion'])) {
                         echo "<tr><td colspan='4'>No se encontraron items de inventario para este préstamo</td></tr>";
+                    } else {
+                        echo "<tr><td colspan='4'>Ingrese un ID de petición para consultar</td></tr>";
                     }
-                    $conexion->close();
+                    
+                    // Cerrar la conexión
+                    if (isset($conexion)) {
+                        $conexion->close();
+                    }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <script>
-        function consultarEstado(event) {
-            event.preventDefault();
-            // Aquí puedes agregar el código JavaScript para manejar la consulta
-            // Por ejemplo, usando fetch o XMLHttpRequest para actualizar la información sin recargar la página
-
-            // Por ahora, simplemente enviamos el formulario:
-            document.getElementById('consultaFormulario').submit();
-        }
-    </script>
-    <a class="regresar" href="consulta_peticion.php">Volver atras</a>
+    <a class="regresar" href="consulta_peticion.php">Volver atrás</a>
 </body>
 
 </html>

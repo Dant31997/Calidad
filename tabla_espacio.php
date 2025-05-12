@@ -1,33 +1,56 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "basededatos");
+// Manejo de errores 
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-// Verifica la conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión: " . $conexion->connect_error);
+try {
+    // Conexión a la base de datos - mejor usar constantes o variables de entorno
+    $conexion = new mysqli("localhost", "root", "", "basededatos");
+
+    // Verificar conexión
+    if ($conexion->connect_error) {
+        throw new Exception("Error en la conexión: " . $conexion->connect_error);
+    }
+
+    // Obtener ID de petición y validar
+    $idPeticion = isset($_POST['idPeticion']) ? trim($_POST['idPeticion']) : '';
+
+    if (empty($idPeticion)) {
+        throw new Exception("ID de petición no proporcionado");
+    }
+
+    // Consultar estado de la petición
+    $stmt = $conexion->prepare("SELECT estado_peticion, id_prestamo, pide FROM peticiones_espacios WHERE id = ?");
+    if (!$stmt) {
+        throw new Exception("Error al preparar la consulta: " . $conexion->error);
+    }
+
+    $stmt->bind_param("s", $idPeticion);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Verificar si se encontró la petición
+    if (!$result || $result->num_rows === 0) {
+        $peticionEncontrada = false;
+        $estado = '';
+        $idPrestamo = '';
+        $nomPersona = '';
+        $error = "No se encontró la petición con ID: " . htmlspecialchars($idPeticion);
+    } else {
+        $peticionEncontrada = true;
+        $row = $result->fetch_assoc();
+        $estado = $row['estado_peticion'] ?? '';
+        $idPrestamo = $row['id_prestamo'] ?? '';
+        $nomPersona = $row['pide'] ?? '';
+        $error = '';
+        $stmt->close();
+    }
+} catch (Exception $e) {
+    // Log del error
+    error_log("Error en tabla_espacio.php: " . $e->getMessage());
+    $peticionEncontrada = false;
+    $error = "Ha ocurrido un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.";
 }
-
-$idPeticion = $_POST['idPeticion'] ?? '';
-
-//Consulta el estado de la petición
-$stmt2 = $conexion->prepare("SELECT estado_peticion, id_prestamo, pide FROM peticiones_espacios WHERE id = ?");
-$stmt2->bind_param("s", $idPeticion);
-$stmt2->execute();
-$result2 = $stmt2->get_result();
-
-$estado = "";
-if ($result2 && $row = $result2->fetch_assoc()) {
-    $estado = $row['estado_peticion'];
-} else {
-    echo "No se encontró la petición con ID: " . htmlspecialchars($idPeticion);
-}
-$idPrestamo = $row['id_prestamo'] ?? '';
-$nomPersona = $row['pide'] ?? '';
-
-$stmt3 = $conexion->prepare("SELECT * FROM espacios WHERE id_prestamo = ?");
-$stmt3->bind_param("s", $idPrestamo);
-$stmt3->execute();
-$resultado = $stmt3->get_result();
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -35,10 +58,10 @@ $resultado = $stmt3->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Insumos</title>
+    <title>Consulta de Espacios</title>
     <style>
         :root {
-            --primary-color: #4285f4;
+            --primary-color: black;
             --secondary-color: #f8f9fa;
             --text-color: #333;
             --border-color: #ddd;
@@ -63,17 +86,27 @@ $resultado = $stmt3->get_result();
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        html {
+            background: linear-gradient(to bottom, white, 70%, #d89785);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
+            background-color: transparent;
+            margin: auto;
+            margin-top: 10px;
+            padding: 10px;
         }
 
         #resultadoConsulta {
-            max-width: 1000px;
+            width: 1000px;
+            height: 100%;
             margin: 0 auto;
             background-color: white;
             border-radius: 8px;
@@ -139,11 +172,12 @@ $resultado = $stmt3->get_result();
         }
 
         #tablaInsumos {
-            margin-top: 30px;
+            margin-top: 10px;
         }
 
         #tabla-inventario {
             width: 100%;
+            height: 280px;
             border-collapse: collapse;
             margin-top: 10px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -173,10 +207,9 @@ $resultado = $stmt3->get_result();
 </head>
 
 <body>
-
     <div id="resultadoConsulta">
         <h3>Resultado de la consulta</h3>
-        <form id="consultaFormulario" onsubmit="return consultarEstado(event)">
+        <form id="consultaFormulario" method="POST">
             <div>
                 <label for="idPeticion">ID de Petición:</label>
                 <input type="text" id="idPeticion" name="idPeticion" value="<?php echo htmlspecialchars($idPeticion); ?>" required>
@@ -184,13 +217,12 @@ $resultado = $stmt3->get_result();
 
             <div>
                 <label for="estadoPeticion">Estado de Petición:</label>
-                <input type="text" id="estadoPeticion" name="estadoPeticion" value="<?php
-                                                                                    echo htmlspecialchars($estado); ?>" readonly>
+                <input type="text" id="estadoPeticion" name="estadoPeticion" value="<?php echo htmlspecialchars($estado); ?>" readonly>
             </div>
         </form>
 
         <div id="tablaInsumos">
-            <h4>Detalle de Insumos</h4>
+            <h4>Detalle de Espacios</h4>
             <table id="tabla-inventario">
                 <thead>
                     <tr class='encabezado'>
@@ -202,37 +234,51 @@ $resultado = $stmt3->get_result();
                 </thead>
                 <tbody>
                     <?php
-                    if ($resultado && $resultado->num_rows > 0) {
-                        // Mostrar registros
-                        while ($fila = $resultado->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($fila['cod_espacio']) . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['nom_espacio']) . "</td>";
-                            echo "<td>" . htmlspecialchars($fila['Descripcion']) . "</td>";
-                            echo "<td>" . htmlspecialchars($nomPersona) . "</td>";
-                            echo "</tr>";
+                    if (!empty($error)) {
+                        echo "<tr><td colspan='4'>{$error}</td></tr>";
+                    } elseif ($peticionEncontrada) {
+                        try {
+                            // Consultar los espacios
+                            $stmt2 = $conexion->prepare("SELECT * FROM espacios WHERE id_prestamo = ?");
+                            if (!$stmt2) {
+                                throw new Exception("Error al preparar la consulta de espacios: " . $conexion->error);
+                            }
+
+                            $stmt2->bind_param("s", $idPrestamo);
+                            $stmt2->execute();
+                            $resultado = $stmt2->get_result();
+
+                            if ($resultado && $resultado->num_rows > 0) {
+                                // Mostrar registros
+                                while ($fila = $resultado->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($fila['cod_espacio']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($fila['nom_espacio']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($fila['Descripcion']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($nomPersona) . "</td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='4'>No se encontraron espacios para este préstamo</td></tr>";
+                            }
+                            $stmt2->close();
+                        } catch (Exception $e) {
+                            error_log("Error al consultar espacios: " . $e->getMessage());
+                            echo "<tr><td colspan='4'>Error al consultar los datos de espacios</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='4'>No se encontraron items de inventario para este préstamo</td></tr>";
                     }
-                    $conexion->close();
+
+                    // Cerrar la conexión solo una vez al final
+                    if (isset($conexion)) {
+                        $conexion->close();
+                    }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <script>
-        function consultarEstado(event) {
-            event.preventDefault();
-            // Aquí puedes agregar el código JavaScript para manejar la consulta
-            // Por ejemplo, usando fetch o XMLHttpRequest para actualizar la información sin recargar la página
-
-            // Por ahora, simplemente enviamos el formulario:
-            document.getElementById('consultaFormulario').submit();
-        }
-    </script>
-    <a class="regresar" href="consulta_peticion.php">Volver atras</a>
+    <a class="regresar" href="consulta_peticion.php">Volver atrás</a>
 </body>
 
 </html>
