@@ -7,7 +7,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 16);
         $this->Cell(0, 12, $this->codificar('INFORME DE PRÉSTAMOS DE INSUMOS Y ESPACIOS'), 0, 1, 'C');
         $this->SetFont('Arial', '', 11);
-        $this->Cell(0, 8, 'Fecha de generación: ' . date('d/m/Y'), 0, 1, 'R');
+        $this->Cell (0, 8, $this->codificar('Fecha de generación: ' . date('d/m/Y')), 0, 1, 'R');
         $this->Ln(3);
     }
     function Footer() {
@@ -33,7 +33,7 @@ class PDF extends FPDF {
     }
     function tablaPrestamosInsumos($header, $data) {
         $this->SetFont('Arial', 'B', 11);
-        $w = [15, 35, 18, 40, 20, 22, 18, 18, 25];
+        $w = [15, 30, 18, 50, 20, 32, 18, 18, 35];
         for($i=0; $i<count($header); $i++)
             $this->Cell($w[$i], 7, $this->codificar($header[$i]), 1, 0, 'C', true);
         $this->Ln();
@@ -49,7 +49,7 @@ class PDF extends FPDF {
     }
     function tablaPrestamosEspacios($header, $data) {
         $this->SetFont('Arial', 'B', 11);
-        $w = [18, 35, 40, 18, 22, 18, 18, 25, 25];
+        $w = [18, 35, 50, 18, 34, 20, 18, 25, 32];
         for($i=0; $i<count($header); $i++)
             $this->Cell($w[$i], 7, $this->codificar($header[$i]), 1, 0, 'C', true);
         $this->Ln();

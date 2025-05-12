@@ -8,7 +8,7 @@
     <style>
         html {
             background: linear-gradient(white, 60%, #FADBD8);
-            height: 789px;
+            height: 100%;
         }
 
         h2 {
