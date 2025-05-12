@@ -16,7 +16,6 @@ $insumo = isset($_GET['inventario']) ? $_GET['inventario'] : '';
 $cantidad = isset($_GET['cantidad']) ? $_GET['cantidad'] : '';
 $nombrePersona = isset($_GET['nombre_trabajador']) ? $_GET['nombre_trabajador'] : '';
 
-
 // Consulta para obtener los registros de la tabla inventario
 $sqlInventario = "SELECT cod_inventario, nom_inventario, descripcion 
                   FROM inventario 
@@ -279,8 +278,8 @@ $resultadoInventario = $conexion->query($sqlInventario);
 
     <!-- Tabla dinámica -->
     <form action="procesar_inventario.php" method="POST">
-    <input type="hidden" name="nombrePersona" value="<?php echo $nombrePersona; ?>">
-    <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo2; ?>">
+        <input type="hidden" name="nombrePersona" value="<?php echo $nombrePersona; ?>">
+        <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo2; ?>">
         <table id="tabla-inventario">
             <thead>
                 <tr class='encabezado'>

@@ -119,7 +119,7 @@ if ($stmt_insert) {
                 title: 'Éxito',
                 text: 'Peticion aceptada correctamente.'
             }).then(() => {
-                window.location.href = 'lista_inventario.php?id=" . urlencode($id) . "&inventario=" . urlencode($inventario) . "&cantidad=" . urlencode($cantidad) . "&nombre_trabajador=" . urlencode($nombre_trabajador) . "&prestamo_id=" . urlencode($ultimo_id) . "';
+                window.location.href = 'lista_inventario.php?id=" . urlencode($id) . "&inventario=" . urlencode($inventario) . "&cantidad=" . urlencode($cantidad) . "&nombre_trabajador=" . urlencode($nombre_trabajador) . "&prestamo_id=" . urlencode($ultimo_id) .  "';
             });
         </script>";
     } else {
