@@ -3,17 +3,20 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
-try {
-    // Conexión a la base de datos - mejor usar constantes o variables de entorno
-    $conexion = new mysqli("localhost", "root", "", "basededatos");
+// Inicializar variables
+$peticionEncontrada = false;
+$estado = '';
+$idPrestamo = '';
+$nomPersona = '';
+$error = '';
+$idPeticion = isset($_POST['idPeticion']) ? trim($_POST['idPeticion']) : '';
 
-    // Verificar conexión
+try {
+    // Conexión a la base de datos
+    $conexion = new mysqli("localhost", "root", "", "basededatos");
     if ($conexion->connect_error) {
         throw new Exception("Error en la conexión: " . $conexion->connect_error);
     }
-
-    // Obtener ID de petición y validar
-    $idPeticion = isset($_POST['idPeticion']) ? trim($_POST['idPeticion']) : '';
 
     if (empty($idPeticion)) {
         throw new Exception("ID de petición no proporcionado");
@@ -24,17 +27,11 @@ try {
     if (!$stmt) {
         throw new Exception("Error al preparar la consulta: " . $conexion->error);
     }
-
     $stmt->bind_param("s", $idPeticion);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Verificar si se encontró la petición
     if (!$result || $result->num_rows === 0) {
-        $peticionEncontrada = false;
-        $estado = '';
-        $idPrestamo = '';
-        $nomPersona = '';
         $error = "No se encontró la petición con ID: " . htmlspecialchars($idPeticion);
     } else {
         $peticionEncontrada = true;
@@ -43,12 +40,10 @@ try {
         $idPrestamo = $row['id_prestamo'] ?? '';
         $nomPersona = $row['pide'] ?? '';
         $error = '';
-        $stmt->close();
     }
+    $stmt->close();
 } catch (Exception $e) {
-    // Log del error
     error_log("Error en tabla_espacio.php: " . $e->getMessage());
-    $peticionEncontrada = false;
     $error = "Ha ocurrido un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.";
 }
 ?>
@@ -237,34 +232,43 @@ try {
                     if (!empty($error)) {
                         echo "<tr><td colspan='4'>{$error}</td></tr>";
                     } elseif ($peticionEncontrada) {
-                        try {
-                            // Consultar los espacios
-                            $stmt2 = $conexion->prepare("SELECT * FROM espacios WHERE id_prestamo = ?");
-                            if (!$stmt2) {
-                                throw new Exception("Error al preparar la consulta de espacios: " . $conexion->error);
-                            }
-
-                            $stmt2->bind_param("s", $idPrestamo);
-                            $stmt2->execute();
-                            $resultado = $stmt2->get_result();
-
-                            if ($resultado && $resultado->num_rows > 0) {
-                                // Mostrar registros
-                                while ($fila = $resultado->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . htmlspecialchars($fila['cod_espacio']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($fila['nom_espacio']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($fila['Descripcion']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($nomPersona) . "</td>";
-                                    echo "</tr>";
-                                }
+                        // Condicional para mostrar mensajes según el estado
+                        if ($estado !== "Aprobada") {
+                            if ($estado === "Rechazada") {
+                                echo "<tr><td colspan='4'>La petición fue rechazada por alguna razón, lo siento.</td></tr>";
                             } else {
-                                echo "<tr><td colspan='4'>No se encontraron espacios para este préstamo</td></tr>";
+                                echo "<tr><td colspan='4'>Aún no se ha revisado la petición.</td></tr>";
                             }
-                            $stmt2->close();
-                        } catch (Exception $e) {
-                            error_log("Error al consultar espacios: " . $e->getMessage());
-                            echo "<tr><td colspan='4'>Error al consultar los datos de espacios</td></tr>";
+                        } else {
+                            try {
+                                // Consultar los espacios
+                                $stmt2 = $conexion->prepare("SELECT * FROM espacios WHERE id_prestamo = ?");
+                                if (!$stmt2) {
+                                    throw new Exception("Error al preparar la consulta de espacios: " . $conexion->error);
+                                }
+
+                                $stmt2->bind_param("i", $idPrestamo);
+                                $stmt2->execute();
+                                $resultado = $stmt2->get_result();
+
+                                if ($resultado && $resultado->num_rows > 0) {
+                                    // Mostrar registros
+                                    while ($fila = $resultado->fetch_assoc()) {
+                                        echo "<tr>";
+                                        echo "<td>" . htmlspecialchars($fila['cod_espacio']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($fila['nom_espacio']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($fila['Descripcion']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($nomPersona) . "</td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='4'>No se encontraron espacios para este préstamo</td></tr>";
+                                }
+                                $stmt2->close();
+                            } catch (Exception $e) {
+                                error_log("Error al consultar espacios: " . $e->getMessage());
+                                echo "<tr><td colspan='4'>Error al consultar los datos de espacios</td></tr>";
+                            }
                         }
                     }
 

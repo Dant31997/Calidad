@@ -95,7 +95,7 @@ if ($stmt_insert) {
     $stmt_insert->bind_param("ssssss", $nom_espacio, $nombre_trabajador, $estado, $fecha_entrega, $desde, $hasta);
 
     if ($stmt_insert->execute()) {
-
+        $ultimo_id = $conexion->insert_id;
         $conexion = new mysqli("localhost", "root", "", "basededatos");
 
         // Verifica la conexión
@@ -112,16 +112,16 @@ if ($stmt_insert) {
             exit;
         }
         // Actualiza la tabla peticones_espacios
-        $sql_update = "UPDATE peticiones_espacios SET estado_peticion = 'Aprobada' WHERE id = ?";
+        $sql_update = "UPDATE peticiones_espacios SET estado_peticion = 'Aprobada', id_prestamo = ? WHERE id = ?";
         $stmt_update = $conexion->prepare($sql_update);
-        $stmt_update->bind_param("i", $id);
+        $stmt_update->bind_param("ii", $ultimo_id, $id);
         $stmt_update->execute();
         $stmt_update->close();
 
         // Actualiza la tabla espacios
-        $sql_update_espacio = "UPDATE espacios SET estado_espacio = 'Reservado' WHERE nom_espacio = ?";
+        $sql_update_espacio = "UPDATE espacios SET estado_espacio = 'Reservado', id_prestamo = ? WHERE nom_espacio = ?";
         $stmt_update_espacio = $conexion->prepare($sql_update_espacio);
-        $stmt_update_espacio->bind_param("s", $nom_espacio);
+        $stmt_update_espacio->bind_param("is", $ultimo_id, $nom_espacio);
         $stmt_update_espacio->execute();
         $stmt_update_espacio->close();
 
