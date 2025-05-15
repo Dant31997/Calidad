@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Peticiones</title>
@@ -8,6 +10,45 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
     <style>
+        .tabla-container {
+            width: 450px;
+            height: 380px;
+            position: absolute;
+            top: 15%;
+            right: 1%;
+            padding: 5px 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabla-resumen {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla-resumen th {
+            background-color: #ff0000;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .tabla-resumen td {
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        .tabla-resumen tr:hover td {
+            background-color: #f5f5f5;
+        }
+
+
+
+
         html {
             background: linear-gradient(to bottom, white, 70%, #FADBD8);
             margin: 0;
@@ -220,12 +261,14 @@
         }
     </style>
 </head>
+
 <body>
     <div class="panel-box-admin">
         <h2>PETICIONES DE INSUMOS</h2>
     </div>
     </div>
     <?php
+
     $conexion = new mysqli("localhost", "root", "", "basededatos");
 
     // Verifica la conexión
@@ -249,6 +292,43 @@
     // Calcular el número total de páginas
     $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
+    // Segunda tabla para mostrar la cantidad de insumos por tipo
+    //-----------------------------------------------------------------------
+    $registrosPorPagina2 = 6;
+    $paginaActual2 = isset($_GET['pagina2']) ? $_GET['pagina2'] : 1;
+
+    $offset2 = ($paginaActual2 - 1) * $registrosPorPagina2;
+    $sql2 = "SELECT 
+        ti.nombre_insumo, 
+        COALESCE(COUNT(i.nom_inventario), 0) as cantidad,
+        COALESCE(SUM(CASE WHEN i.estado = 'Libre' THEN 1 ELSE 0 END), 0) as libres,
+        COALESCE(SUM(CASE WHEN i.estado = 'Averiado' THEN 1 ELSE 0 END), 0) as averiados,
+        COALESCE(SUM(CASE WHEN i.estado = 'Bodega' THEN 1 ELSE 0 END), 0) as bodega,
+        COALESCE(SUM(CASE WHEN i.estado = 'Prestado' THEN 1 ELSE 0 END), 0) as prestados
+    FROM tipo_insumo ti 
+    LEFT JOIN inventario i ON ti.nombre_insumo = i.nom_inventario 
+    GROUP BY ti.nombre_insumo 
+    ORDER BY ti.nombre_insumo ASC 
+    LIMIT $offset2, $registrosPorPagina2";
+    $resultado2 = $conexion->query($sql2);
+
+    // Consulta SQL para obtener el número total de registros
+    $totalRegistros2 = $conexion->query("SELECT COUNT(*) as total FROM (
+        SELECT ti.nombre_insumo 
+        FROM tipo_insumo ti 
+        GROUP BY ti.nombre_insumo
+    ) as subquery")->fetch_assoc()['total'];
+
+    // Calcular el número total de páginas
+    $numTotalPaginas2 = ceil($totalRegistros2 / $registrosPorPagina2);
+
+
+
+
+
+    
+
+
 
     if ($resultado->num_rows > 0) {
 
@@ -260,7 +340,7 @@
         <th style=width:280px;>Nombre de la persona</th>
         <th style=width:150px;>Estado de la peticion</th>
         <th style=width:130px>Fecha</th>
-        <th style=width:100px;>Hora de Salida</th>
+        <th style=width:100px;>Hora del Prestamo</th>
         <th style=width:100px;>Hora de Devolucion</th>
         <th style=width:80px;>Acciones</th> </tr>";
         while ($fila = $resultado->fetch_assoc()) {
@@ -295,7 +375,39 @@
         }
         ?>
     </div>
-
+    <div class="tabla-container">
+        <h2 style="text-align: center; color: #000;">Cantidades por insumo</h2>
+        <table class="tabla-resumen">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Total</th>
+                    <th>Libres</th>
+                    <th>Prestados</th>
+                    <th>Averiados</th>
+                    <th>En bodega</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($resultado2->num_rows > 0) {
+                    while ($row = $resultado2->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['nombre_insumo'] . "</td>";
+                        echo "<td>" . $row['cantidad'] . "</td>";
+                        echo "<td>" . $row['libres'] . "</td>";
+                        echo "<td>" . $row['prestados'] . "</td>";
+                        echo "<td>" . $row['averiados'] . "</td>";
+                        echo "<td>" . $row['bodega'] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5'>No hay datos disponibles</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 
     <a class="custom-button2" href="inventario.php">Volver al inicio</a>
     <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>

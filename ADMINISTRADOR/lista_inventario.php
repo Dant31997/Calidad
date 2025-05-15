@@ -273,8 +273,22 @@ $resultadoInventario = $conexion->query($sqlInventario);
         </form>
     </div>
 
-    <!-- Filtro para la tabla -->
-    <input type="text" id="filtro" class="filter-input" onkeyup="filtrarTabla()" placeholder="Filtrar por nombre de equipo...">
+
+
+    <select id="filtro" class="filter-input">
+        <option value="">-- Mostrar todos los equipos --</option>
+        <?php
+        // Generar opciones para el select con los nombres únicos de inventario disponibles
+        $sqlOpciones = "SELECT DISTINCT nom_inventario FROM inventario WHERE estado = 'Libre' AND (prestado_a = 'Nadie' OR TRIM(prestado_a) = '' OR prestado_a IS NULL) ORDER BY nom_inventario ASC";
+        $resultadoOpciones = $conexion->query($sqlOpciones);
+        if ($resultadoOpciones->num_rows > 0) {
+            while ($opcion = $resultadoOpciones->fetch_assoc()) {
+                echo '<option value="' . htmlspecialchars($opcion['nom_inventario']) . '">' . htmlspecialchars($opcion['nom_inventario']) . '</option>';
+            }
+        }
+        ?>
+    </select>
+
 
     <!-- Tabla dinámica -->
     <form action="procesar_inventario.php" method="POST">
@@ -311,6 +325,23 @@ $resultadoInventario = $conexion->query($sqlInventario);
     </form>
 
     <script>
+        function filtrarTabla() {
+            const filtro = document.getElementById('filtro').value.toLowerCase();
+
+            // Si el filtro está vacío, mostrar todas las filas
+            if (filtro === "") {
+                visibleRows = [...allRows];
+            } else {
+                visibleRows = allRows.filter(row => {
+                    const nombre = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    return nombre === filtro;
+                });
+            }
+
+            currentPage = 1; // Reiniciar a la primera página al filtrar
+            renderTable(); // Actualizar la tabla
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Configuración inicial
             const rowsPerPage = 5;
@@ -381,8 +412,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
             }
 
             // Asignar evento de filtrado al input
-            document.getElementById('filtro').addEventListener('keyup', filtrarTabla);
-
+            document.getElementById('filtro').addEventListener('change', filtrarTabla);
             // Renderizar la tabla inicialmente
             renderTable();
         });
