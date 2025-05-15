@@ -379,7 +379,6 @@ while ($fila = $resultadoTipos->fetch_assoc()) {
     $tiposInsumo[] = $fila['nom_inventario'];
 }
 
-// Obtener los estados distintos
 $estados = array();
 $sqlEstados = "SELECT DISTINCT estado FROM inventario ORDER BY estado ASC";
 $resultadoEstados = $conexion->query($sqlEstados);
@@ -519,22 +518,25 @@ if ($resultado->num_rows >= 0) {
     }
 
     echo "<label for='filtro_tipo'>Filtrar por tipo: </label>";
-
-    // SELECT CORRECTO CON onchange
     echo "<select name='filtro_tipo' id='filtro_tipo' onchange='this.form.submit()'>";
     echo "<option value=''>Todos los tipos</option>";
-
     foreach ($tiposInsumo as $tipo) {
         $selected = ($tipo == $filtroTipoInsumo) ? 'selected' : '';
         echo "<option value='$tipo' $selected>$tipo</option>";
     }
-
     echo "</select>";
 
-    // Puedes quitar el botón porque ya se filtra automáticamente
-    // echo "<button type='submit'>Filtrar</button>";
+    echo "<label for='filtro_estado' style='margin-left:10px;'>Estado: </label>";
+    echo "<select name='filtro_estado' id='filtro_estado' onchange='this.form.submit()'>";
+    echo "<option value=''>Todos</option>";
+    foreach ($estados as $estado) {
+        $selected = ($estado == $filtroEstado) ? 'selected' : '';
+        echo "<option value='$estado' $selected>$estado</option>";
+    }
+    echo "</select>";
 
-    echo "</form>"; // <--- No olvides cerrar el form aquí
+    echo "</form>";
+
     echo "</div>";
 
     // Tabla de resultados
