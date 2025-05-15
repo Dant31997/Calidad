@@ -100,7 +100,7 @@ $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
         font-size: 16px;
         position: absolute;
         top: 86%;
-        left: 18%;
+        left: 25%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-color: transparent;
     }
@@ -296,7 +296,7 @@ $hora_regreso = isset($_GET['hora_regreso']) ? $_GET['hora_regreso'] : '';
             <br>
             <input type="hidden" id="id" name="id" value="<?php echo htmlspecialchars($id); ?>">
             <label for="Nombre_trabajador">Nombre:</label>
-            <input type="text" id="Nombre_trabajador" name="Nombre_trabajador" value="<?php echo htmlspecialchars($nom_persona); ?>" required>
+            <input  readonly type="text" id="Nombre_trabajador" name="Nombre_trabajador" value="<?php echo htmlspecialchars($nom_persona); ?>" required>
             <div class="form-grid">
                 <div class="form-group">
                     <label for="inventario">Inventario:</label>

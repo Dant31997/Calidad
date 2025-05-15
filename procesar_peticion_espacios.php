@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+</head>
+<body>
+    
+</body>
+</html>
 <?php
 
 // Conexión a la base de datos
@@ -30,24 +42,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn->query($sql) === TRUE) {
             // Obtener el ID de la petición generada
             $idPeticion = $conn->insert_id;
-            echo "<script>
-                alert('Petición registrada exitosamente. El ID de tu petición es: " . $idPeticion . "');
-                window.location.href = 'peticiones_insumos.php';
-            </script>";
+            echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Petición registrada exitosamente',
+            html: 'El ID de tu petición es: <b>$idPeticion</b>',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+            window.location.href = 'peticiones_insumos.php';
+        });
+    </script>";
         } else {
-            echo "<script>
-                alert('Error al registrar la petición: " . $conn->error . "');
-                window.location.href = 'peticiones_insumos.php';
-            </script>";
+            echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al registrar la petición',
+            text: '" . addslashes($conn->error) . "',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
+            window.location.href = 'peticiones_insumos.php';
+        });
+    </script>";
         }
     } else {
-        echo "<script>
-            alert('Por favor, completa todos los campos.');
+        echo "
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, completa todos los campos.',
+            confirmButtonText: 'Aceptar'
+        }).then(() => {
             window.location.href = 'peticiones_insumos.php';
-        </script>";
+        });
+    </script>";
     }
 }
-
 // Cerrar la conexión
 $conn->close();
-?>

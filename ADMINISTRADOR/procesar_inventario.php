@@ -30,8 +30,7 @@ if (isset($_POST['equipos']) && is_array($_POST['equipos']) && count($_POST['equ
         $stmt = $conexion->prepare("UPDATE inventario 
                                   SET id_prestamo = ?,
                                       estado = 'Prestado', 
-                                      prestado_a = ?, 
-                                      dia_prestamo = CURRENT_TIMESTAMP 
+                                      prestado_a = ?
                                   WHERE cod_inventario = ?");
 
         // Verificar que la preparación fue exitosa
