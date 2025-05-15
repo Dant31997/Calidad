@@ -26,7 +26,7 @@ if ($conexion->query($sql) === TRUE) {
     // Si el estado del préstamo es "Devuelto", actualiza el estado del insumo en la tabla inventario
     if ($estado === "Devuelto") {
         $sql_inventario = "UPDATE inventario 
-                           SET estado = 'Libre', prestado_a = 'Nadie', dia_prestamo = NULL, id_prestamo = NULL
+                           SET estado = 'Libre', prestado_a = 'Nadie', id_prestamo = NULL
                            WHERE id_prestamo = '$id_prestamo'";
         $conexion->query($sql_inventario);
     }
