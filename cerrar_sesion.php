@@ -1,7 +1,5 @@
 <?php
-// Iniciar o reanudar la sesión
 session_start();
-
 $_SESSION = array();
 
 if (ini_get("session.use_cookies")) {
@@ -12,10 +10,9 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// Destruir la sesión actual
 session_destroy();
 
-// Redirigir a la página de inicio de sesión
-header("Location: ../index.php");
+// Redirigir a la página de mensaje de cierre de sesión
+header("Location: logout_success.php");
 exit();
 ?>
