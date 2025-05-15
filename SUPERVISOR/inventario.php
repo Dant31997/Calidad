@@ -501,13 +501,13 @@ $totalRegistros2 = $conexion->query("SELECT COUNT(*) as total FROM (
 $numTotalPaginas2 = ceil($totalRegistros2 / $registrosPorPagina2);
 
 if ($resultado->num_rows >= 0) {
-    echo "<div class='panel-box-admin'>";
+   echo "<div class='panel-box-admin'>";
     echo "<h2 class='title1' align='center'>INVENTARIO</h2>";
     echo "</div>";
 
     // Agregar el formulario de filtro
     echo "<div class='filtro-container'>";
-    echo "<form method='get' action=''>";
+    echo "<form method='get' action=''>"; // <--- Asegúrate de abrir el form aquí
 
     // Mantener estados de paginación
     if (isset($_GET['pagina2'])) {
@@ -515,7 +515,9 @@ if ($resultado->num_rows >= 0) {
     }
 
     echo "<label for='filtro_tipo'>Filtrar por tipo: </label>";
-    echo "<select name='filtro_tipo' id='filtro_tipo'>";
+
+    // SELECT CORRECTO CON onchange
+    echo "<select name='filtro_tipo' id='filtro_tipo' onchange='this.form.submit()'>";
     echo "<option value=''>Todos los tipos</option>";
 
     foreach ($tiposInsumo as $tipo) {
@@ -525,38 +527,23 @@ if ($resultado->num_rows >= 0) {
 
     echo "</select>";
 
-    echo "<label for='filtro_estado' style='margin-left:10px;'>Estado: </label>";
-    echo "<select name='filtro_estado' id='filtro_estado'>";
-    echo "<option value=''>Todos</option>";
-    foreach ($estados as $estado) {
-        $selected = ($estado == $filtroEstado) ? 'selected' : '';
-        echo "<option value='$estado' $selected>$estado</option>";
-    }
-    echo "</select>";
+    // Puedes quitar el botón porque ya se filtra automáticamente
+    // echo "<button type='submit'>Filtrar</button>";
 
-    echo "<button type='submit'>Filtrar</button>";
 
-    // Botón para reiniciar el filtro
-    if (!empty($filtroTipoInsumo)) {
-        echo "<a href='inventario.php";
-        if (isset($_GET['pagina2'])) {
-            echo "?pagina2=" . $_GET['pagina2'];
-        }
-        echo "' class='reset-button'>Reiniciar</a>";
-    }
-
-    echo "</form>";
+    echo "</form>"; // <--- No olvides cerrar el form aquí
     echo "</div>";
 
+    // Tabla de resultados
     echo "<div class='tabla1'>";
     echo "<table>";
     echo "<tr class='encabezado'>
-    <th style=width:50px;>Cód.inv</th>
-    <th style=width:100px;> Tipo de Insumo </th>
-    <th style=width:250px;> Descripcion</th>
-    <th style=width:150px;> Prestado a</th>
-    <th style=width:60px;> Estado </th>
-    <th style=width:100px;>Acciones</th>
+        <th style=width:50px;>Cód.inv</th>
+        <th style=width:100px;> Tipo de Insumo </th>
+        <th style=width:250px;> Descripcion</th>
+        <th style=width:150px;> Prestado a</th>
+        <th style=width:60px;> Estado </th>
+        <th style=width:100px;>Acciones</th>
     </tr>";
 
     while ($fila = $resultado->fetch_assoc()) {
@@ -567,7 +554,7 @@ if ($resultado->num_rows >= 0) {
         echo "<td>" . $fila['prestado_a'] . "</td>";
         echo "<td>" . $fila['estado'] . "</td>";
         echo "<td><a href='editarobjeto.php?cod_inventario=" . $fila['cod_inventario'] . "&nom_inventario=" . $fila['nom_inventario'] . "&estado=" . $fila['estado'] . "&Descripcion=" . $fila['Descripcion'] .  "'><img src='imagenes/editar.png' /></a>
-                  ";
+                  <a href='eliminar_objeto.php?cod_inventario=" . $fila['cod_inventario'] . "'><img src='imagenes/eliminar.png' /></a></td>";
         echo "</tr>";
     }
 
