@@ -527,11 +527,16 @@ if ($resultado->num_rows >= 0) {
 
     echo "</select>";
 
-    // Puedes quitar el botón porque ya se filtra automáticamente
-    // echo "<button type='submit'>Filtrar</button>";
+    echo "<label for='filtro_estado' style='margin-left:10px;'>Estado: </label>";
+    echo "<select name='filtro_estado' id='filtro_estado' onchange='this.form.submit()'>";
+    echo "<option value=''>Todos</option>";
+    foreach ($estados as $estado) {
+        $selected = ($estado == $filtroEstado) ? 'selected' : '';
+        echo "<option value='$estado' $selected>$estado</option>";
+    }
+    echo "</select>";
 
-
-    echo "</form>"; // <--- No olvides cerrar el form aquí
+    echo "</form>"; 
     echo "</div>";
 
     // Tabla de resultados
