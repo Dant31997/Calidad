@@ -1,5 +1,5 @@
 <title>INVENTARIO</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
     html {
         background: linear-gradient(to bottom, white, 30%, #FADBD8);
@@ -312,6 +312,56 @@
     .reset-button:hover {
         background-color: #444;
     }
+
+    .dropdown-nav {
+        position: absolute;
+        top: 1%;
+        left: 2%;
+        z-index: 1000;
+    }
+
+    .dropbtn {
+        background-color: #ff0000;
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .dropbtn:hover,
+    .dropbtn:focus {
+        background-color: #D62828;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        color: #ff0000;
+    }
+
+    .dropdown-nav:hover .dropdown-content {
+        display: block;
+    }
 </style>
 <?php
 
@@ -328,9 +378,16 @@ $resultadoTipos = $conexion->query($sqlTipos);
 while ($fila = $resultadoTipos->fetch_assoc()) {
     $tiposInsumo[] = $fila['nom_inventario'];
 }
+$estados = array();
+$sqlEstados = "SELECT DISTINCT estado FROM inventario ORDER BY estado ASC";
+$resultadoEstados = $conexion->query($sqlEstados);
+while ($fila = $resultadoEstados->fetch_assoc()) {
+    $estados[] = $fila['estado'];
+}
 
 // Procesar el filtro si se ha seleccionado
 $filtroTipoInsumo = isset($_GET['filtro_tipo']) ? $_GET['filtro_tipo'] : '';
+$filtroEstado = isset($_GET['filtro_estado']) ? $_GET['filtro_estado'] : '';
 
 $registrosPorPagina = 5;
 $paginaActual = isset($_GET['pagina1']) ? $_GET['pagina1'] : 1;
@@ -342,6 +399,10 @@ $sqlParams = array();
 if (!empty($filtroTipoInsumo)) {
     $sqlWhere = "WHERE nom_inventario = ?";
     $sqlParams[] = $filtroTipoInsumo;
+}
+if (!empty($filtroEstado)) {
+    $sqlWhere .= (empty($sqlWhere) ? "WHERE " : " AND ") . "estado = ?";
+    $sqlParams[] = $filtroEstado;
 }
 
 // Consulta SQL con LIMIT para obtener registros de la página actual
@@ -463,6 +524,16 @@ if ($resultado->num_rows >= 0) {
     }
 
     echo "</select>";
+
+    echo "<label for='filtro_estado' style='margin-left:10px;'>Estado: </label>";
+    echo "<select name='filtro_estado' id='filtro_estado'>";
+    echo "<option value=''>Todos</option>";
+    foreach ($estados as $estado) {
+        $selected = ($estado == $filtroEstado) ? 'selected' : '';
+        echo "<option value='$estado' $selected>$estado</option>";
+    }
+    echo "</select>";
+
     echo "<button type='submit'>Filtrar</button>";
 
     // Botón para reiniciar el filtro
@@ -527,6 +598,20 @@ $conexion->close();
     ?>
 </div>
 
+<div class="dropdown-nav">
+    <button class="dropbtn">&#9776;</button>
+    <div class="dropdown-content">
+        <a href="espacios.php"><i class="fa-solid fa-building"></i> Espacios</a>
+        <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+        <a target="_blank" href="exportar_inv.php"><i class="fa-solid fa-file-export"></i> Informe de Inventario</a>
+        <a href="verificarPeticionesInsumos.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Insumos</a>
+        <a href="tipo_insumo.php"><i class="fa-solid fa-boxes-stacked"></i> Tipos de Insumo</a>
+        <a href="supervisor.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+        <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+
+    </div>
+</div>
+
 <div class="tabla-container">
     <h2 style="text-align: center;">Cantidades por insumo</h2>
     <table class="tabla-resumen">
@@ -570,12 +655,12 @@ $conexion->close();
         if (isset($_GET['pagina1'])) {
             echo "&pagina1=" . $_GET['pagina1'];
         }
-        
+
         // Mantener el filtro si está aplicado
         if (!empty($filtroTipoInsumo)) {
             echo "&filtro_tipo=" . urlencode($filtroTipoInsumo);
         }
-        
+
         echo "'>$i2</a>";
     }
     ?>
@@ -583,5 +668,3 @@ $conexion->close();
 
 <br>
 <a class="custom-button2" href="supervisor.php">Volver al inicio</a>
-<a class="custom-button3" target="_blank" href='exportar_inv.php'>Exportar a PDF</a>
-<a class="peticiones-button" href="verificarPeticionesInsumos.php">PETICIONES DE INSUMOS </a>

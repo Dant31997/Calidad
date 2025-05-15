@@ -1,4 +1,5 @@
 <title>ESPACIOS</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
     html {
         background: linear-gradient(to bottom, white, 70%, #FADBD8);
@@ -41,7 +42,7 @@
         font-size: 16px;
         position: absolute;
         top: 90.5%;
-        left: 30%;
+        left: 41.5%;
     }
 
     .custom-button:hover {
@@ -79,7 +80,7 @@
         margin-top: 5%;
         position: absolute;
         top: 2%;
-        left: 2%;   
+        left: 2%;
     }
 
     table {
@@ -169,9 +170,60 @@
         left: 75%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
     .custom-button3:hover {
         background-color: #ff0000;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-nav {
+        position: absolute;
+        top: 1%;
+        left: 2%;
+        z-index: 1000;
+    }
+
+    .dropbtn {
+        background-color: #ff0000;
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .dropbtn:hover,
+    .dropbtn:focus {
+        background-color: #D62828;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        color: #ff0000;
+    }
+
+    .dropdown-nav:hover .dropdown-content {
+        display: block;
     }
 </style>
 <?php
@@ -221,7 +273,7 @@ if ($resultado->num_rows > 0) {
         echo "<td>" . $fila['Descripcion'] . "</td>";
         echo "<td>" . $fila['capacidad'] . "</td>";
         echo "<td>" . $fila['estado_espacio'] . "</td>";
-        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&capacidad=" . $fila['capacidad']."&nom_espacio=" . $fila['nom_espacio'] . "&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
+        echo "<td><a href='editar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "&capacidad=" . $fila['capacidad'] . "&nom_espacio=" . $fila['nom_espacio'] . "&estado_espacio=" . $fila['estado_espacio'] .  "&Descripcion=" . $fila['Descripcion'] . "'><img src='imagenes/editar.png' /></a><h>--</h><a href='eliminar_espacio.php?cod_espacio=" . $fila['cod_espacio'] . "'><img src='imagenes/eliminar.png' /></a></td>";
         echo "</tr>";
     }
 
@@ -232,7 +284,17 @@ if ($resultado->num_rows > 0) {
 $conexion->close();
 
 ?>
-<!-- Crear los enlaces de paginación -->
+<div class="dropdown-nav">
+    <button class="dropbtn">&#9776;</button>
+    <div class="dropdown-content">
+        <a href="inventario.php"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+        <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+        <a href="verificarPeticionesEspacios.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Espacios</a>
+        <a target="_blank" href="exportar_esp.php"><i class="fa-solid fa-file-export"></i> Informe de Espacios</a>
+        <a href="admin_panel.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+        <a href="../cerrar_sesion.php" ><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+</div>
 
 <div class="pagination">
     <?php
@@ -243,8 +305,6 @@ $conexion->close();
     ?>
 </div>
 <br>
-        
-<a class="peticiones-button" href="verificarPeticionesEspacios.php">PETICIONES DE ESPACIOS</a>
+
+
 <a class="custom-button" href="agregarespacio.php">Agregar Espacio</a>
-<a class="regresar" href="admin_panel.php">Volver al inicio</a>
-<a class="custom-button3" target="_blank" href='exportar_esp.php'>Exportar a PDF</a>

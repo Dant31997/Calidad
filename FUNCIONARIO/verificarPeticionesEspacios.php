@@ -5,6 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Peticiones de espacios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
@@ -174,12 +175,71 @@
         .encabezado {
             background-color: red;
         }
+
+        .dropdown-nav {
+            position: absolute;
+            top: 1%;
+            left: 2%;
+            z-index: 1000;
+        }
+
+        .dropbtn {
+            background-color: #ff0000;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #D62828;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: #ff0000;
+        }
+
+        .dropdown-nav:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
     <div class="panel-box-admin">
         <h2>PETICIONES DE ESPACIOS</h2>
+    </div>
+    <div class="dropdown-nav">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+            <a href="verificarPeticionesInsumos.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Insumos</a>
+            <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+            <a href="funcionario.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+            <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+        </div>
     </div>
 
     <?php
@@ -230,9 +290,9 @@
             echo "<td>" . date('g:i A', strtotime($fila['hora_entrega'])) . "</td>";
             echo "<td>" . date('g:i A', strtotime($fila['hora_regreso'])) . "</td>";
             echo "<td>  
-                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_espacio.php?id=" . $fila['id'] 
-                    . "&nom_espacio=" . $fila['nom_espacio'] . "&pide=" . $fila['pide'] . "&hora_entrega=" . $fila['hora_entrega'] . 
-                    "&hora_regreso=" . $fila['hora_regreso'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
+                    <a title='Asignar' class='asignar-btn' style='margin-right: 1px;' href='asignar_espacio.php?id=" . $fila['id']
+                . "&nom_espacio=" . $fila['nom_espacio'] . "&pide=" . $fila['pide'] . "&hora_entrega=" . $fila['hora_entrega'] .
+                "&hora_regreso=" . $fila['hora_regreso'] . "&fecha_entrega=" . $fila['fecha_entrega'] . "'><img src='imagenes/asignar.png' alt='Asignar' /></a>
                 </td>";
             echo "</tr>";
         }
@@ -250,7 +310,6 @@
         }
         ?>
     </div>
-    <a class="custom-button2" href="funcionario.php">Volver al inicio</a>
 </body>
 
 </html>

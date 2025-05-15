@@ -3,12 +3,12 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
+
     // Mostrar alertas si existen
     if (isset($_SESSION['alert_type']) && isset($_SESSION['alert_message'])) {
         $alertType = $_SESSION['alert_type'];
         $alertMessage = $_SESSION['alert_message'];
-        
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -21,12 +21,12 @@
             });
         </script>
         ";
-        
+
         // Limpiar las variables de sesión
         unset($_SESSION['alert_type']);
         unset($_SESSION['alert_message']);
     }
-    
+
     ?>
 
     <!DOCTYPE html>
@@ -36,6 +36,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?php echo $title; ?></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <!-- SweetAlert2 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <!-- SweetAlert2 JS -->
@@ -243,10 +244,70 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
+
+            .dropdown-nav {
+                position: absolute;
+                top: 1%;
+                left: 2%;
+                z-index: 1000;
+            }
+
+            .dropbtn {
+                background-color: #ff0000;
+                color: white;
+                padding: 12px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .dropbtn:hover,
+            .dropbtn:focus {
+                background-color: #D62828;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                left: 0;
+                background-color: #fff;
+                min-width: 220px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+                overflow: hidden;
+            }
+
+            .dropdown-content a {
+                color: #333;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background 0.2s;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+                color: #ff0000;
+            }
+
+            .dropdown-nav:hover .dropdown-content {
+                display: block;
+            }
         </style>
     </head>
 
     <body>
+
+        <div class="dropdown-nav">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="verificarPeticionesInsumos.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Insumos</a>
+                <a href="verificarPeticionesEspacios.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Espacios</a>     
+                <a href="funcionario.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+                <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+            </div>
+        </div>
         <!-- Modal para editar préstamos de insumos -->
         <div id="editModal" class="modal" style="display:none;">
             <div class="modal-content">
@@ -390,13 +451,13 @@
         $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM $tablaSeleccionada")->fetch_assoc()['total'];
         $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-        
-            echo "<div class='panel-box-admin'>";
-            echo "<h2 class='title1' align='center'>$title</h2>";
-            echo "</div>";
 
-            echo "<div class='tabla1'>";
-            if ($resultado->num_rows > 0) {
+        echo "<div class='panel-box-admin'>";
+        echo "<h2 class='title1' align='center'>$title</h2>";
+        echo "</div>";
+
+        echo "<div class='tabla1'>";
+        if ($resultado->num_rows > 0) {
             echo "<table>";
             echo "<tr class='encabezado'>";
 
@@ -466,7 +527,6 @@
                 echo "</tr>";
             }
             echo "</table>";
-
         } else {
             // Display a specific message based on the selected table
             if ($tablaSeleccionada === 'prestamos_insumos') {
@@ -480,8 +540,8 @@
             }
         }
 
-            echo "</div>";
-        
+        echo "</div>";
+
 
         $conexion->close();
         ?>
@@ -495,7 +555,6 @@
             ?>
         </div>
         <br>
-        <a class="custom-button" href="funcionario.php">Volver al inicio</a>
     </body>
 
     </html>

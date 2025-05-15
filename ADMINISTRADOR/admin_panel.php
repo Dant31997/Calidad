@@ -368,8 +368,7 @@ $resultado = $conexion->query($consulta);
     <div class="panel-box-admin">
         <h2>Bienvenido <?php echo htmlspecialchars($nombre); ?></h2>
     </div>
-    <a href="../cerrar_sesion.php" class="logout-button">Cerrar Sesión</a>
-
+    <a href="../cerrar_sesion.php" class="logout-button"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
     <div class="panel-box">
 
         <!-- Formulario para crear un nuevo usuario -->

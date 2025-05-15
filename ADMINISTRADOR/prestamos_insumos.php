@@ -3,12 +3,12 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
+
     // Mostrar alertas si existen
     if (isset($_SESSION['alert_type']) && isset($_SESSION['alert_message'])) {
         $alertType = $_SESSION['alert_type'];
         $alertMessage = $_SESSION['alert_message'];
-        
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -21,12 +21,12 @@
             });
         </script>
         ";
-        
+
         // Limpiar las variables de sesión
         unset($_SESSION['alert_type']);
         unset($_SESSION['alert_message']);
     }
-    
+
     ?>
 
     <!DOCTYPE html>
@@ -37,6 +37,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?php echo $title; ?></title>
         <!-- SweetAlert2 CSS -->
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <!-- SweetAlert2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -72,6 +74,7 @@
                 background-color: #D62828;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
+
             .export-button {
                 display: inline-block;
                 padding: 10px 20px;
@@ -82,7 +85,7 @@
                 font-size: 16px;
                 position: absolute;
                 top: 1.5%;
-                left: 5%;
+                left: 10%;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 
@@ -261,10 +264,70 @@
                 border-radius: 5px;
                 cursor: pointer;
             }
+
+            .dropdown-nav {
+                position: absolute;
+                top: 1%;
+                left: 2%;
+                z-index: 1000;
+            }
+
+            .dropbtn {
+                background-color: #ff0000;
+                color: white;
+                padding: 12px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .dropbtn:hover,
+            .dropbtn:focus {
+                background-color: #D62828;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                left: 0;
+                background-color: #fff;
+                min-width: 220px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+                overflow: hidden;
+            }
+
+            .dropdown-content a {
+                color: #333;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background 0.2s;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+                color: #ff0000;
+            }
+
+            .dropdown-nav:hover .dropdown-content {
+                display: block;
+            }
         </style>
     </head>
 
     <body>
+        <div class="dropdown-nav">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="inventario.php"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+                <a href="espacios.php"><i class="fa-solid fa-building"></i> Espacios</a>
+                <a target="_blank" href="exportar_prestamos.php"><i class="fa-solid fa-file-export"></i> Informe de Préstamos</a>
+                <a href="admin_panel.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+                <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+            </div>
+        </div>
         <!-- Modal para editar préstamos de insumos -->
         <div id="editModal" class="modal" style="display:none;">
             <div class="modal-content">
@@ -408,13 +471,13 @@
         $totalRegistros = $conexion->query("SELECT COUNT(*) as total FROM $tablaSeleccionada")->fetch_assoc()['total'];
         $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-        
-            echo "<div class='panel-box-admin'>";
-            echo "<h2 class='title1' align='center'>$title</h2>";
-            echo "</div>";
 
-            echo "<div class='tabla1'>";
-            if ($resultado->num_rows > 0) {
+        echo "<div class='panel-box-admin'>";
+        echo "<h2 class='title1' align='center'>$title</h2>";
+        echo "</div>";
+
+        echo "<div class='tabla1'>";
+        if ($resultado->num_rows > 0) {
             echo "<table>";
             echo "<tr class='encabezado'>";
 
@@ -484,7 +547,6 @@
                 echo "</tr>";
             }
             echo "</table>";
-
         } else {
             // Display a specific message based on the selected table
             if ($tablaSeleccionada === 'prestamos_insumos') {
@@ -498,8 +560,8 @@
             }
         }
 
-            echo "</div>";
-        
+        echo "</div>";
+
 
         $conexion->close();
         ?>
@@ -513,8 +575,7 @@
             ?>
         </div>
         <br>
-        <a class="custom-button" href="admin_panel.php">Volver al inicio</a>
-        <a class="export-button" target="_blank" href="exportar_prestamos.php">Exportar a PDF</a>
+       
     </body>
 
     </html>
