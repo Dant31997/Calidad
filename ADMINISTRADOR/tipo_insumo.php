@@ -250,7 +250,7 @@ $numTotalPaginas = ceil($totalRegistros / $registrosPorPagina);
         ?>
     </div>
 
-    <a class="regresar" href="inventario.php">Volver al inicio</a>
+    <a class="regresar" href="inventario.php">Volver al inventario</a>
 </body>
 
 </html>

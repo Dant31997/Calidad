@@ -22,17 +22,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $equipo = $_POST['equipo'];
         $nombre = $_POST['nom_persona'];
         $cantidad = $_POST['cantidad'];
+        $fecha = date('Y-m-d');
         $horario_salida = $_POST['hora_entrega'];
         $horario_devolucion = $_POST['hora_regreso'];
 
         // Consulta preparada
-        $sql = "INSERT INTO peticiones_insumos (equipo, cantidad, nom_persona, hora_entrega, hora_regreso) 
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO peticiones_insumos (equipo, cantidad, nom_persona, dia_entrega, hora_entrega, hora_regreso) 
+                VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conexion->prepare($sql);
 
         if ($stmt) {
             // Vincular parámetros
-            $stmt->bind_param("sssss", $equipo, $cantidad, $nombre, $horario_salida, $horario_devolucion);
+            $stmt->bind_param("ssssss", $equipo, $cantidad, $nombre, $fecha, $horario_salida, $horario_devolucion);
 
             // Ejecutar la consulta
             if ($stmt->execute()) {

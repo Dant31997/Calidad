@@ -7,6 +7,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Peticiones</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
     <style>
@@ -15,7 +16,7 @@
             height: 380px;
             position: absolute;
             top: 15%;
-            right: 1%;
+            right: 10%;
             padding: 5px 10px;
             background-color: #fff;
             border-radius: 10px;
@@ -45,10 +46,6 @@
         .tabla-resumen tr:hover td {
             background-color: #f5f5f5;
         }
-
-
-
-
         html {
             background: linear-gradient(to bottom, white, 70%, #FADBD8);
             margin: 0;
@@ -90,7 +87,7 @@
         .tabla1 {
             position: absolute;
             top: 13%;
-            left: 1%;
+            left: 4%;
             padding: 10px;
             width: 1280px;
             height: 400px;
@@ -259,6 +256,56 @@
             background-color: #943126;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
+        .dropdown-nav {
+            position: absolute;
+            top: 1%;
+            left: 2%;
+            z-index: 1000;
+        }
+
+        .dropbtn {
+            background-color: #ff0000;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #D62828;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 0;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: #ff0000;
+        }
+
+        .dropdown-nav:hover .dropdown-content {
+            display: block;
+        }
     </style>
 </head>
 
@@ -266,7 +313,18 @@
     <div class="panel-box-admin">
         <h2>PETICIONES DE INSUMOS</h2>
     </div>
+
+    <div class="dropdown-nav">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+            <a href="espacios.php"><i class="fa-solid fa-house"></i> Espacios</a>
+            <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+            <a target="_blank" href="exportar_PeticionesInsumos.php"><i class="fa-solid fa-file-export"></i> Informe de Peticiones de Insumos</a>
+            <a href="inventario.php"><i class="fa-solid fa-boxes-stacked"></i> Volver al Inventario</a>
+            <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
+        </div>
     </div>
+
     <?php
 
     $conexion = new mysqli("localhost", "root", "", "basededatos");
@@ -322,22 +380,14 @@
     // Calcular el número total de páginas
     $numTotalPaginas2 = ceil($totalRegistros2 / $registrosPorPagina2);
 
-
-
-
-
-    
-
-
-
     if ($resultado->num_rows > 0) {
 
         echo "<div class='tabla1'>";
         echo "<table>";
         echo "<tr class='encabezado' ><th style=width:50px;>ID</th>
-        <th style=width:100px;>Equipo</th>
-        <th style=width:100px;>Cantidad</th>
-        <th style=width:280px;>Nombre de la persona</th>
+        <th style=width:110px;>Equipo</th>
+        <th style=width:70px;>Cantidad</th>
+        <th style=width:260px;>Nombre de la persona</th>
         <th style=width:150px;>Estado de la peticion</th>
         <th style=width:130px>Fecha</th>
         <th style=width:100px;>Hora del Prestamo</th>
@@ -375,42 +425,6 @@
         }
         ?>
     </div>
-    <div class="tabla-container">
-        <h2 style="text-align: center; color: #000;">Cantidades por insumo</h2>
-        <table class="tabla-resumen">
-            <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Total</th>
-                    <th>Libres</th>
-                    <th>Prestados</th>
-                    <th>Averiados</th>
-                    <th>En bodega</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($resultado2->num_rows > 0) {
-                    while ($row = $resultado2->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row['nombre_insumo'] . "</td>";
-                        echo "<td>" . $row['cantidad'] . "</td>";
-                        echo "<td>" . $row['libres'] . "</td>";
-                        echo "<td>" . $row['prestados'] . "</td>";
-                        echo "<td>" . $row['averiados'] . "</td>";
-                        echo "<td>" . $row['bodega'] . "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='5'>No hay datos disponibles</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-
-    <a class="custom-button2" href="inventario.php">Volver al inicio</a>
-    <a class="custom-button3" target="_blank" href='exportar_PeticionesInsumos.php'>Exportar a PDF</a>
 </body>
 
 </html>

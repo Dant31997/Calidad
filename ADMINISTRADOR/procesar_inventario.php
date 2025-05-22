@@ -13,6 +13,7 @@ if ($conexion->connect_error) {
 // Recuperar los parámetros necesarios
 $idPrestamo = isset($_POST['idPrestamo']) ? (int)$_POST['idPrestamo'] : 0;
 $nombrePersona = isset($_POST['nombrePersona']) ? trim($_POST['nombrePersona']) : '';
+$peticion = isset($_POST['peticion']) ? trim($_POST['peticion']) : '';
 
 // Variables para el mensaje de alerta
 $mensaje = "";
@@ -51,6 +52,19 @@ if (isset($_POST['equipos']) && is_array($_POST['equipos']) && count($_POST['equ
 
             if ($stmt->execute()) {
                 $equiposActualizados++;
+                $sqlHoras = "SELECT dia_entrega, hora_entrega, hora_regreso FROM peticiones_insumos WHERE id = ?";
+                $stmtHoras = $conexion->prepare($sqlHoras);
+                $stmtHoras->bind_param("i", $peticion);
+                $stmtHoras->execute();
+                $stmtHoras->bind_result($fecha, $horaSalida, $horaDevolucion);
+                $stmtHoras->fetch();
+                $stmtHoras->close();
+
+                $sqlInsert = "INSERT INTO fecha_insumos (id_equipo, fecha, hora_salida, hora_devolucion) VALUES (?, ?, ?, ?)";
+                $stmtInsert = $conexion->prepare($sqlInsert);
+                $stmtInsert->bind_param("isss", $codInventario, $fecha, $horaSalida, $horaDevolucion);
+                $stmtInsert->execute();
+                $stmtInsert->close();
             } else {
                 throw new Exception("Error al actualizar el equipo $codInventario: " . $stmt->error);
             }

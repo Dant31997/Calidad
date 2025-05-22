@@ -16,11 +16,55 @@ $insumo = isset($_GET['inventario']) ? $_GET['inventario'] : '';
 $cantidad = isset($_GET['cantidad']) ? $_GET['cantidad'] : '';
 $nombrePersona = isset($_GET['nombre_trabajador']) ? $_GET['nombre_trabajador'] : '';
 
+$diaEntrega = '';
+$horaEntrega = '';
+$horaRegreso = '';
+if (!empty($idPrestamo)) {
+    $sqlPeticion = "SELECT dia_entrega, hora_entrega, hora_regreso FROM peticiones_insumos WHERE id = ?";
+    $stmtPeticion = $conexion->prepare($sqlPeticion);
+    $stmtPeticion->bind_param("i", $idPrestamo);
+    $stmtPeticion->execute();
+    $stmtPeticion->bind_result($diaEntrega, $horaEntrega, $horaRegreso);
+    $stmtPeticion->fetch();
+    $stmtPeticion->close();
+}
+
 // Consulta para obtener los registros de la tabla inventario
-$sqlInventario = "SELECT cod_inventario, nom_inventario, descripcion 
-                  FROM inventario 
-                  WHERE estado = 'Libre' AND prestado_a = 'Nadie'";
-$resultadoInventario = $conexion->query($sqlInventario);
+$sqlInventario = "
+SELECT cod_inventario, nom_inventario, descripcion
+FROM inventario
+WHERE nom_inventario = ?
+  AND cod_inventario NOT IN (
+      SELECT id_equipo
+      FROM fecha_insumos
+      WHERE fecha = ?
+        AND (
+            (hora_salida < ? AND hora_devolucion > ?) -- Traslape de horario
+            OR
+            (hora_salida < ? AND hora_devolucion > ?)
+            OR
+            (hora_salida >= ? AND hora_salida < ?)
+            OR
+            (hora_devolucion > ? AND hora_devolucion <= ?)
+        )
+  )
+";
+$stmtInv = $conexion->prepare($sqlInventario);
+$stmtInv->bind_param(
+    "ssssssssss",
+    $insumo,
+    $diaEntrega,
+    $horaRegreso,
+    $horaEntrega,
+    $horaEntrega,
+    $horaRegreso,
+    $horaEntrega,
+    $horaRegreso,
+    $horaEntrega,
+    $horaRegreso
+);
+$stmtInv->execute();
+$resultadoInventario = $stmtInv->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +151,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
             border-collapse: collapse;
             font-size: 14.5px;
             margin-bottom: 10px;
-            margin-top: -30px;
+            margin-top: -10px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -136,9 +180,10 @@ $resultadoInventario = $conexion->query($sqlInventario);
             background-color: #ff0000;
             color: white;
             border: none;
+            width: 150px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 26px;
             position: absolute;
             top: 10%;
             left: 82%;
@@ -185,7 +230,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
             margin-bottom: 5px;
             width: 100%;
             max-width: 800px;
-            margin-top: -15px;
+            margin-top: -10px;
             height: 80px;
         }
 
@@ -275,7 +320,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
 
 
 
-    <select id="filtro" class="filter-input">
+    <select hidden id="filtro" class="filter-input">
         <option value="">-- Mostrar todos los equipos --</option>
         <?php
         // Generar opciones para el select con los nombres únicos de inventario disponibles
@@ -294,6 +339,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
     <form action="procesar_inventario.php" method="POST">
         <input type="hidden" name="nombrePersona" value="<?php echo $nombrePersona; ?>">
         <input type="hidden" name="idPrestamo" value="<?php echo $idPrestamo2; ?>">
+        <input type="hidden" name="peticion" value="<?php echo $idPrestamo; ?>">
         <table id="tabla-inventario">
             <thead>
                 <tr class='encabezado'>
@@ -344,7 +390,7 @@ $resultadoInventario = $conexion->query($sqlInventario);
 
         document.addEventListener('DOMContentLoaded', function() {
             // Configuración inicial
-            const rowsPerPage = 5;
+            const rowsPerPage = 4;
             const table = document.getElementById('tabla-inventario');
             const tbody = table.querySelector('tbody');
             const allRows = Array.from(tbody.querySelectorAll('tr')); // Todas las filas originales
