@@ -412,7 +412,7 @@ $pdf->TableHeader([
 // Poblar la tabla
 $fill = false;
 $contador = 0;
-$maxItems = 16; // Número máximo de elementos por página
+$maxItems = 10; // Número máximo de elementos por página
 $totalRegistros = $todosRegistros->num_rows;
 
 while ($registro = $todosRegistros->fetch_assoc()) {

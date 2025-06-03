@@ -18,6 +18,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['rol']) && isset($_SESSION['estado
 <html>
   <head>
     <title>Iniciar Sesion</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <style>
       * {
         box-sizing: border-box;

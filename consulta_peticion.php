@@ -25,7 +25,7 @@
             width: 400px;
             position: absolute;
             top: 20%;
-            left: 30%;
+            left: 35%;
         }
 
         h1 {
@@ -101,8 +101,8 @@
             border-radius: 5px;
             font-size: 16px;
             position: absolute;
-            top: 110%;
-            left: -10%;
+            top: 80%;
+            left: 45%;
         }
 
         .regresar:hover {
