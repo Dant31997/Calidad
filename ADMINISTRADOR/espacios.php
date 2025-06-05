@@ -289,6 +289,7 @@ $conexion->close();
     <div class="dropdown-content">
         <a href="inventario.php"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
         <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+        <a href="listar_usuarios.php"><i class="fa-solid fa-users"></i> Gestion de Usuarios</a>
         <a href="verificarPeticionesEspacios.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Espacios</a>
         <a target="_blank" href="exportar_esp.php"><i class="fa-solid fa-file-export"></i> Informe de Espacios</a>
         <a href="admin_panel.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>

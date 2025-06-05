@@ -323,6 +323,7 @@
             <div class="dropdown-content">
                 <a href="inventario.php"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
                 <a href="espacios.php"><i class="fa-solid fa-building"></i> Espacios</a>
+                <a href="listar_usuarios.php"><i class="fa-solid fa-users"></i> Gestion de Usuarios</a>
                 <a target="_blank" href="exportar_prestamos.php"><i class="fa-solid fa-file-export"></i> Informe de Préstamos</a>
                 <a href="admin_panel.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
                 <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>

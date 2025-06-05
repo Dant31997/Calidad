@@ -16,7 +16,7 @@ if ($conexion->connect_error) {
 
 // Consulta para obtener los roles del usuario
 $consulta = "SELECT * FROM roles";
-$resultado = $conexion->query($consulta);   
+$resultado = $conexion->query($consulta);
 
 ?>
 
@@ -97,18 +97,17 @@ $resultado = $conexion->query($consulta);
         }
 
         .lista {
-            background-color: #ff0000;
-            color: #fff;
-            font-size: 15px;
             padding: 11px 20px;
-            text-decoration: none;
-            text-align: center;
+            background-color: red;
+            color: #fff;
+            border: none;
             border-radius: 5px;
+            text-decoration: none;
             position: absolute;
-            top: 88%;
-            left: 49%;
+            top: 59%;
+            left: 50%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
+            font-size: 25px;
             font-weight: bold;
         }
 
@@ -156,7 +155,7 @@ $resultado = $conexion->query($consulta);
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 39%;
+            top: 59%;
             left: 7%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             font-size: 25px;
@@ -181,8 +180,8 @@ $resultado = $conexion->query($consulta);
             border-radius: 5px;
             text-decoration: none;
             position: absolute;
-            top: 82%;
-            left: 7%;
+            top: 59%;
+            left: 28%;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             font-size: 25px;
             font-weight: bold;
@@ -275,7 +274,7 @@ $resultado = $conexion->query($consulta);
 
         .imginv {
             position: absolute;
-            top: 4%;
+            top: 28%;
             left: 11%;
         }
 
@@ -287,8 +286,8 @@ $resultado = $conexion->query($consulta);
 
         .imgesp {
             position: absolute;
-            top: 49%;
-            left: 7%;
+            top: 29%;
+            left: 28%;
             resize: both;
         }
 
@@ -306,6 +305,11 @@ $resultado = $conexion->query($consulta);
 
         .imgpet:hover {
             position: absolute;
+        }
+        .imagest {
+            position: absolute;
+            top: 30%;
+            left: 53%;
         }
 
         .form-group input {
@@ -369,44 +373,13 @@ $resultado = $conexion->query($consulta);
         <h2>Bienvenido <?php echo htmlspecialchars($nombre); ?></h2>
     </div>
     <a href="../cerrar_sesion.php" class="logout-button"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
-    <div class="panel-box">
 
-        <!-- Formulario para crear un nuevo usuario -->
-        <h3>Crear Nuevo Usuario</h3>
-        <form action="crear_usuario.php" method="POST">
-            <div class="form-group">
-                <label for="nombre_usuario">Nombre de Usuario:</label>
-                <input type="text" id="nombre_usuario" name="nombre_usuario" required>
-            </div>
-            <div class="form-group">
-                <label for="contrasena">Contraseña: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;</label>
-                <input type="password" id="contrasena" name="contrasena" required>
-            </div>
-            <div class="form-group">
-                <label for="nombre">Nombre completo: &nbsp;&nbsp; </label>
-                <input type="text" id="nombre" name="nombre" required>
-            </div>
-            <div class="rol">
-                <label for="rol">Rol:</label>
-                <select id="rol" name="rol" required>
-                    <option value="" disabled selected>Elige un rol</option>
-                    <?php
-                    if ($resultado->num_rows > 0) {
-                        while ($row = $resultado->fetch_assoc()) {
-                            echo "<option value='" . $row['nombre_rol'] . "'>" . $row['nombre_rol'] . "</option>";
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
-            <br>
-            <input class="crear_usu" type="submit" value="Crear Usuario">
+    <div>
+        <br>
+        <a class="lista" href='listar_usuarios.php' class="lista">Gestion de Usuarios</a>
+    </div>
 
-            <div>
-                <br>
-                <a class="lista" href='listar_usuarios.php' class="lista">Lista de Usuarios</a>
-            </div>
-        </form>
+
     </div>
     <form action="inventario.php">
         <input class="custom-button" name="inv" type="submit" value="INVENTARIO">
@@ -423,6 +396,7 @@ $resultado = $conexion->query($consulta);
     <a class="imginv"><img src='imagenes/inventario.PNG' /></a>
     <a class="imgesp"><img src='imagenes/espacio1.jpg' /></a>
     <a class="imgpet"><img src='imagenes/peticiones.png' /></a>
+    <a class="imagest"><img src='imagenes/gestion.png' width="200" height="200" /></a>
 </body>
 
 </html>

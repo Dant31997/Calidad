@@ -222,7 +222,6 @@
         background-color: red;
         border-bottom: #943126 10px solid;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
     }
 
     .encabezado {
@@ -595,12 +594,12 @@ $conexion->close();
     <div class="dropdown-content">
         <a href="espacios.php"><i class="fa-solid fa-building"></i> Espacios</a>
         <a href="prestamos_insumos.php"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+        <a href="listar_usuarios.php"><i class="fa-solid fa-users"></i> Gestion de Usuarios</a>
         <a target="_blank" href="exportar_inv.php"><i class="fa-solid fa-file-export"></i> Informe de Inventario</a>
         <a href="verificarPeticionesInsumos.php"><i class="fa-solid fa-envelope-open-text"></i> Peticiones de Insumos</a>
         <a href="tipo_insumo.php"><i class="fa-solid fa-boxes-stacked"></i> Tipos de Insumo</a>
         <a href="admin_panel.php"><i class="fa-solid fa-house"></i> Volver al inicio</a>
         <a href="../cerrar_sesion.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
-
     </div>
 </div>
 
