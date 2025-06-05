@@ -80,7 +80,7 @@
         margin-top: 5%;
         position: absolute;
         top: 2%;
-        left: 2%;
+        left: 7%;
     }
 
     table {

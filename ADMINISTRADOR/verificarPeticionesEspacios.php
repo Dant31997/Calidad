@@ -51,7 +51,7 @@
         .tabla1 {
             position: absolute;
             top: 13%;
-            left: 5%;
+            left: 10%;
             padding: 10px;
             width: 1200px;
             height: 400px;
